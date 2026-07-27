@@ -1,6 +1,7 @@
 /* ==========================================================================
    《舌战》桌游电子版 核心游戏引擎与 AI 逻辑 (App.js)
-   (包含 100% 规则下三角矩阵 + 手机端触摸控制适配 Mobile Friendly)
+   (彻底订正：破口大骂 vs 反唇相讥 单元格为 -/-5, 停动)
+   (破口大骂造成反唇相讥-5且停动；反唇相讥被破口大骂停动)
    ========================================================================== */
 
 // SVG Art Icons for 6 Cards
@@ -17,8 +18,8 @@ const SEALS = { 0: '破', 1: '反', 2: '怒', 3: '静', 4: '水', 5: '虑' };
 
 const CARD_DESCS = {
   0: '⚡ 击穿《破口大骂》（对方-15 HP）；克制《心如止水》《深思熟虑》（对方-10 HP）。被《反唇相讥》反弹（己方-10 HP）。',
-  1: '🌿 反弹《一语道破》（对方-10 HP）；对《破口大骂》造成己方0伤对方-5且停动；打断《深思熟虑》（阻断对方回收手牌）。',
-  2: '🔥 被《一语道破》刺穿（己方-15 HP）；被《反唇相讥》反弹（己方-5 HP且【停动】）；打《沉默是金》（己方0伤，对方-5 HP）；打《深思熟虑》（己方0伤，对方-5 HP且【停动】，但对方依然能回收）；碰《心如止水》（对方+15 HP）。',
+  1: '🌿 反弹《一语道破》（对方-10 HP）；被《破口大骂》压制（己方-5 HP且【停动】）；打断《深思熟虑》（阻断对方回收手牌）。',
+  2: '🔥 压制《反唇相讥》（对方-5 HP且【停动】）；打《沉默是金》（己方0伤，对方-5 HP）；打《深思熟虑》（己方0伤，对方-5 HP且【停动】，但对方依然能回收）；被《一语道破》刺穿（己方-15 HP）；碰《心如止水》（对方+15 HP）。',
   3: '🌈 最稳试探牌。仅被《破口大骂》造成（己方-5 HP，无停动），面对其他所有牌均为 0 伤害。',
   4: '💧 吸收《破口大骂》（己方+15 HP）；碰《一语道破》（己方-10 HP）；碰其他所有牌均（己方+10 HP）。',
   5: '⛰️ 回收除自身外的所有弃牌。碰《破口大骂》（己方-5 HP且【停动】，但依然成功回收手牌）；遭遇《反唇相讥》回收被打断！'
@@ -33,8 +34,9 @@ const CARDS = [
   { id: 5, name: '深思熟虑', color: '#c2410c' }
 ];
 
-// 100% PERFECT MATRIX DIRECTLY FROM PDF screenshot:
-// Rows = Player A, Cols = Player B
+// 100% EXACT MATCHING MATRIX FOR PDF SCREENSHOT:
+// Row 3 (破口大骂) Col 2 (反唇相讥): -/-5, 停动 (Red: -, Blue: -5, 停动)
+// So P (Row) gets 0 HP & no stun. F (Col) gets -5 HP & STUN!
 const MATRIX = [
   // 0: 一语道破 (Y) vs [Y, F, P, C, X, S]
   [
@@ -50,7 +52,7 @@ const MATRIX = [
   [
     {A:   0, B: -10, sA: false, sB: false, pA: false, pB: false},
     {A:   0, B:   0, sA: false, sB: false, pA: false, pB: false},
-    {A:   0, B:  -5, sA: false, sB: true,  pA: false, pB: false},
+    {A:  -5, B:   0, sA: true,  sB: false, pA: false, pB: false}, // F (A) vs P (B) -> F takes -5 & STUN! P takes 0!
     {A:   0, B:   0, sA: false, sB: false, pA: false, pB: false},
     {A:   0, B: +10, sA: false, sB: false, pA: false, pB: false},
     {A:   0, B:   0, sA: false, sB: false, pA: false, pB: false}
@@ -59,18 +61,18 @@ const MATRIX = [
   // 2: 破口大骂 (P) vs [Y, F, P, C, X, S]
   [
     {A: -15, B:   0, sA: false, sB: false, pA: false, pB: false},
-    {A:  -5, B:   0, sA: true,  sB: false, pA: false, pB: false},
+    {A:   0, B:  -5, sA: false, sB: true,  pA: false, pB: false}, // P (A) vs F (B) -> P takes 0! F takes -5 & STUN!
     {A:  -5, B:  -5, sA: true,  sB: true,  pA: false, pB: false},
-    {A:   0, B:  -5, sA: false, sB: false, pA: false, pB: false},
+    {A:   0, B:  -5, sA: false, sB: false, pA: false, pB: false}, // P vs C -> P: 0, C: -5 (NO STUN)
     {A:   0, B: +15, sA: false, sB: false, pA: false, pB: false},
-    {A:   0, B:  -5, sA: false, sB: true,  pA: false, pB: true }
+    {A:   0, B:  -5, sA: false, sB: true,  pA: false, pB: true }  // P vs S -> P: 0, S: -5 & STUN & PICKUP!
   ],
 
   // 3: 沉默是金 (C) vs [Y, F, P, C, X, S]
   [
     {A:   0, B:   0, sA: false, sB: false, pA: false, pB: false},
     {A:   0, B:   0, sA: false, sB: false, pA: false, pB: false},
-    {A:  -5, B:   0, sA: false, sB: false, pA: false, pB: false},
+    {A:  -5, B:   0, sA: false, sB: false, pA: false, pB: false}, // C vs P -> C: -5 (NO STUN), P: 0
     {A:   0, B:   0, sA: false, sB: false, pA: false, pB: false},
     {A:   0, B: +10, sA: false, sB: false, pA: false, pB: false},
     {A:   0, B:   0, sA: false, sB: false, pA: false, pB: true }
@@ -89,8 +91,8 @@ const MATRIX = [
   // 5: 深思熟虑 (S) vs [Y, F, P, C, X, S]
   [
     {A: -10, B:   0, sA: false, sB: false, pA: true,  pB: false},
-    {A:   0, B:   0, sA: false, sB: false, pA: false, pB: false},
-    {A:  -5, B:   0, sA: true,  sB: false, pA: true,  pB: false},
+    {A:   0, B:   0, sA: false, sB: false, pA: false, pB: false}, // S vs F -> NO PICKUP
+    {A:  -5, B:   0, sA: true,  sB: false, pA: true,  pB: false}, // S vs P -> S: -5 & STUN & PICKUP, P: 0
     {A:   0, B:   0, sA: false, sB: false, pA: true,  pB: false},
     {A:   0, B: +10, sA: false, sB: false, pA: true,  pB: false},
     {A:   0, B:   0, sA: false, sB: false, pA: true,  pB: true }
@@ -353,7 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
     clashRay.classList.add('hidden');
   }
 
-  // Render Card 3D Element with Royal Card Back
+  // Render Card 3D Element (Complete with 3D Flip animation support)
   function createCard3DHtml(cardId, isFaceDown = true) {
     if (cardId === -1) {
       return `<div class="stun-slot-badge">😵 停动跳过<br><small style="font-size:0.75rem;">(SKIPPED)</small></div>`;
@@ -362,14 +364,14 @@ document.addEventListener('DOMContentLoaded', () => {
     return `
       <div class="card-container-3d ${isFaceDown ? '' : 'flipped'}" data-card="${cardId}">
         <div class="card-3d-inner">
-          <!-- ROYAL CRIMSON GOLD CARD BACK -->
+          <!-- BACK FACE (Facing user when card is face down) -->
           <div class="card-face card-face-back">
             <div class="card-back-pattern">
               <div class="card-back-seal">舌</div>
               <span class="card-back-text">舌战</span>
             </div>
           </div>
-          <!-- FACE UP FRONT (VECTOR ART) -->
+          <!-- FRONT FACE (Facing user when card is flipped 180deg) -->
           <div class="card-face card-face-front">
             <div class="card-header-bar">
               <span class="card-type-icon">${card.name.substring(0, 1)}</span>
@@ -396,8 +398,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (game.userStunned) {
-      handCardsContainer.innerHTML = `<div class="placeholder-text" style="color: #b91c1c; font-size: 0.9rem; font-weight:bold;">😵 你处于【停动】状态，本回合无法出牌！点击“跳过回合”继续。</div>
-      <button id="btn-skip-turn" class="btn btn-primary" style="margin-top:8px;">跳过本回合</button>`;
+      handCardsContainer.innerHTML = `<div class="placeholder-text" style="color: #b91c1c; font-size: 0.85rem; font-weight:bold;">😵 你处于【停动】状态，本回合无法出牌！点击“跳过回合”继续。</div>
+      <button id="btn-skip-turn" class="btn btn-primary" style="margin-top:4px;">跳过本回合</button>`;
       document.getElementById('btn-skip-turn')?.addEventListener('click', () => handleTurn(-1));
       return;
     }
@@ -441,7 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let left = clientX + 15;
     let top = clientY - 80;
-    if (left + 260 > window.innerWidth) left = Math.max(10, clientX - 260);
+    if (left + 250 > window.innerWidth) left = Math.max(10, clientX - 250);
     if (top < 10) top = clientY + 15;
     hoverTooltip.style.left = left + 'px';
     hoverTooltip.style.top = top + 'px';
@@ -476,6 +478,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     clashRay.classList.add('hidden');
+    
+    // Step 1: Render cards face-down into arena slots with card back animation
     playerCardSlot.innerHTML = createCard3DHtml(userCardId, true);
     aiCardSlot.innerHTML = createCard3DHtml(aiCardId, true);
 
@@ -490,11 +494,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderAiHandBacks();
 
+    // Step 2: After 400ms, trigger simultaneous 3D Flip animation (rotateY(180deg))
     setTimeout(() => {
       document.querySelectorAll('.arena-card-slot .card-container-3d').forEach(el => {
         el.classList.add('flipped');
       });
 
+      // Step 3: After flip finishes (500ms), show energy ray beam and resolve outcome
       setTimeout(() => {
         clashRay.classList.remove('hidden');
 
@@ -505,9 +511,9 @@ document.addEventListener('DOMContentLoaded', () => {
           game.isProcessing = false;
           updateUI();
           checkGameOver();
-        }, 600);
+        }, 500);
       }, 500);
-    }, 500);
+    }, 400);
   }
 
   function resolveOutcome(uId, aId) {
