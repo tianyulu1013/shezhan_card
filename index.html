@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>舌战</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="app">
+    <!-- Game Cover / Welcome Screen (开始界面) -->
+    <div id="cover-screen" class="cover-screen active">
+      <div class="cover-content">
+        <div class="cover-header">
+          <div class="cover-seal">舌战</div>
+          <h1 class="cover-title">舌战</h1>
+        </div>
+
+        <div class="cover-setup-panel">
+          <div class="setup-group">
+            <label class="group-label">对局模式</label>
+            <div class="mode-buttons">
+              <button class="mode-select-btn active" data-mode="competitive">
+                <span class="m-title">⚡ 竞技刺客模式</span>
+                <span class="m-sub">30 HP | 14 张手牌 (1张心如止水)</span>
+              </button>
+              <button class="mode-select-btn" data-mode="casual">
+                <span class="m-title">🛡️ 新手缓冲模式</span>
+                <span class="m-sub">40 HP | 15 张手牌 (2张心如止水)</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="setup-group">
+            <label class="group-label">AI 对手难度</label>
+            <div class="diff-buttons">
+              <button class="diff-select-btn active" data-diff="master">
+                <span class="d-title">🧠 大师 AI</span>
+                <span class="d-sub">高智商算牌+残局斩杀</span>
+              </button>
+              <button class="diff-select-btn" data-diff="medium">
+                <span class="d-title">⚖️ 中级 AI</span>
+                <span class="d-sub">基础防守+记牌</span>
+              </button>
+              <button class="diff-select-btn" data-diff="easy">
+                <span class="d-title">🎲 随机 AI</span>
+                <span class="d-sub">轻松试玩</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="cover-actions">
+            <button id="btn-enter-game" class="btn-primary btn-cover-start">开始对局</button>
+            <button id="btn-cover-rules" class="btn btn-secondary btn-cover-rules">📖 规则手册</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="game-header">
+      <div class="logo">
+        <span class="logo-seal">舌战</span>
+        <h1>舌战</h1>
+      </div>
+      <div class="header-controls">
+        <button id="btn-tracker" class="btn btn-secondary">📊 记牌器</button>
+        <button id="btn-rules" class="btn btn-secondary">📖 规则</button>
+        <button id="btn-restart" class="btn btn-danger">🔄 主菜单</button>
+      </div>
+    </header>
+
+    <!-- Main Game Board (Warm Tabletop) -->
+    <main class="game-board">
+      <!-- Opponent Zone (AI) -->
+      <section class="player-zone ai-zone">
+        <div class="player-info">
+          <div class="avatar ai-avatar">🤖</div>
+          <div class="status-details">
+            <div class="name-bar">
+              <span class="player-name">AI 对手</span>
+              <span id="ai-diff-tag" class="badge">大师 AI</span>
+            </div>
+            <div class="hp-wrapper">
+              <div class="hp-bar-bg">
+                <div id="ai-hp-bar" class="hp-bar-fill" style="width: 100%;"></div>
+              </div>
+              <span id="ai-hp-text" class="hp-text">30 / 30 HP</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Face-Down Cards Container -->
+        <div class="ai-hand-deck">
+          <div id="ai-hand-backs" class="hand-backs-row">
+            <!-- Dynamic Face-Down Cards Rendered by JS -->
+          </div>
+          <span class="hand-count-badge">🎴 剩余手牌: <strong id="ai-hand-count">14</strong> 张</span>
+          <span id="ai-stun-badge" class="badge badge-warning hidden">😵 停动中</span>
+        </div>
+      </section>
+
+      <!-- Arena Battle Field (Center Table) -->
+      <section class="arena-zone">
+        <div class="turn-indicator">
+          <span id="turn-counter">第 1 回合</span>
+        </div>
+
+        <!-- Prominent Stun Toast Alert Banner -->
+        <div id="stun-notice-banner" class="stun-notice-banner hidden">
+          <span id="stun-notice-text">😵 提示：对方处于【停动】状态！</span>
+        </div>
+
+        <div class="cards-clash">
+          <!-- Player Card Played Slot -->
+          <div class="clash-slot player-slot">
+            <span class="slot-label">👤 玩家出牌</span>
+            <div id="player-card-slot" class="arena-card-slot">
+              <div class="slot-placeholder">等待选牌...</div>
+            </div>
+          </div>
+
+          <!-- Central Visual Clash Ray & FX -->
+          <div class="clash-center-fx">
+            <div id="clash-ray" class="clash-ray hidden"></div>
+            <div class="vs-badge">VS</div>
+          </div>
+
+          <!-- AI Card Played Slot -->
+          <div class="clash-slot ai-slot">
+            <span class="slot-label">🤖 AI出牌</span>
+            <div id="ai-card-slot" class="arena-card-slot">
+              <div class="slot-placeholder">等待出牌...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Outcome Banner -->
+        <div id="outcome-banner" class="outcome-banner hidden">
+          <span id="outcome-text">结算结果...</span>
+        </div>
+      </section>
+
+      <!-- Log and Controls Area -->
+      <section class="bottom-panel">
+        <!-- Battle Log -->
+        <div class="log-box">
+          <div class="log-header">📜 对局日志</div>
+          <div id="battle-log" class="log-content">
+            <p class="log-item system">对局开始！请选择一张卡牌暗置出牌。</p>
+          </div>
+        </div>
+
+        <!-- Player Zone -->
+        <div class="player-zone user-zone">
+          <div class="player-info">
+            <div class="avatar user-avatar">👤</div>
+            <div class="status-details">
+              <div class="name-bar">
+                <span class="player-name">你 (Player)</span>
+              </div>
+              <div class="hp-wrapper">
+                <div class="hp-bar-bg">
+                  <div id="user-hp-bar" class="hp-bar-fill" style="width: 100%;"></div>
+                </div>
+                <span id="user-hp-text" class="hp-text">30 / 30 HP</span>
+              </div>
+            </div>
+          </div>
+          <div class="hand-summary">
+            <span class="hand-count-badge">🎴 剩余手牌: <strong id="user-hand-count">14</strong> 张</span>
+            <span id="user-stun-badge" class="badge badge-warning hidden">😵 停动中</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Player Hand Dock (Bottom Interactive Bar) -->
+      <section class="hand-dock">
+        <div class="dock-title">手牌区（鼠标悬停可查看卡牌说明）:</div>
+        <div id="hand-cards-container" class="hand-cards-list">
+          <!-- Dynamic Cards Rendered by JS -->
+        </div>
+      </section>
+    </main>
+
+    <!-- Floating Mouse Hover Tooltip -->
+    <div id="card-hover-tooltip" class="card-hover-tooltip hidden">
+      <div id="tooltip-title" class="tooltip-title">卡牌名称</div>
+      <div id="tooltip-body" class="tooltip-body">卡牌效果说明...</div>
+    </div>
+
+    <!-- Card Tracker Modal -->
+    <div id="tracker-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>📊 双方手牌剩余记牌器</h2>
+          <button class="close-btn" data-close="tracker-modal">✕</button>
+        </div>
+        <div class="tracker-grid">
+          <div class="tracker-column">
+            <h3>🤖 AI 对手剩余手牌</h3>
+            <div id="ai-tracker-list" class="tracker-list"></div>
+          </div>
+          <div class="tracker-column">
+            <h3>👤 你的剩余手牌</h3>
+            <div id="user-tracker-list" class="tracker-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rules Modal (Fixed Silence is Gold No Stun Rule) -->
+    <div id="rules-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>📖 《舌战》规则手册</h2>
+          <button class="close-btn" data-close="rules-modal">✕</button>
+        </div>
+        <div class="rules-body">
+          <p><strong>基本规则</strong>：双方同时暗置出牌结算。任意一方 HP 归零则失败。</p>
+          <p><strong>卡牌关系说明（明确己方与对方得失）</strong>：</p>
+          <ul>
+            <li>⚡ <strong>一语道破</strong>：刺穿《破口大骂》（<strong>对方-15 HP</strong>）；克制《心如止水》《深思熟虑》（<strong>对方-10 HP</strong>）；被《反唇相讥》反弹（<strong>己方-10 HP</strong>）。</li>
+            <li>🌿 <strong>反唇相讥</strong>：反弹《一语道破》（<strong>对方-10 HP</strong>）；被《破口大骂》压制（<strong>己方-5 HP 且【停动】</strong>）；打断《深思熟虑》（<strong>阻止对方回收手牌</strong>）。</li>
+            <li>🔥 <strong>破口大骂</strong>：压制《反唇相讥》《深思熟虑》《破口大骂》（<strong>对方-5 HP 且【停动】</strong>）；攻击《沉默是金》（<strong>对方仅-5 HP，不会被停动！</strong>）；被《一语道破》刺穿（<strong>己方-15 HP</strong>）；碰《心如止水》（<strong>对方+15 HP</strong>）。</li>
+            <li>🌈 <strong>沉默是金</strong>：最稳试探牌。仅被《破口大骂》攻击（<strong>己方-5 HP，绝不会被停动！</strong>），面对其他所有牌均为 0 伤害。</li>
+            <li>💧 <strong>心如止水</strong>：吸收《破口大骂》（<strong>己方+15 HP</strong>）；碰《一语道破》（<strong>己方-10 HP</strong>）；碰其他所有牌均（<strong>己方+10 HP</strong>）。</li>
+            <li>⛰️ <strong>深思熟虑</strong>：回收除自身外的所有弃牌。碰《破口大骂》受-5 HP且【停动】，但<strong>仍可成功回收手牌</strong>！仅在遭遇《反唇相讥》时回收会被打断。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="gameover-modal" class="modal">
+      <div class="modal-content gameover-box">
+        <h2 id="gameover-title">🏆 战斗胜利！</h2>
+        <p id="gameover-desc" class="gameover-desc">你成功击败了 AI 对手！</p>
+        <div class="gameover-stats">
+          <div class="stat-item">总回合数: <strong id="stat-turns">12</strong></div>
+          <div class="stat-item">剩余血量: <strong id="stat-hp">15</strong></div>
+        </div>
+        <button id="btn-play-again" class="btn btn-primary btn-large">🔄 返回主菜单</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
