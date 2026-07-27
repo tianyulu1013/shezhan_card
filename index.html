@@ -23,13 +23,13 @@
           <div class="setup-group">
             <label class="group-label">对局模式</label>
             <div class="mode-buttons">
-              <button class="mode-select-btn active" data-mode="competitive">
+              <button class="mode-select-btn" data-mode="competitive">
                 <span class="m-title">⚡ 竞技刺客模式</span>
                 <span class="m-sub">30 HP | 14 张手牌 (1张心如止水)</span>
               </button>
-              <button class="mode-select-btn" data-mode="casual">
-                <span class="m-title">🛡️ 新手缓冲模式</span>
-                <span class="m-sub">40 HP | 15 张手牌 (2张心如止水)</span>
+              <button class="mode-select-btn active" data-mode="casual">
+                <span class="m-title">♟️ 持久策略模式</span>
+                <span class="m-sub">40 HP | 15 张手牌 · 双心如止水</span>
               </button>
             </div>
           </div>
@@ -49,6 +49,19 @@
                 <span class="d-title">🎲 随机 AI</span>
                 <span class="d-sub">轻松试玩</span>
               </button>
+            </div>
+          </div>
+
+          <div class="session-record" aria-label="本次游玩战绩">
+            <div class="session-record-heading">
+              <span>本次游玩</span>
+              <small id="session-games">0 局</small>
+            </div>
+            <div class="session-record-grid">
+              <div><strong id="session-wins">0</strong><span>胜</span></div>
+              <div><strong id="session-losses">0</strong><span>负</span></div>
+              <div><strong id="session-draws">0</strong><span>平</span></div>
+              <div><strong id="session-win-rate">—</strong><span>胜率</span></div>
             </div>
           </div>
 
@@ -181,7 +194,21 @@
 
       <!-- Player Hand Dock (Bottom Interactive Bar) -->
       <section class="hand-dock">
-        <div class="dock-title">手牌区（点击查看卡牌说明并出牌）:</div>
+        <div class="dock-heading-row">
+          <div class="dock-title">点击选牌，或向上拖到出牌区</div>
+          <div id="hand-action-bar" class="hand-action-bar" aria-live="polite">
+            <span id="selected-card-name">点选或上拖</span>
+            <button id="btn-cancel-card" class="hand-action-btn hand-cancel-btn" disabled>取消</button>
+            <button id="btn-confirm-card" class="hand-action-btn hand-confirm-btn" disabled>确认出牌</button>
+          </div>
+        </div>
+        <div class="discard-summary" aria-label="玩家弃牌堆">
+          <span class="discard-label">弃牌堆</span>
+          <div id="user-discard-preview" class="discard-chips">
+            <span class="discard-empty">空</span>
+          </div>
+          <span id="recoverable-count" class="recoverable-count">深思可捡 0 张</span>
+        </div>
         <div id="hand-cards-container" class="hand-cards-list">
           <!-- Dynamic Cards Rendered by JS -->
         </div>
@@ -344,6 +371,7 @@
           <div class="stat-item">总回合数: <strong id="stat-turns">12</strong></div>
           <div class="stat-item">剩余血量: <strong id="stat-hp">15</strong></div>
         </div>
+        <p id="gameover-session-record" class="gameover-session-record">本次游玩：0 胜 · 0 负 · 0 平</p>
         <button id="btn-play-again" class="btn btn-primary btn-large">🔄 返回主菜单</button>
       </div>
     </div>

@@ -145,6 +145,8 @@ class ShezhanGame {
     this.userPlayHistory = [];
     this.aiPlayHistory = [];
     this.aiPersonality = 'balanced';
+    this.sessionStats = { wins: 0, losses: 0, draws: 0, games: 0 };
+    this.resultRecorded = false;
     
     this.isProcessing = false;
     this.gameOver = false;
@@ -167,6 +169,7 @@ class ShezhanGame {
     this.userPlayHistory = [];
     this.aiPlayHistory = [];
     this.aiPersonality = ['balanced', 'aggressive', 'control', 'resource'][Math.floor(Math.random() * 4)];
+    this.resultRecorded = false;
     
     this.userStunned = false;
     this.aiStunned = false;
@@ -205,25 +208,41 @@ class ShezhanGame {
   }
 
   getPlayerProbabilities(state, adaptToCurrentMatch = false) {
-    const weights = state.userHand.map(count => Math.max(0, count));
+    const handWeights = state.userHand.map(count => Math.max(0, count));
+    const handTotal = handWeights.reduce((sum, value) => sum + value, 0);
+    if (handTotal <= 0) return [];
+
+    let probabilities = handWeights.map(weight => weight / handTotal);
 
     if (adaptToCurrentMatch && this.userPlayHistory.length > 0) {
-      const recent = this.userPlayHistory.slice(-6);
+      const recent = this.userPlayHistory.slice(-5);
+      const patternWeights = handWeights.map(() => 0);
+
       recent.forEach((card, index) => {
-        if (card >= 0 && weights[card] > 0) {
-          weights[card] *= 1 + 0.05 + (index / Math.max(1, recent.length - 1)) * 0.12;
+        if (card >= 0 && handWeights[card] > 0) {
+          patternWeights[card] += 1 + index * 0.45;
         }
       });
 
-      const lastCard = recent[recent.length - 1];
-      if (lastCard >= 0 && weights[lastCard] > 0) weights[lastCard] *= 1.1;
-      if (state.userHp <= state.maxHp * 0.4 && weights[4] > 0) weights[4] *= 1.25;
+      const patternTotal = patternWeights.reduce((sum, value) => sum + value, 0);
+      if (patternTotal > 0) {
+        // 一次重复倾向就值得警觉；连续出现后迅速提高置信度，
+        // 但最多保留 15% 的手牌基准概率，避免 AI 变成机械读牌。
+        const patternConfidence = Math.min(0.88, 0.6 + (recent.length - 1) * 0.2);
+        probabilities = probabilities.map((baseProbability, card) =>
+          baseProbability * (1 - patternConfidence)
+          + (patternWeights[card] / patternTotal) * patternConfidence
+        );
+      }
+
+      if (state.userHp <= state.maxHp * 0.4 && handWeights[4] > 0) {
+        probabilities[4] *= 1.3;
+      }
     }
 
-    const total = weights.reduce((sum, value) => sum + value, 0);
-    if (total <= 0) return [];
-    return weights
-      .map((weight, card) => ({ card, probability: weight / total }))
+    const total = probabilities.reduce((sum, value) => sum + value, 0);
+    return probabilities
+      .map((probability, card) => ({ card, probability: probability / total }))
       .filter(item => item.probability > 0);
   }
 
@@ -369,12 +388,39 @@ class ShezhanGame {
     return cards[cards.length - 1];
   }
 
+  getOpeningWeights(validCards) {
+    const baseWeights = [3, 2.5, 2.5, 2, 0, 0];
+    return validCards.map(card =>
+      baseWeights[card] > 0
+        ? Math.max(0.2, baseWeights[card] + this.getPersonalityBonus(card) * 0.35)
+        : 0
+    );
+  }
+
+  chooseFromWeights(cards, weights) {
+    const total = weights.reduce((a, b) => a + b, 0);
+    if (total <= 0) return cards[Math.floor(Math.random() * cards.length)];
+    let roll = Math.random() * total;
+    for (let i = 0; i < cards.length; i++) {
+      roll -= weights[i];
+      if (roll <= 0) return cards[i];
+    }
+    return cards[cards.length - 1];
+  }
+
   getAiChoice() {
     const validCards = this.getValidCards(this.aiHand);
     if (validCards.length === 0) return -1;
 
     if (this.difficulty === 'easy') {
       return validCards[Math.floor(Math.random() * validCards.length)];
+    }
+
+    if (this.turn === 1 && !this.userStunned) {
+      const openingCards = validCards.filter(card => card <= 3);
+      if (openingCards.length > 0) {
+        return this.chooseFromWeights(openingCards, this.getOpeningWeights(openingCards));
+      }
     }
 
     const currentState = {
@@ -413,12 +459,15 @@ class ShezhanGame {
     }
 
     const useLookahead = this.difficulty === 'master';
+    const lookaheadWeight = this.userPlayHistory.length > 0 ? 0.28 : 0.55;
     const scores = validCards.map(aiCard => {
       let score = probabilities.reduce((sum, item) => {
         const immediate = this.evaluatePair(currentState, item.card, aiCard);
         if (!useLookahead) return sum + item.probability * immediate;
         const next = this.simulatePair(currentState, item.card, aiCard);
-        return sum + item.probability * (immediate + this.estimateNextTurn(next) * 0.55);
+        return sum + item.probability * (
+          immediate + this.estimateNextTurn(next) * lookaheadWeight
+        );
       }, 0);
 
       if (useLookahead) {
@@ -433,13 +482,44 @@ class ShezhanGame {
     return this.chooseFromScores(
       validCards,
       scores,
-      this.difficulty === 'master' ? 2.8 : 6.5
+      this.difficulty === 'master'
+        ? (this.userPlayHistory.length >= 2 ? 2.4 : (this.turn <= 3 ? 3.4 : 3.2))
+        : 6.5
     );
   }
 
   recordTurn(userCard, aiCard) {
     if (userCard >= 0) this.userPlayHistory.push(userCard);
     if (aiCard >= 0) this.aiPlayHistory.push(aiCard);
+  }
+
+  consumeMutualStunTurn() {
+    if (
+      !this.userStunned
+      || !this.aiStunned
+      || this.userHp <= 0
+      || this.aiHp <= 0
+    ) return false;
+
+    this.userStunned = false;
+    this.aiStunned = false;
+    this.turn++;
+    return true;
+  }
+
+  recordGameResult(result) {
+    if (this.resultRecorded || !['win', 'loss', 'draw'].includes(result)) return false;
+    this.sessionStats.games++;
+    if (result === 'win') this.sessionStats.wins++;
+    if (result === 'loss') this.sessionStats.losses++;
+    if (result === 'draw') this.sessionStats.draws++;
+    this.resultRecorded = true;
+    return true;
+  }
+
+  getSessionWinRate() {
+    if (this.sessionStats.games === 0) return null;
+    return Math.round((this.sessionStats.wins / this.sessionStats.games) * 100);
   }
 }
 
@@ -455,6 +535,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const trackerModal = document.getElementById('tracker-modal');
   const rulesModal = document.getElementById('rules-modal');
   const gameoverModal = document.getElementById('gameover-modal');
+  const sessionWins = document.getElementById('session-wins');
+  const sessionLosses = document.getElementById('session-losses');
+  const sessionDraws = document.getElementById('session-draws');
+  const sessionGames = document.getElementById('session-games');
+  const sessionWinRate = document.getElementById('session-win-rate');
+  const gameoverSessionRecord = document.getElementById('gameover-session-record');
 
   const btnTracker = document.getElementById('btn-tracker');
   const btnRules = document.getElementById('btn-rules');
@@ -465,6 +551,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const userHpText = document.getElementById('user-hp-text');
   const userHandCount = document.getElementById('user-hand-count');
   const userStunBadge = document.getElementById('user-stun-badge');
+  const userDiscardPreview = document.getElementById('user-discard-preview');
+  const recoverableCount = document.getElementById('recoverable-count');
 
   const aiHpBar = document.getElementById('ai-hp-bar');
   const aiHpText = document.getElementById('ai-hp-text');
@@ -476,6 +564,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const turnCounter = document.getElementById('turn-counter');
   const stunNoticeBanner = document.getElementById('stun-notice-banner');
   const stunNoticeText = document.getElementById('stun-notice-text');
+  const arenaZone = document.querySelector('.arena-zone');
   const playerCardSlot = document.getElementById('player-card-slot');
   const aiCardSlot = document.getElementById('ai-card-slot');
   const clashRay = document.getElementById('clash-ray');
@@ -483,14 +572,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const outcomeText = document.getElementById('outcome-text');
   const battleLog = document.getElementById('battle-log');
   const handCardsContainer = document.getElementById('hand-cards-container');
+  const handActionBar = document.getElementById('hand-action-bar');
+  const selectedCardName = document.getElementById('selected-card-name');
+  const btnCancelCard = document.getElementById('btn-cancel-card');
+  const btnConfirmCard = document.getElementById('btn-confirm-card');
 
   // Hover Tooltip Elements
   const hoverTooltip = document.getElementById('card-hover-tooltip');
   const tooltipTitle = document.getElementById('tooltip-title');
   const tooltipBody = document.getElementById('tooltip-body');
 
-  let selectedMode = 'competitive';
+  let selectedMode = 'casual';
   let selectedDiff = 'master';
+  let selectedCardId = null;
+  let suppressCardClick = false;
 
   // Mode & Difficulty Setup in Cover Screen
   document.querySelectorAll('.mode-select-btn').forEach(btn => {
@@ -511,10 +606,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnEnterGame.addEventListener('click', () => {
     game.init(selectedMode, selectedDiff);
+    clearCardSelection();
     coverScreen.classList.remove('active');
     resetArenaSlots();
     updateUI();
-    addLog(`对局开始！模式：${selectedMode === 'competitive' ? '⚡竞技刺客 (30HP)' : '🛡️新手缓冲 (40HP)'} | AI难度：${selectedDiff.toUpperCase()}`, 'system');
+    addLog(`对局开始！模式：${selectedMode === 'competitive' ? '⚡竞技刺客 (30HP)' : '♟️持久策略 (40HP · 双心如止水)'} | AI难度：${selectedDiff.toUpperCase()}`, 'system');
   });
 
   btnCoverRules.addEventListener('click', () => {
@@ -522,12 +618,24 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   btnRestart.addEventListener('click', () => {
+    clearCardSelection();
     coverScreen.classList.add('active');
   });
 
   btnPlayAgain.addEventListener('click', () => {
+    clearCardSelection();
     gameoverModal.classList.remove('active');
     coverScreen.classList.add('active');
+  });
+
+  btnCancelCard.addEventListener('click', () => clearCardSelection());
+  btnConfirmCard.addEventListener('click', () => {
+    if (selectedCardId !== null) {
+      const sourceCard = handCardsContainer.querySelector(
+        `.dock-card-wrapper[data-card-id="${selectedCardId}"]`
+      );
+      commitCard(selectedCardId, sourceCard);
+    }
   });
 
   btnTracker.addEventListener('click', () => {
@@ -551,9 +659,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, { passive: true });
 
-  function resetArenaSlots() {
+  function clearPlayedCards() {
     playerCardSlot.innerHTML = `<div class="slot-placeholder">等待选牌...</div>`;
+    playerCardSlot.classList.remove('drop-ready');
     aiCardSlot.innerHTML = `<div class="slot-placeholder">等待出牌...</div>`;
+  }
+
+  function resetArenaSlots() {
+    clearPlayedCards();
     outcomeBanner.classList.add('hidden');
     stunNoticeBanner.classList.add('hidden');
     clashRay.classList.add('hidden');
@@ -593,6 +706,229 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
   }
 
+  function syncCardSelectionUI() {
+    const hasSelection = selectedCardId !== null;
+    const recoverableCards = game.userDiscard.slice(0, 5).reduce((sum, qty) => sum + qty, 0);
+    handActionBar.classList.toggle('has-selection', hasSelection);
+    selectedCardName.textContent = hasSelection
+      ? (
+        selectedCardId === 5
+          ? `已选：深思熟虑 · 可捡 ${recoverableCards}`
+          : `已选：${CARDS[selectedCardId].name}`
+      )
+      : '点选或上拖';
+    btnCancelCard.disabled = !hasSelection;
+    btnConfirmCard.disabled = !hasSelection;
+
+    handCardsContainer.querySelectorAll('.dock-card-wrapper').forEach(wrapper => {
+      wrapper.classList.toggle(
+        'selected',
+        hasSelection && Number(wrapper.dataset.cardId) === selectedCardId
+      );
+    });
+  }
+
+  function clearCardSelection() {
+    selectedCardId = null;
+    playerCardSlot.classList.remove('drop-ready');
+    arenaZone.classList.remove('drag-ready');
+    syncCardSelectionUI();
+  }
+
+  function selectCard(cardId) {
+    if (
+      game.isProcessing
+      || game.gameOver
+      || game.userStunned
+      || game.userHand[cardId] <= 0
+    ) return;
+
+    selectedCardId = cardId;
+    syncCardSelectionUI();
+  }
+
+  function previewCardRemoval(sourceCard, cardId) {
+    const qty = game.userHand[cardId];
+    const qtyTag = sourceCard.querySelector('.card-qty-tag');
+    sourceCard.classList.add('card-being-played');
+    if (qty > 1 && qtyTag) {
+      qtyTag.textContent = qty - 1;
+    } else {
+      if (qtyTag) qtyTag.classList.add('hidden');
+      sourceCard.classList.add('last-copy-playing');
+    }
+  }
+
+  function restoreCardPreview(sourceCard, cardId) {
+    const qtyTag = sourceCard.querySelector('.card-qty-tag');
+    sourceCard.classList.remove('card-being-played', 'last-copy-playing');
+    if (qtyTag) {
+      qtyTag.textContent = game.userHand[cardId];
+      qtyTag.classList.remove('hidden');
+    }
+  }
+
+  function createFlyingCard(cardVisual) {
+    const startRect = cardVisual.getBoundingClientRect();
+    const flyingCard = cardVisual.cloneNode(true);
+    flyingCard.classList.add('drag-flight-card');
+    Object.assign(flyingCard.style, {
+      left: `${startRect.left}px`,
+      top: `${startRect.top}px`,
+      width: `${startRect.width}px`,
+      height: `${startRect.height}px`
+    });
+    document.body.appendChild(flyingCard);
+    return flyingCard;
+  }
+
+  function animateCardIntoArena(sourceCard, cardId, existingFlyingCard = null) {
+    const cardVisual = sourceCard?.querySelector('.card-container-3d');
+    if (!cardVisual) {
+      handleTurn(cardId);
+      return;
+    }
+
+    const flyingCard = existingFlyingCard || createFlyingCard(cardVisual);
+    const startRect = flyingCard.getBoundingClientRect();
+    const targetRect = playerCardSlot.getBoundingClientRect();
+    Object.assign(flyingCard.style, {
+      left: `${startRect.left}px`,
+      top: `${startRect.top}px`,
+      width: `${startRect.width}px`,
+      height: `${startRect.height}px`,
+      transform: 'none'
+    });
+    if (!sourceCard.classList.contains('card-being-played')) {
+      previewCardRemoval(sourceCard, cardId);
+    }
+    game.isProcessing = true;
+
+    let finished = false;
+    const finishFlight = () => {
+      if (finished) return;
+      finished = true;
+      flyingCard.remove();
+      game.isProcessing = false;
+      handleTurn(cardId);
+    };
+
+    if (typeof flyingCard.animate === 'function') {
+      const flight = flyingCard.animate([
+        {
+          left: `${startRect.left}px`,
+          top: `${startRect.top}px`,
+          width: `${startRect.width}px`,
+          height: `${startRect.height}px`,
+          opacity: 1
+        },
+        {
+          left: `${targetRect.left}px`,
+          top: `${targetRect.top}px`,
+          width: `${targetRect.width}px`,
+          height: `${targetRect.height}px`,
+          opacity: 0.98
+        }
+      ], {
+        duration: 230,
+        easing: 'cubic-bezier(0.2, 0.8, 0.25, 1)',
+        fill: 'forwards'
+      });
+      flight.addEventListener('finish', finishFlight, { once: true });
+      flight.addEventListener('cancel', finishFlight, { once: true });
+      setTimeout(finishFlight, 270);
+    } else {
+      setTimeout(finishFlight, 230);
+    }
+  }
+
+  function commitCard(cardId, sourceCard = null) {
+    if (
+      game.isProcessing
+      || game.gameOver
+      || game.userStunned
+      || game.userHand[cardId] <= 0
+    ) return;
+
+    selectedCardId = cardId;
+    if (sourceCard) animateCardIntoArena(sourceCard, cardId);
+    else handleTurn(cardId);
+  }
+
+  function enableCardDrag(cardWrapper, cardId) {
+    let drag = null;
+    cardWrapper.draggable = false;
+
+    const moveDrag = (event) => {
+      if (!drag || drag.pointerId !== event.pointerId) return;
+      const dx = event.clientX - drag.startX;
+      const dy = event.clientY - drag.startY;
+
+      if (!drag.active && Math.hypot(dx, dy) > 8) {
+        drag.active = true;
+        hideCardTooltip();
+        drag.flyingCard = createFlyingCard(
+          cardWrapper.querySelector('.card-container-3d')
+        );
+        drag.flyingStart = drag.flyingCard.getBoundingClientRect();
+        previewCardRemoval(cardWrapper, cardId);
+      }
+      if (!drag.active) return;
+
+      event.preventDefault();
+      Object.assign(drag.flyingCard.style, {
+        left: `${drag.flyingStart.left + dx}px`,
+        top: `${drag.flyingStart.top + dy}px`
+      });
+      const playThreshold = Math.min(64, cardWrapper.getBoundingClientRect().height * 0.7);
+      drag.canPlay = dy < -playThreshold;
+      playerCardSlot.classList.toggle('drop-ready', drag.canPlay);
+      arenaZone.classList.toggle('drag-ready', drag.canPlay);
+    };
+
+    const finishDrag = (event, cancelled = false) => {
+      if (!drag || drag.pointerId !== event.pointerId) return;
+      const shouldPlay = drag.active && drag.canPlay && !cancelled;
+      if (drag.active) {
+        suppressCardClick = true;
+        setTimeout(() => { suppressCardClick = false; }, 0);
+      }
+      const wasActive = drag.active;
+      const flyingCard = drag.flyingCard;
+      drag = null;
+
+      if (shouldPlay) {
+        animateCardIntoArena(cardWrapper, cardId, flyingCard);
+      } else {
+        flyingCard?.remove();
+        if (wasActive) restoreCardPreview(cardWrapper, cardId);
+        if (wasActive && !cancelled) selectCard(cardId);
+      }
+      playerCardSlot.classList.remove('drop-ready');
+      arenaZone.classList.remove('drag-ready');
+      window.removeEventListener('pointermove', moveDrag);
+      window.removeEventListener('pointerup', finishDrag);
+      window.removeEventListener('pointercancel', cancelDrag);
+    };
+
+    const cancelDrag = event => finishDrag(event, true);
+
+    cardWrapper.addEventListener('pointerdown', (event) => {
+      if (event.button !== undefined && event.button !== 0) return;
+      if (game.isProcessing || game.gameOver || game.userStunned) return;
+      drag = {
+        pointerId: event.pointerId,
+        startX: event.clientX,
+        startY: event.clientY,
+        active: false,
+        canPlay: false
+      };
+      window.addEventListener('pointermove', moveDrag, { passive: false });
+      window.addEventListener('pointerup', finishDrag);
+      window.addEventListener('pointercancel', cancelDrag);
+    });
+  }
+
   // Render Hand Dock
   function renderHandDock() {
     handCardsContainer.innerHTML = '';
@@ -601,37 +937,59 @@ document.addEventListener('DOMContentLoaded', () => {
       addLog('👤 你的手牌已用光，触发【全量自动回收】！全部手牌已重置回到手中。', 'heal');
     }
 
-    if (game.userStunned) {
-      handCardsContainer.innerHTML = `<div class="placeholder-text" style="color: #b91c1c; font-size: 0.85rem; font-weight:bold;">😵 你处于【停动】状态，本回合无法出牌！点击“跳过回合”继续。</div>
-      <button id="btn-skip-turn" class="btn btn-primary" style="margin-top:4px;">跳过本回合</button>`;
-      document.getElementById('btn-skip-turn')?.addEventListener('click', () => handleTurn(-1));
-      return;
+    if (
+      selectedCardId !== null
+      && (game.userStunned || game.userHand[selectedCardId] <= 0)
+    ) {
+      selectedCardId = null;
     }
 
     CARDS.forEach((card) => {
       const qty = game.userHand[card.id];
+      const unavailable = qty === 0 || game.userStunned || game.isProcessing;
       const cardWrapper = document.createElement('div');
-      cardWrapper.className = `dock-card-wrapper ${qty === 0 ? 'disabled' : ''}`;
+      cardWrapper.dataset.cardId = card.id;
+      cardWrapper.className =
+        `dock-card-wrapper ${unavailable ? 'disabled' : ''} ${selectedCardId === card.id ? 'selected' : ''}`;
       
       cardWrapper.innerHTML = `
         ${createCard3DHtml(card.id, false)}
         ${qty > 0 ? `<span class="card-qty-tag">${qty}</span>` : ''}
       `;
 
-      // Touch & Mouse Events
       cardWrapper.addEventListener('mouseenter', (e) => showCardTooltip(card.id, e));
       cardWrapper.addEventListener('mousemove', (e) => positionCardTooltip(e));
       cardWrapper.addEventListener('mouseleave', () => hideCardTooltip());
 
-      if (qty > 0 && !game.isProcessing) {
+      if (!unavailable) {
         cardWrapper.addEventListener('click', () => {
+          if (suppressCardClick) return;
           hideCardTooltip();
-          handleTurn(card.id);
+          selectCard(card.id);
         });
+        cardWrapper.addEventListener('dblclick', () => {
+          if (suppressCardClick) return;
+          hideCardTooltip();
+          commitCard(card.id, cardWrapper);
+        });
+        enableCardDrag(cardWrapper, card.id);
       }
 
       handCardsContainer.appendChild(cardWrapper);
     });
+
+    if (game.userStunned) {
+      const stunOverlay = document.createElement('div');
+      stunOverlay.className = 'hand-stun-overlay';
+      stunOverlay.innerHTML = `
+        <span>😵 本回合停动，手牌保持不变</span>
+        <button id="btn-skip-turn" class="btn btn-primary">跳过本回合</button>
+      `;
+      handCardsContainer.appendChild(stunOverlay);
+      stunOverlay.querySelector('#btn-skip-turn')?.addEventListener('click', () => handleTurn(-1));
+    }
+
+    syncCardSelectionUI();
   }
 
   function showCardTooltip(cardId, e) {
@@ -657,6 +1015,22 @@ document.addEventListener('DOMContentLoaded', () => {
     hoverTooltip.classList.add('hidden');
   }
 
+  function renderDiscardPreview() {
+    const recoverableCards = game.userDiscard.slice(0, 5).reduce((sum, qty) => sum + qty, 0);
+    const discardedCards = CARDS.filter(card => game.userDiscard[card.id] > 0);
+
+    recoverableCount.textContent = `深思可捡 ${recoverableCards} 张`;
+    userDiscardPreview.innerHTML = discardedCards.length
+      ? discardedCards.map(card => {
+        const qty = game.userDiscard[card.id];
+        const unrecoverable = card.id === 5;
+        const note = unrecoverable ? '（不能被深思熟虑自身回收）' : '';
+        return `<span class="discard-chip ${unrecoverable ? 'unrecoverable' : ''}"
+          title="${card.name} ×${qty}${note}">${card.name.substring(0, 1)}×${qty}</span>`;
+      }).join('')
+      : '<span class="discard-empty">空</span>';
+  }
+
   function renderAiHandBacks() {
     aiHandBacks.innerHTML = '';
     let count = game.getHandCount(game.aiHand);
@@ -670,7 +1044,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function handleTurn(userCardId) {
     if (game.isProcessing || game.gameOver) return;
+    clearCardSelection();
     game.isProcessing = true;
+    outcomeBanner.classList.add('hidden');
 
     if (game.checkAiAutoPickup()) {
       addLog('🤖 AI 对手手牌用光，触发【全量自动回收】！', 'system');
@@ -712,10 +1088,17 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
           clashRay.classList.add('hidden');
           resolveOutcome(userCardId, aiCardId);
-          game.turn++;
-          game.isProcessing = false;
-          updateUI();
-          checkGameOver();
+          document.querySelectorAll('.arena-card-slot .card-container-3d').forEach(el => {
+            el.classList.add('played-card-exit');
+          });
+
+          setTimeout(() => {
+            clearPlayedCards();
+            game.turn++;
+            game.isProcessing = false;
+            updateUI();
+            checkGameOver();
+          }, 220);
         }, 500);
       }, 500);
     }, 400);
@@ -805,6 +1188,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateUI() {
+    if (game.userStunned && game.aiStunned && game.userHp > 0 && game.aiHp > 0) {
+      const skippedTurn = game.turn;
+      addLog(`双方均处于【停动】状态，第 ${skippedTurn} 回合已自动跳过。`, 'stun');
+      game.consumeMutualStunTurn();
+    }
+
     turnCounter.textContent = `第 ${game.turn} 回合`;
     
     let uPct = (game.userHp / game.maxHp * 100).toFixed(1);
@@ -841,6 +1230,7 @@ document.addEventListener('DOMContentLoaded', () => {
     aiDiffTag.textContent = (game.difficulty === 'master') ? '🧠 大师 AI' : (game.difficulty === 'medium' ? '⚖️ 中级 AI' : '🎲 随机 AI');
 
     renderAiHandBacks();
+    renderDiscardPreview();
     renderHandDock();
   }
 
@@ -872,9 +1262,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function updateSessionStats() {
+    const stats = game.sessionStats;
+    sessionWins.textContent = stats.wins;
+    sessionLosses.textContent = stats.losses;
+    sessionDraws.textContent = stats.draws;
+    sessionGames.textContent = `${stats.games} 局`;
+    const winRate = game.getSessionWinRate();
+    sessionWinRate.textContent = winRate === null ? '—' : `${winRate}%`;
+    gameoverSessionRecord.textContent =
+      `本次游玩：${stats.wins} 胜 · ${stats.losses} 负 · ${stats.draws} 平`;
+  }
+
   function checkGameOver() {
     if (game.userHp <= 0 || game.aiHp <= 0) {
       game.gameOver = true;
+      const result = game.userHp > 0 && game.aiHp <= 0
+        ? 'win'
+        : (game.userHp <= 0 && game.aiHp > 0 ? 'loss' : 'draw');
+      game.recordGameResult(result);
+      updateSessionStats();
       setTimeout(() => {
         gameoverModal.classList.add('active');
         const title = document.getElementById('gameover-title');
@@ -882,11 +1289,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('stat-turns').textContent = game.turn;
         document.getElementById('stat-hp').textContent = game.userHp + ' HP';
 
-        if (game.userHp > 0 && game.aiHp <= 0) {
+        if (result === 'win') {
           title.textContent = '🏆 辩论压制，战斗胜利！';
           title.style.color = '#15803d';
           desc.textContent = `你凭借高超的词锋与手牌推演，成功击败了 ${selectedDiff.toUpperCase()} AI！`;
-        } else if (game.userHp <= 0 && game.aiHp > 0) {
+        } else if (result === 'loss') {
           title.textContent = '💀 辩词匮乏，遗憾战败！';
           title.style.color = '#b91c1c';
           desc.textContent = `AI 在残局中看破了你的手牌，你未能存活下来。`;
@@ -899,5 +1306,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  updateSessionStats();
   updateUI();
 });
