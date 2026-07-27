@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>舌战</title>
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -85,10 +85,11 @@
               <span id="ai-diff-tag" class="badge">大师 AI</span>
             </div>
             <div class="hp-wrapper">
+              <span class="hp-heart-icon">❤️</span>
               <div class="hp-bar-bg">
                 <div id="ai-hp-bar" class="hp-bar-fill" style="width: 100%;"></div>
               </div>
-              <span id="ai-hp-text" class="hp-text">30 / 30 HP</span>
+              <span id="ai-hp-text" class="hp-text">30/30</span>
             </div>
           </div>
         </div>
@@ -98,7 +99,7 @@
           <div id="ai-hand-backs" class="hand-backs-row">
             <!-- Dynamic Face-Down Cards Rendered by JS -->
           </div>
-          <span class="hand-count-badge">🎴 剩余手牌: <strong id="ai-hand-count">14</strong> 张</span>
+          <span class="hand-count-badge">🎴 剩余: <strong id="ai-hand-count">14</strong></span>
           <span id="ai-stun-badge" class="badge badge-warning hidden">😵 停动中</span>
         </div>
       </section>
@@ -163,15 +164,16 @@
                 <span class="player-name">你 (Player)</span>
               </div>
               <div class="hp-wrapper">
+                <span class="hp-heart-icon">❤️</span>
                 <div class="hp-bar-bg">
                   <div id="user-hp-bar" class="hp-bar-fill" style="width: 100%;"></div>
                 </div>
-                <span id="user-hp-text" class="hp-text">30 / 30 HP</span>
+                <span id="user-hp-text" class="hp-text">30/30</span>
               </div>
             </div>
           </div>
           <div class="hand-summary">
-            <span class="hand-count-badge">🎴 剩余手牌: <strong id="user-hand-count">14</strong> 张</span>
+            <span class="hand-count-badge">🎴 剩余: <strong id="user-hand-count">14</strong></span>
             <span id="user-stun-badge" class="badge badge-warning hidden">😵 停动中</span>
           </div>
         </div>
@@ -179,7 +181,7 @@
 
       <!-- Player Hand Dock (Bottom Interactive Bar) -->
       <section class="hand-dock">
-        <div class="dock-title">手牌区（鼠标悬停可查看卡牌说明）:</div>
+        <div class="dock-title">手牌区（点击查看卡牌说明并出牌）:</div>
         <div id="hand-cards-container" class="hand-cards-list">
           <!-- Dynamic Cards Rendered by JS -->
         </div>
@@ -212,24 +214,123 @@
       </div>
     </div>
 
-    <!-- Rules Modal (Fixed Silence is Gold No Stun Rule) -->
+    <!-- Rules Modal (Fixed Rule Text) -->
     <div id="rules-modal" class="modal">
       <div class="modal-content">
         <div class="modal-header">
-          <h2>📖 《舌战》规则手册</h2>
+          <div>
+            <span class="rules-kicker">HOW TO PLAY</span>
+            <h2>《舌战》规则手册</h2>
+          </div>
           <button class="close-btn" data-close="rules-modal">✕</button>
         </div>
         <div class="rules-body">
-          <p><strong>基本规则</strong>：双方同时暗置出牌结算。任意一方 HP 归零则失败。</p>
-          <p><strong>卡牌关系说明（明确己方与对方得失）</strong>：</p>
-          <ul>
-            <li>⚡ <strong>一语道破</strong>：刺穿《破口大骂》（<strong>对方-15 HP</strong>）；克制《心如止水》《深思熟虑》（<strong>对方-10 HP</strong>）；被《反唇相讥》反弹（<strong>己方-10 HP</strong>）。</li>
-            <li>🌿 <strong>反唇相讥</strong>：反弹《一语道破》（<strong>对方-10 HP</strong>）；被《破口大骂》压制（<strong>己方-5 HP 且【停动】</strong>）；打断《深思熟虑》（<strong>阻止对方回收手牌</strong>）。</li>
-            <li>🔥 <strong>破口大骂</strong>：压制《反唇相讥》《深思熟虑》《破口大骂》（<strong>对方-5 HP 且【停动】</strong>）；攻击《沉默是金》（<strong>对方仅-5 HP，不会被停动！</strong>）；被《一语道破》刺穿（<strong>己方-15 HP</strong>）；碰《心如止水》（<strong>对方+15 HP</strong>）。</li>
-            <li>🌈 <strong>沉默是金</strong>：最稳试探牌。仅被《破口大骂》攻击（<strong>己方-5 HP，绝不会被停动！</strong>），面对其他所有牌均为 0 伤害。</li>
-            <li>💧 <strong>心如止水</strong>：吸收《破口大骂》（<strong>己方+15 HP</strong>）；碰《一语道破》（<strong>己方-10 HP</strong>）；碰其他所有牌均（<strong>己方+10 HP</strong>）。</li>
-            <li>⛰️ <strong>深思熟虑</strong>：回收除自身外的所有弃牌。碰《破口大骂》受-5 HP且【停动】，但<strong>仍可成功回收手牌</strong>！仅在遭遇《反唇相讥》时回收会被打断。</li>
-          </ul>
+          <section class="rules-section">
+            <div class="rules-section-heading">
+              <span class="rules-step">01</span>
+              <div>
+                <h3>目标与回合</h3>
+                <p>先让对方生命值降到 0。</p>
+              </div>
+            </div>
+            <div class="rules-basics-grid">
+              <article class="rule-basic">
+                <span class="rule-basic-icon">暗</span>
+                <div><strong>同时出牌</strong><p>双方每回合暗置一张牌，然后同时翻开结算。</p></div>
+              </article>
+              <article class="rule-basic">
+                <span class="rule-basic-icon">停</span>
+                <div><strong>停动</strong><p>被停动者下一回合不能出牌，对手获得一次空门行动。</p></div>
+              </article>
+              <article class="rule-basic">
+                <span class="rule-basic-icon">尽</span>
+                <div><strong>手牌耗尽</strong><p>手牌全部用完时，自动捡回所有弃牌。</p></div>
+              </article>
+            </div>
+          </section>
+
+          <section class="rules-section">
+            <div class="rules-section-heading">
+              <span class="rules-step">02</span>
+              <div>
+                <h3>对手停动：空门怎么结算</h3>
+                <p>此时对手没有牌，按你打出的牌单独结算。</p>
+              </div>
+            </div>
+            <div class="solo-rules-grid">
+              <article class="solo-rule attack"><span>一</span><div><strong>一语道破</strong><p>对手 <b>-10 HP</b></p></div></article>
+              <article class="solo-rule stun"><span>破</span><div><strong>破口大骂</strong><p>继续【停动】，<b>不扣血</b></p></div></article>
+              <article class="solo-rule heal"><span>心</span><div><strong>心如止水</strong><p>自己 <b>+10 HP</b></p></div></article>
+              <article class="solo-rule pickup"><span>思</span><div><strong>深思熟虑</strong><p>正常捡牌</p></div></article>
+            </div>
+            <p class="rules-note">反唇相讥、沉默是金在空门时没有额外效果。</p>
+          </section>
+
+          <section class="rules-section">
+            <div class="rules-section-heading">
+              <span class="rules-step">03</span>
+              <div>
+                <h3>六张牌速查</h3>
+                <p>“你”代表打出该牌的一方。</p>
+              </div>
+            </div>
+            <div class="rule-card-grid">
+              <article class="rule-guide guide-y">
+                <header><span>一</span><div><h4>一语道破</h4><small>直接攻击</small></div></header>
+                <ul>
+                  <li>对一语道破：<b>双方 -10</b></li>
+                  <li>对破口大骂：<b>对方 -15</b></li>
+                  <li>对心如止水、深思熟虑：<b>对方 -10</b></li>
+                  <li>对反唇相讥：<b>你 -10</b></li>
+                </ul>
+              </article>
+              <article class="rule-guide guide-f">
+                <header><span>反</span><div><h4>反唇相讥</h4><small>反制与打断</small></div></header>
+                <ul>
+                  <li>对一语道破：<b>对方 -10</b></li>
+                  <li>对破口大骂：<b>你 -5，并停动</b></li>
+                  <li>对深思熟虑：<b>打断对方捡牌</b></li>
+                  <li>其余对局：不造成伤害</li>
+                </ul>
+              </article>
+              <article class="rule-guide guide-p">
+                <header><span>破</span><div><h4>破口大骂</h4><small>压制与停动</small></div></header>
+                <ul>
+                  <li>对同牌：<b>双方 -5，并停动</b></li>
+                  <li>对反唇相讥：<b>对方 -5，并停动</b></li>
+                  <li>对沉默是金：<b>对方 -5，不停动</b></li>
+                  <li>对深思熟虑：<b>对方 -5，并停动；仍可捡牌</b></li>
+                  <li>对心如止水：<b>对方 +15</b></li>
+                  <li>对一语道破：<b>你 -15</b></li>
+                </ul>
+              </article>
+              <article class="rule-guide guide-c">
+                <header><span>默</span><div><h4>沉默是金</h4><small>安全试探</small></div></header>
+                <ul>
+                  <li>只会被破口大骂伤害：<b>你 -5</b></li>
+                  <li>即使挨骂也<b>不会停动</b></li>
+                  <li>不阻止心如止水回血或深思熟虑捡牌</li>
+                </ul>
+              </article>
+              <article class="rule-guide guide-x">
+                <header><span>心</span><div><h4>心如止水</h4><small>恢复与吸收</small></div></header>
+                <ul>
+                  <li>对一语道破：<b>你 -10</b></li>
+                  <li>对破口大骂：<b>你 +15</b></li>
+                  <li>对其他所有牌：<b>你 +10</b></li>
+                </ul>
+              </article>
+              <article class="rule-guide guide-s">
+                <header><span>思</span><div><h4>深思熟虑</h4><small>回收弃牌</small></div></header>
+                <ul>
+                  <li>回收除本张深思熟虑外的所有弃牌</li>
+                  <li>对反唇相讥：<b>捡牌被打断</b></li>
+                  <li>对破口大骂：<b>你 -5，并停动；仍可捡牌</b></li>
+                  <li>其他对局：正常捡牌</li>
+                </ul>
+              </article>
+            </div>
+          </section>
         </div>
       </div>
     </div>

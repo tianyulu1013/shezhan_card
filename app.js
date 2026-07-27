@@ -6,32 +6,32 @@
 
 // SVG Art Icons for 6 Cards
 const SVG_ICONS = {
-  0: `<svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>`,
-  1: `<svg viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>`,
-  2: `<svg viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>`,
-  3: `<svg viewBox="0 0 24 24" fill="none" stroke="#7e22ce" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`,
-  4: `<svg viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"></path></svg>`,
-  5: `<svg viewBox="0 0 24 24" fill="none" stroke="#c2410c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"></path></svg>`
+  0: `<svg viewBox="0 0 24 24" fill="none" stroke="#9e7539" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>`,
+  1: `<svg viewBox="0 0 24 24" fill="none" stroke="#52705e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>`,
+  2: `<svg viewBox="0 0 24 24" fill="none" stroke="#9b4942" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>`,
+  3: `<svg viewBox="0 0 24 24" fill="none" stroke="#746279" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`,
+  4: `<svg viewBox="0 0 24 24" fill="none" stroke="#536f7e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"></path></svg>`,
+  5: `<svg viewBox="0 0 24 24" fill="none" stroke="#8a6046" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"></path></svg>`
 };
 
 const SEALS = { 0: '破', 1: '反', 2: '怒', 3: '静', 4: '水', 5: '虑' };
 
 const CARD_DESCS = {
-  0: '⚡ 击穿《破口大骂》（对方-15 HP）；克制《心如止水》《深思熟虑》（对方-10 HP）。被《反唇相讥》反弹（己方-10 HP）。',
+  0: '⚡ 同牌相撞时双方-10 HP；击穿《破口大骂》（对方-15 HP）；克制《心如止水》《深思熟虑》（对方-10 HP）；被《反唇相讥》反弹（己方-10 HP）。',
   1: '🌿 反弹《一语道破》（对方-10 HP）；被《破口大骂》压制（己方-5 HP且【停动】）；打断《深思熟虑》（阻断对方回收手牌）。',
-  2: '🔥 压制《反唇相讥》（对方-5 HP且【停动】）；打《沉默是金》（己方0伤，对方-5 HP）；打《深思熟虑》（己方0伤，对方-5 HP且【停动】，但对方依然能回收）；被《一语道破》刺穿（己方-15 HP）；碰《心如止水》（对方+15 HP）。',
+  2: '🔥 同牌相撞时双方-5 HP且【停动】；压制《反唇相讥》（对方-5 HP且【停动】）；打《沉默是金》（己方0伤，对方-5 HP）；打《深思熟虑》（己方0伤，对方-5 HP且【停动】，但对方依然能回收）；被《一语道破》刺穿（己方-15 HP）；碰《心如止水》（对方+15 HP）。',
   3: '🌈 最稳试探牌。仅被《破口大骂》造成（己方-5 HP，无停动），面对其他所有牌均为 0 伤害。',
   4: '💧 吸收《破口大骂》（己方+15 HP）；碰《一语道破》（己方-10 HP）；碰其他所有牌均（己方+10 HP）。',
   5: '⛰️ 回收除自身外的所有弃牌。碰《破口大骂》（己方-5 HP且【停动】，但依然成功回收手牌）；遭遇《反唇相讥》回收被打断！'
 };
 
 const CARDS = [
-  { id: 0, name: '一语道破', color: '#d97706' },
-  { id: 1, name: '反唇相讥', color: '#15803d' },
-  { id: 2, name: '破口大骂', color: '#b91c1c' },
-  { id: 3, name: '沉默是金', color: '#7e22ce' },
-  { id: 4, name: '心如止水', color: '#1d4ed8' },
-  { id: 5, name: '深思熟虑', color: '#c2410c' }
+  { id: 0, name: '一语道破', color: '#9e7539' },
+  { id: 1, name: '反唇相讥', color: '#52705e' },
+  { id: 2, name: '破口大骂', color: '#9b4942' },
+  { id: 3, name: '沉默是金', color: '#746279' },
+  { id: 4, name: '心如止水', color: '#536f7e' },
+  { id: 5, name: '深思熟虑', color: '#8a6046' }
 ];
 
 // 100% EXACT MATCHING MATRIX FOR PDF SCREENSHOT:
@@ -98,6 +98,30 @@ const MATRIX = [
     {A:   0, B:   0, sA: false, sB: false, pA: true,  pB: true }
   ]
 ];
+
+function describeMatrixEffects(userCardId, aiCardId, cell) {
+  const effects = [];
+
+  if (cell.A < 0) effects.push(`你 ${cell.A} HP`);
+  if (cell.A > 0) effects.push(`你 +${cell.A} HP`);
+  if (cell.B < 0) effects.push(`AI ${cell.B} HP`);
+  if (cell.B > 0) effects.push(`AI +${cell.B} HP`);
+  if (cell.sA) effects.push('你被【停动】');
+  if (cell.sB) effects.push('AI 被【停动】');
+  if (cell.pA) effects.push('你回收除本牌外的弃牌');
+  if (cell.pB) effects.push('AI 回收除本牌外的弃牌');
+
+  if (userCardId === 5 && aiCardId === 1 && !cell.pA) {
+    effects.push('你的捡牌被《反唇相讥》打断');
+  }
+  if (aiCardId === 5 && userCardId === 1 && !cell.pB) {
+    effects.push('AI 的捡牌被《反唇相讥》打断');
+  }
+
+  return effects.length
+    ? `${effects.join('；')}。`
+    : '双方均无伤害、无停动、无捡牌效果。';
+}
 
 // Game Engine Class
 class ShezhanGame {
@@ -549,31 +573,41 @@ document.addEventListener('DOMContentLoaded', () => {
         addLog('⚠️ AI 的《深思熟虑》遭遇《反唇相讥》，回收被打断！', 'heal');
       }
 
-      outcomeStr = `【对决】你出《${CARDS[uId].name}》，AI出《${CARDS[aId].name}》。`;
-      if (cell.A < 0) outcomeStr += ` 你(己方)血量 ${cell.A}；`;
-      if (cell.A > 0) outcomeStr += ` 你(己方)血量 +${cell.A}；`;
-      if (cell.B < 0) outcomeStr += ` AI(对方)血量 ${cell.B}；`;
-      if (cell.B > 0) outcomeStr += ` AI(对方)血量 +${cell.B}；`;
+      outcomeStr = `【对决】你出《${CARDS[uId].name}》，AI 出《${CARDS[aId].name}》。${describeMatrixEffects(uId, aId, cell)}`;
 
     } else if (uId !== -1 && aId === -1) {
+      // 停动时没有对手牌可供结算；破口大骂只续停动，不重复扣血。
       game.aiStunned = false;
-      if (uId === 0) { game.aiHp -= 10; outcomeStr = `AI处于停动！你的《一语道破》对AI(对方)造成 -10 伤害！`; }
-      else if (uId === 2) { game.aiHp -= 5; game.aiStunned = true; outcomeStr = `AI处于停动！你的《破口大骂》对AI(对方)造成 -5 伤害并再次【停动】AI！`; }
-      else if (uId === 4) { game.userHp += 10; outcomeStr = `AI处于停动！你的《心如止水》为你(己方)恢复 +10 HP！`; }
+      if (uId === 0) {
+        game.aiHp -= 10;
+        outcomeStr = `AI本轮因【停动】未出牌；你的《一语道破》直接攻击，AI -10 HP。`;
+      }
+      else if (uId === 2) {
+        game.aiStunned = true;
+        outcomeStr = `AI本轮因【停动】未出牌；《破口大骂》续接【停动】，但不造成伤害。`;
+      }
+      else if (uId === 4) { game.userHp += 10; outcomeStr = `AI本轮因【停动】未出牌；你的《心如止水》恢复 +10 HP。`; }
       else if (uId === 5) { 
         for(let k=0; k<5; k++) { game.userHand[k] += game.userDiscard[k]; game.userDiscard[k] = 0; }
-        outcomeStr = `AI处于停动！你趁机打出《深思熟虑》安全回收全部弃牌！`; 
-      } else { outcomeStr = `AI处于停动，你打出了《${CARDS[uId].name}》。`; }
+        outcomeStr = `AI本轮因【停动】未出牌；你用《深思熟虑》回收了除本牌外的弃牌。`;
+      } else { outcomeStr = `AI本轮因【停动】未出牌；《${CARDS[uId].name}》没有对手牌可供结算。`; }
 
     } else if (uId === -1 && aId !== -1) {
+      // 与上面的玩家分支保持完全对称。
       game.userStunned = false;
-      if (aId === 0) { game.userHp -= 10; outcomeStr = `你处于停动！AI的《一语道破》对你(己方)造成 -10 伤害！`; }
-      else if (aId === 2) { game.userHp -= 5; game.userStunned = true; outcomeStr = `你处于停动！AI的《破口大骂》对你(己方)造成 -5 伤害并再次【停动】你！`; }
-      else if (aId === 4) { game.aiHp += 10; outcomeStr = `你处于停动！AI的《心如止水》为其(对方)恢复 +10 HP！`; }
+      if (aId === 0) {
+        game.userHp -= 10;
+        outcomeStr = `你本轮因【停动】未出牌；AI 的《一语道破》直接攻击，你 -10 HP。`;
+      }
+      else if (aId === 2) {
+        game.userStunned = true;
+        outcomeStr = `你本轮因【停动】未出牌；AI 的《破口大骂》续接【停动】，但不造成伤害。`;
+      }
+      else if (aId === 4) { game.aiHp += 10; outcomeStr = `你本轮因【停动】未出牌；AI 的《心如止水》恢复 +10 HP。`; }
       else if (aId === 5) {
         for(let k=0; k<5; k++) { game.aiHand[k] += game.aiDiscard[k]; game.aiDiscard[k] = 0; }
-        outcomeStr = `你处于停动！AI趁机打出《深思熟虑》安全回收全部弃牌！`;
-      } else { outcomeStr = `你处于停动，AI打出了《${CARDS[aId].name}》。`; }
+        outcomeStr = `你本轮因【停动】未出牌；AI 用《深思熟虑》回收了除本牌外的弃牌。`;
+      } else { outcomeStr = `你本轮因【停动】未出牌；AI 的《${CARDS[aId].name}》没有对手牌可供结算。`; }
 
     } else {
       game.userStunned = false;
@@ -596,10 +630,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let aPct = (game.aiHp / game.maxHp * 100).toFixed(1);
 
     userHpBar.style.width = uPct + '%';
-    userHpText.textContent = `${game.userHp} / ${game.maxHp} HP`;
+    userHpText.textContent = `${game.userHp}/${game.maxHp}`;
 
     aiHpBar.style.width = aPct + '%';
-    aiHpText.textContent = `${game.aiHp} / ${game.maxHp} HP`;
+    aiHpText.textContent = `${game.aiHp}/${game.maxHp}`;
 
     userHandCount.textContent = game.getHandCount(game.userHand);
     aiHandCount.textContent = game.getHandCount(game.aiHand);
