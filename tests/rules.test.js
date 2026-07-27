@@ -5,7 +5,7 @@ const path = require('node:path');
 
 const appPath = path.join(__dirname, '..', 'app.js');
 const source = `${fs.readFileSync(appPath, 'utf8')}
-globalThis.__rulesForTest = { MATRIX, describeMatrixEffects };`;
+globalThis.__rulesForTest = { MATRIX, describeMatrixEffects, ShezhanGame };`;
 const sandbox = {
   document: { addEventListener() {} },
   console,
@@ -14,7 +14,7 @@ const sandbox = {
 };
 
 vm.runInNewContext(source, sandbox, { filename: appPath });
-const { MATRIX, describeMatrixEffects } = sandbox.__rulesForTest;
+const { MATRIX, describeMatrixEffects, ShezhanGame } = sandbox.__rulesForTest;
 const signature = ({ A, B, sA, sB, pA, pB }) =>
   [A, B, Number(sA), Number(sB), Number(pA), Number(pB)];
 
@@ -74,4 +74,46 @@ assert.match(
   /你的捡牌被《反唇相讥》打断/
 );
 
-console.log('核心规则矩阵、空门结算、续停动与零效果反馈校验通过。');
+const tacticalGame = new ShezhanGame();
+tacticalGame.init('competitive', 'master');
+tacticalGame.userStunned = true;
+tacticalGame.userHp = 10;
+tacticalGame.aiHand = [1, 0, 0, 0, 0, 1];
+assert.equal(tacticalGame.getAiChoice(), 0, '大师 AI 应优先完成空门斩杀');
+
+const fullHpState = {
+  maxHp: 30,
+  userHp: 30,
+  aiHp: 30,
+  userStunned: false,
+  aiStunned: false,
+  userHand: [0, 0, 1, 0, 0, 0],
+  aiHand: [0, 0, 0, 0, 1, 0],
+  userDiscard: [0, 0, 0, 0, 0, 0],
+  aiDiscard: [0, 0, 0, 0, 0, 0]
+};
+assert.equal(
+  tacticalGame.evaluatePair(fullHpState, 2, 4),
+  0,
+  '满血时不应把溢出的 +15 HP 当成收益'
+);
+
+const probabilityState = {
+  ...fullHpState,
+  userHand: [3, 1, 0, 0, 0, 0]
+};
+assert.deepEqual(
+  tacticalGame.getPlayerProbabilities(probabilityState, false).map(
+    item => [item.card, item.probability]
+  ),
+  [[0, 0.75], [1, 0.25]]
+);
+
+const variedChoices = new Set();
+for (let i = 0; i < 100; i++) {
+  variedChoices.add(tacticalGame.chooseFromScores([0, 1, 2], [5, 5, 5], 2.8));
+}
+assert.ok(variedChoices.size > 1, '同分合理牌之间应保留随机性');
+assert.doesNotMatch(source, /\bfetch\s*\(|\blocalStorage\b/, 'AI 必须保持纯静态网页实现');
+
+console.log('核心规则、空门结算与静态概率 AI 校验通过。');

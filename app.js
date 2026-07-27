@@ -142,6 +142,9 @@ class ShezhanGame {
     
     this.userDiscard = [0, 0, 0, 0, 0, 0];
     this.aiDiscard = [0, 0, 0, 0, 0, 0];
+    this.userPlayHistory = [];
+    this.aiPlayHistory = [];
+    this.aiPersonality = 'balanced';
     
     this.isProcessing = false;
     this.gameOver = false;
@@ -161,6 +164,9 @@ class ShezhanGame {
     
     this.userDiscard = [0, 0, 0, 0, 0, 0];
     this.aiDiscard = [0, 0, 0, 0, 0, 0];
+    this.userPlayHistory = [];
+    this.aiPlayHistory = [];
+    this.aiPersonality = ['balanced', 'aggressive', 'control', 'resource'][Math.floor(Math.random() * 4)];
     
     this.userStunned = false;
     this.aiStunned = false;
@@ -194,72 +200,246 @@ class ShezhanGame {
     return false;
   }
 
-  getAiChoice() {
-    let validCards = [];
-    for (let i = 0; i < 6; i++) {
-      if (this.aiHand[i] > 0) validCards.push(i);
+  getValidCards(hand) {
+    return hand.map((count, card) => count > 0 ? card : -1).filter(card => card !== -1);
+  }
+
+  getPlayerProbabilities(state, adaptToCurrentMatch = false) {
+    const weights = state.userHand.map(count => Math.max(0, count));
+
+    if (adaptToCurrentMatch && this.userPlayHistory.length > 0) {
+      const recent = this.userPlayHistory.slice(-6);
+      recent.forEach((card, index) => {
+        if (card >= 0 && weights[card] > 0) {
+          weights[card] *= 1 + 0.05 + (index / Math.max(1, recent.length - 1)) * 0.12;
+        }
+      });
+
+      const lastCard = recent[recent.length - 1];
+      if (lastCard >= 0 && weights[lastCard] > 0) weights[lastCard] *= 1.1;
+      if (state.userHp <= state.maxHp * 0.4 && weights[4] > 0) weights[4] *= 1.25;
     }
+
+    const total = weights.reduce((sum, value) => sum + value, 0);
+    if (total <= 0) return [];
+    return weights
+      .map((weight, card) => ({ card, probability: weight / total }))
+      .filter(item => item.probability > 0);
+  }
+
+  evaluatePair(state, userCard, aiCard) {
+    const cell = MATRIX[userCard][aiCard];
+    const nextUserHp = Math.min(state.maxHp, Math.max(0, state.userHp + cell.A));
+    const nextAiHp = Math.min(state.maxHp, Math.max(0, state.aiHp + cell.B));
+    const userDelta = nextUserHp - state.userHp;
+    const aiDelta = nextAiHp - state.aiHp;
+    let score = (-userDelta * 1.12) + (aiDelta * 1.0);
+
+    if (nextUserHp <= 0) score += 100;
+    if (nextAiHp <= 0) score -= 120;
+    if (cell.sA) score += 7;
+    if (cell.sB) score -= 8;
+
+    const userRecoverable = state.userDiscard.slice(0, 5).reduce((a, b) => a + b, 0);
+    const aiRecoverable = state.aiDiscard.slice(0, 5).reduce((a, b) => a + b, 0);
+    if (cell.pA) score -= userRecoverable * 1.1;
+    if (cell.pB) score += aiRecoverable * 1.1;
+    if (userCard === 5 && aiCard === 1 && !cell.pA) score += userRecoverable * 0.8;
+    if (aiCard === 5 && userCard === 1 && !cell.pB) score -= aiRecoverable * 0.8;
+
+    return score;
+  }
+
+  simulatePair(state, userCard, aiCard) {
+    const cell = MATRIX[userCard][aiCard];
+    const next = {
+      maxHp: state.maxHp,
+      userHp: Math.min(state.maxHp, Math.max(0, state.userHp + cell.A)),
+      aiHp: Math.min(state.maxHp, Math.max(0, state.aiHp + cell.B)),
+      userStunned: cell.sA,
+      aiStunned: cell.sB,
+      userHand: [...state.userHand],
+      aiHand: [...state.aiHand],
+      userDiscard: [...state.userDiscard],
+      aiDiscard: [...state.aiDiscard]
+    };
+
+    next.userHand[userCard]--;
+    next.aiHand[aiCard]--;
+    next.userDiscard[userCard]++;
+    next.aiDiscard[aiCard]++;
+
+    if (cell.pA) {
+      for (let i = 0; i < 5; i++) {
+        next.userHand[i] += next.userDiscard[i];
+        next.userDiscard[i] = 0;
+      }
+    }
+    if (cell.pB) {
+      for (let i = 0; i < 5; i++) {
+        next.aiHand[i] += next.aiDiscard[i];
+        next.aiDiscard[i] = 0;
+      }
+    }
+
+    if (this.getHandCount(next.userHand) === 0) {
+      for (let i = 0; i < 6; i++) {
+        next.userHand[i] += next.userDiscard[i];
+        next.userDiscard[i] = 0;
+      }
+    }
+    if (this.getHandCount(next.aiHand) === 0) {
+      for (let i = 0; i < 6; i++) {
+        next.aiHand[i] += next.aiDiscard[i];
+        next.aiDiscard[i] = 0;
+      }
+    }
+
+    return next;
+  }
+
+  evaluateAiSolo(state, aiCard) {
+    if (aiCard === 0) {
+      const damage = Math.min(10, state.userHp);
+      return damage * 1.12 + (state.userHp <= 10 ? 100 : 0);
+    }
+    if (aiCard === 2) return 7;
+    if (aiCard === 4) return Math.min(10, state.maxHp - state.aiHp);
+    if (aiCard === 5) return state.aiDiscard.slice(0, 5).reduce((a, b) => a + b, 0) * 1.1;
+    return 0;
+  }
+
+  evaluateUserSolo(state, userCard) {
+    if (userCard === 0) {
+      const damage = Math.min(10, state.aiHp);
+      return -(damage * 1.12) - (state.aiHp <= 10 ? 120 : 0);
+    }
+    if (userCard === 2) return -8;
+    if (userCard === 4) return -Math.min(10, state.maxHp - state.userHp);
+    if (userCard === 5) return -state.userDiscard.slice(0, 5).reduce((a, b) => a + b, 0) * 1.1;
+    return 0;
+  }
+
+  estimateNextTurn(state) {
+    if (state.userHp <= 0 || state.aiHp <= 0) return 0;
+    const aiCards = this.getValidCards(state.aiHand);
+    const userCards = this.getValidCards(state.userHand);
+    if (state.userStunned && state.aiStunned) return 0;
+    if (state.userStunned) {
+      return aiCards.length ? Math.max(...aiCards.map(card => this.evaluateAiSolo(state, card))) : 0;
+    }
+    if (state.aiStunned) {
+      return userCards.length ? Math.min(...userCards.map(card => this.evaluateUserSolo(state, card))) : 0;
+    }
+
+    const playerProbabilities = this.getPlayerProbabilities(state, false);
+    if (!aiCards.length || !playerProbabilities.length) return 0;
+    return Math.max(...aiCards.map(aiCard =>
+      playerProbabilities.reduce(
+        (sum, item) => sum + item.probability * this.evaluatePair(state, item.card, aiCard),
+        0
+      )
+    ));
+  }
+
+  getPersonalityBonus(card) {
+    const profiles = {
+      balanced:  [0, 0, 0, 0, 0, 0],
+      aggressive:[0.8, 0, 0.5, -0.1, -0.3, -0.2],
+      control:   [0, 0.4, 0.9, 0.3, -0.1, 0],
+      resource:  [-0.1, 0, -0.2, 0.1, 0.5, 0.9]
+    };
+    return profiles[this.aiPersonality][card];
+  }
+
+  chooseFromScores(cards, scores, temperature) {
+    const bestScore = Math.max(...scores);
+    const cutoff = this.difficulty === 'master' ? 10 : 16;
+    const weighted = scores.map((score, index) => {
+      if (bestScore - score > cutoff) return 0;
+      const explorationFloor = bestScore - score <= 4 ? 0.08 : 0;
+      return Math.exp((score - bestScore) / temperature) + explorationFloor;
+    });
+    const total = weighted.reduce((a, b) => a + b, 0);
+    let roll = Math.random() * total;
+    for (let i = 0; i < cards.length; i++) {
+      roll -= weighted[i];
+      if (roll <= 0) return cards[i];
+    }
+    return cards[cards.length - 1];
+  }
+
+  getAiChoice() {
+    const validCards = this.getValidCards(this.aiHand);
     if (validCards.length === 0) return -1;
-    
+
     if (this.difficulty === 'easy') {
       return validCards[Math.floor(Math.random() * validCards.length)];
     }
 
-    if (this.turn <= 2) {
-      let openChoices = [];
-      if (this.aiHand[0] > 0) openChoices.push(0);
-      if (this.aiHand[1] > 0) openChoices.push(1);
-      if (this.aiHand[3] > 0) openChoices.push(3);
-      if (this.aiHand[2] > 0) openChoices.push(2);
-      
-      if (openChoices.length > 0 && Math.random() < 0.85) {
-        return openChoices[Math.floor(Math.random() * openChoices.length)];
+    const currentState = {
+      maxHp: this.maxHp,
+      userHp: this.userHp,
+      aiHp: this.aiHp,
+      userStunned: this.userStunned,
+      aiStunned: this.aiStunned,
+      userHand: [...this.userHand],
+      aiHand: [...this.aiHand],
+      userDiscard: [...this.userDiscard],
+      aiDiscard: [...this.aiDiscard]
+    };
+
+    if (this.userStunned) {
+      if (this.userHp <= 10 && this.aiHand[0] > 0) return 0;
+      const soloScores = validCards.map(card => this.evaluateAiSolo(currentState, card));
+      return this.chooseFromScores(validCards, soloScores, this.difficulty === 'master' ? 2.4 : 5.5);
+    }
+
+    const probabilities = this.getPlayerProbabilities(
+      currentState,
+      this.difficulty === 'master'
+    );
+
+    if (this.difficulty === 'master') {
+      const guaranteedLethal = validCards.filter(aiCard =>
+        probabilities.every(item => {
+          const next = this.simulatePair(currentState, item.card, aiCard);
+          return next.userHp <= 0 && next.aiHp > 0;
+        })
+      );
+      if (guaranteedLethal.length > 0) {
+        return guaranteedLethal[Math.floor(Math.random() * guaranteedLethal.length)];
       }
     }
 
-    let userHasY = (this.userHand[0] > 0);
-    let userHasP = (this.userHand[2] > 0);
-    let userHasX = (this.userHand[4] > 0);
-    let userCardTotal = this.getHandCount(this.userHand);
-    
-    let weights = validCards.map(c => {
-      let w = 1.0;
-      if (c === 4) { if (!userHasY) w += 8.0; else if (userHasP) w += 3.0; else w += 1.2; }
-      if (c === 0) { if (userHasX) w += 3.0; if (userHasP) w += 2.5; }
-      if (c === 1) { if (userHasY) w += 3.5; else w = 0.5; }
-      if (c === 2) { if (!userHasY) w += 5.0; else w = 0.5; }
-      if (c === 3) { if (userHasY || userHasP) w += 2.5; else w = 1.2; }
-      if (c === 5) {
-        let aiCardTotal = this.getHandCount(this.aiHand);
-        if (this.userStunned) w += 10.0;
-        else if (aiCardTotal <= 3) w += 6.0;
-        else w = 0.1;
+    const useLookahead = this.difficulty === 'master';
+    const scores = validCards.map(aiCard => {
+      let score = probabilities.reduce((sum, item) => {
+        const immediate = this.evaluatePair(currentState, item.card, aiCard);
+        if (!useLookahead) return sum + item.probability * immediate;
+        const next = this.simulatePair(currentState, item.card, aiCard);
+        return sum + item.probability * (immediate + this.estimateNextTurn(next) * 0.55);
+      }, 0);
+
+      if (useLookahead) {
+        score += this.getPersonalityBonus(aiCard);
+        const recentAi = this.aiPlayHistory.slice(-2);
+        if (recentAi[recentAi.length - 1] === aiCard) score -= 0.8;
+        if (recentAi.length === 2 && recentAi.every(card => card === aiCard)) score -= 1.2;
       }
-      return w;
+      return score;
     });
 
-    if (this.difficulty === 'master' && userCardTotal <= 2 && userCardTotal > 0) {
-      let knownPlayerCards = [];
-      for(let i=0; i<6; i++) {
-        if (this.userHand[i] > 0) knownPlayerCards.push(i);
-      }
-      validCards.forEach((c, idx) => {
-        let avgEv = 0;
-        knownPlayerCards.forEach(pc => {
-          avgEv += MATRIX[pc][c].B - MATRIX[pc][c].A;
-        });
-        if (avgEv > 0) weights[idx] += 10.0;
-      });
-    }
+    return this.chooseFromScores(
+      validCards,
+      scores,
+      this.difficulty === 'master' ? 2.8 : 6.5
+    );
+  }
 
-    let totalW = weights.reduce((a, b) => a + b, 0);
-    let rnd = Math.random() * totalW;
-    let cum = 0;
-    for (let i = 0; i < validCards.length; i++) {
-      cum += weights[i];
-      if (rnd <= cum) return validCards[i];
-    }
-    return validCards[validCards.length - 1];
+  recordTurn(userCard, aiCard) {
+    if (userCard >= 0) this.userPlayHistory.push(userCard);
+    if (aiCard >= 0) this.aiPlayHistory.push(aiCard);
   }
 }
 
@@ -515,6 +695,7 @@ document.addEventListener('DOMContentLoaded', () => {
       game.aiHand[aiCardId]--;
       game.aiDiscard[aiCardId]++;
     }
+    game.recordTurn(userCardId, aiCardId);
 
     renderAiHandBacks();
 
