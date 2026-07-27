@@ -1,5 +1,5 @@
 /* ==========================================================================
-   《舌战》桌游电子版 CSS 样式表 (包含 Modal 层级修复 z-index: 300)
+   《舌战》桌游电子版 CSS 样式表 (包含全响应式手机端适配 Mobile Friendly)
    ========================================================================== */
 
 :root {
@@ -24,6 +24,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -67,6 +68,7 @@ body {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.4s ease;
+  padding: 12px;
 }
 
 .cover-screen.active {
@@ -78,44 +80,46 @@ body {
   background: #fdfbf7;
   border: 3px double var(--border-mahogany);
   border-radius: 24px;
-  padding: 36px 45px;
+  padding: 28px 24px;
   max-width: 560px;
-  width: 90%;
+  width: 100%;
   box-shadow: 0 20px 60px rgba(65, 35, 20, 0.3);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  max-height: 95vh;
+  overflow-y: auto;
 }
 
 .cover-header {
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .cover-seal {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   background: var(--accent-vermilion);
   color: #fff;
   border: 2px solid #fef08a;
   border-radius: 8px;
   font-family: var(--font-calligraphy);
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   box-shadow: 0 4px 10px rgba(185, 28, 28, 0.4);
 }
 
 .cover-title {
   font-family: var(--font-calligraphy);
-  font-size: 3.8rem;
+  font-size: 3.2rem;
   color: var(--accent-vermilion);
-  letter-spacing: 8px;
+  letter-spacing: 6px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
 }
 
@@ -123,7 +127,7 @@ body {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 .setup-group {
@@ -134,7 +138,7 @@ body {
 }
 
 .group-label {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: bold;
   color: var(--border-mahogany);
 }
@@ -150,7 +154,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 12px 16px;
+  padding: 10px 14px;
   border-radius: 12px;
   background: #f3ebdc;
   border: 1.5px solid rgba(124, 45, 18, 0.2);
@@ -167,12 +171,12 @@ body {
 
 .m-title {
   font-weight: bold;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: var(--accent-vermilion);
 }
 
 .m-sub {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--text-sub);
   margin-top: 2px;
 }
@@ -180,12 +184,12 @@ body {
 .diff-buttons {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  gap: 6px;
   width: 100%;
 }
 
 .diff-select-btn {
-  padding: 10px 6px;
+  padding: 8px 4px;
   border-radius: 10px;
   background: #f3ebdc;
   border: 1.5px solid rgba(124, 45, 18, 0.2);
@@ -204,25 +208,25 @@ body {
   box-shadow: inset 0 0 0 1px var(--border-gold);
 }
 
-.d-title { font-weight: bold; font-size: 0.9rem; }
-.d-sub { font-size: 0.7rem; color: var(--text-sub); margin-top: 2px; }
+.d-title { font-weight: bold; font-size: 0.85rem; }
+.d-sub { font-size: 0.68rem; color: var(--text-sub); margin-top: 2px; }
 
 .cover-actions {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 12px;
-  margin-top: 10px;
+  gap: 10px;
+  margin-top: 6px;
 }
 
 .btn-cover-start {
   padding: 12px;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   letter-spacing: 2px;
 }
 
 .btn-cover-rules {
   padding: 12px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 /* Header */
@@ -230,54 +234,56 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 10px 16px;
   background: var(--panel-parchment);
   border: 1.5px solid var(--border-mahogany);
   border-radius: 16px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   box-shadow: var(--shadow-lg);
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .logo-seal {
-  padding: 4px 8px;
+  padding: 3px 6px;
   background: var(--accent-vermilion);
   color: #fff;
   font-family: var(--font-calligraphy);
   border-radius: 6px;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .logo h1 {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   color: var(--accent-vermilion);
   letter-spacing: 2px;
 }
 
 .header-controls {
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
 /* Buttons */
 .btn {
-  padding: 8px 14px;
+  padding: 8px 12px;
   border-radius: 8px;
   border: 1px solid var(--border-mahogany);
   background: #f3ebdc;
   color: var(--text-main);
   font-family: inherit;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   cursor: pointer;
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 4px;
+  touch-action: manipulation;
 }
 
 .btn:hover {
@@ -309,14 +315,14 @@ body {
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: 12px;
+  gap: 10px;
 }
 
 .player-zone {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 10px 16px;
   background: var(--panel-parchment);
   border: 1.5px solid rgba(124, 45, 18, 0.25);
   border-radius: 14px;
@@ -326,37 +332,37 @@ body {
 .player-info {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
 }
 
 .avatar {
-  width: 46px;
-  height: 46px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: #f3ebdc;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   border: 2px solid var(--border-gold);
 }
 
 .name-bar {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 4px;
+  gap: 6px;
+  margin-bottom: 2px;
 }
 
 .player-name {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   font-weight: bold;
 }
 
 .badge {
-  padding: 2px 8px;
+  padding: 2px 6px;
   border-radius: 12px;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   background: rgba(29, 78, 216, 0.12);
   color: var(--accent-azure);
   border: 1px solid rgba(29, 78, 216, 0.3);
@@ -373,15 +379,15 @@ body {
 .hp-wrapper {
   display: flex;
   align-items: center;
-  gap: 10px;
-  width: 250px;
+  gap: 8px;
+  width: 180px;
 }
 
 .hp-bar-bg {
   flex: 1;
-  height: 12px;
+  height: 10px;
   background: #e2d5c3;
-  border-radius: 6px;
+  border-radius: 5px;
   overflow: hidden;
   border: 1px solid rgba(0, 0, 0, 0.15);
 }
@@ -389,21 +395,21 @@ body {
 .hp-bar-fill {
   height: 100%;
   background: linear-gradient(90deg, #ef4444, #10b981);
-  border-radius: 6px;
+  border-radius: 5px;
   transition: width 0.5s ease-out;
 }
 
 .hp-text {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: bold;
-  min-width: 60px;
+  min-width: 55px;
 }
 
 /* AI Face-Down Cards Hand Deck */
 .ai-hand-deck {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .hand-backs-row {
@@ -412,26 +418,31 @@ body {
 }
 
 .card-back-mini {
-  width: 26px;
-  height: 38px;
+  width: 22px;
+  height: 32px;
   border-radius: 4px;
   background: linear-gradient(145deg, #60180a, #350903);
   border: 1px solid #f59e0b;
-  margin-left: -10px;
+  margin-left: -9px;
   box-shadow: -2px 0 5px rgba(0,0,0,0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   color: #fef08a;
 }
 
 .card-back-mini:first-child { margin-left: 0; }
 
+.hand-count-badge {
+  font-size: 0.8rem;
+  color: var(--text-sub);
+}
+
 /* Arena Zone (Center Tabletop) */
 .arena-zone {
   position: relative;
-  min-height: 250px;
+  min-height: 220px;
   background: #f4ebd9;
   border: 2px solid var(--border-mahogany);
   border-radius: 20px;
@@ -439,62 +450,64 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 16px 20px;
+  padding: 12px 14px;
   box-shadow: inset 0 0 30px rgba(124, 45, 18, 0.1);
 }
 
 .turn-indicator {
   position: absolute;
-  top: 10px;
-  padding: 4px 18px;
+  top: 8px;
+  padding: 3px 14px;
   background: #faf6ed;
   border: 1.5px solid var(--border-gold);
   border-radius: 20px;
   color: var(--border-gold);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: bold;
 }
 
 .stun-notice-banner {
   position: absolute;
-  top: 40px;
-  padding: 6px 22px;
+  top: 36px;
+  padding: 4px 14px;
   background: linear-gradient(90deg, #b91c1c, #d97706);
   border: 1.5px solid #fef08a;
   border-radius: 20px;
   color: #ffffff;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   font-weight: 900;
   box-shadow: 0 4px 12px rgba(185, 28, 28, 0.3);
   animation: pulse 1.2s infinite ease-in-out;
   z-index: 10;
+  text-align: center;
+  max-width: 92%;
 }
 
 .cards-clash {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 50px;
+  gap: 30px;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 16px;
 }
 
 .clash-slot {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .slot-label {
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   color: var(--text-sub);
 }
 
 .arena-card-slot {
-  width: 110px;
-  height: 165px;
-  border-radius: 14px;
+  width: 96px;
+  height: 144px;
+  border-radius: 12px;
   border: 2px dashed rgba(124, 45, 18, 0.3);
   display: flex;
   align-items: center;
@@ -505,17 +518,17 @@ body {
 }
 
 .slot-placeholder {
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   color: var(--text-sub);
 }
 
 .stun-slot-badge {
-  padding: 10px;
+  padding: 8px;
   background: rgba(185, 28, 28, 0.1);
   border: 2px solid rgba(185, 28, 28, 0.4);
   border-radius: 12px;
   color: var(--accent-vermilion);
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   font-weight: 900;
   text-align: center;
 }
@@ -528,7 +541,7 @@ body {
 }
 
 .vs-badge {
-  font-size: 2.2rem;
+  font-size: 1.8rem;
   font-weight: 900;
   color: var(--accent-vermilion);
   font-family: var(--font-calligraphy);
@@ -537,7 +550,7 @@ body {
 
 .clash-ray {
   position: absolute;
-  width: 120px;
+  width: 90px;
   height: 4px;
   background: linear-gradient(90deg, #f59e0b, #ef4444, #f59e0b);
   border-radius: 2px;
@@ -546,16 +559,17 @@ body {
 }
 
 .outcome-banner {
-  margin-top: 12px;
-  padding: 8px 24px;
+  margin-top: 10px;
+  padding: 6px 18px;
   background: #faf6ed;
   border: 1.5px solid var(--border-gold);
   border-radius: 30px;
   color: var(--accent-vermilion);
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   font-weight: bold;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   animation: slideDown 0.3s ease-out;
+  text-align: center;
 }
 
 /* Card Tooltip Popup z-index: 400 */
@@ -565,8 +579,8 @@ body {
   background: #fdfbf7;
   border: 2px solid var(--border-mahogany);
   border-radius: 12px;
-  padding: 12px 16px;
-  max-width: 280px;
+  padding: 10px 14px;
+  max-width: 260px;
   box-shadow: 0 10px 25px rgba(65, 35, 20, 0.3);
   pointer-events: none;
   transition: opacity 0.15s ease, transform 0.15s ease;
@@ -580,24 +594,24 @@ body {
 }
 
 .tooltip-title {
-  font-size: 1rem;
+  font-size: 0.92rem;
   font-weight: 900;
   color: var(--accent-vermilion);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   border-bottom: 1px dashed rgba(124, 45, 18, 0.2);
-  padding-bottom: 4px;
+  padding-bottom: 3px;
 }
 
 .tooltip-body {
-  font-size: 0.85rem;
-  line-height: 1.4;
+  font-size: 0.8rem;
+  line-height: 1.35;
   color: var(--text-main);
 }
 
 /* Card Visuals */
 .card-container-3d {
-  width: 110px;
-  height: 165px;
+  width: 96px;
+  height: 144px;
   perspective: 800px;
   position: relative;
 }
@@ -608,8 +622,8 @@ body {
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 14px;
-  box-shadow: 0 6px 16px rgba(60, 40, 25, 0.25);
+  border-radius: 12px;
+  box-shadow: 0 5px 14px rgba(60, 40, 25, 0.25);
 }
 
 .card-container-3d.flipped .card-3d-inner {
@@ -621,13 +635,13 @@ body {
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  border-radius: 14px;
+  border-radius: 12px;
   overflow: hidden;
   border: 2px solid var(--border-gold);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 10px 8px;
+  padding: 8px 6px;
   box-sizing: border-box;
 }
 
@@ -645,12 +659,12 @@ body {
   width: 94%;
   height: 94%;
   border: 1.5px solid #fef08a;
-  border-radius: 10px;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 2px;
   background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 80%);
   position: relative;
 }
@@ -661,29 +675,29 @@ body {
   width: 82%;
   height: 86%;
   border: 1px dashed rgba(245, 158, 11, 0.4);
-  border-radius: 6px;
+  border-radius: 5px;
 }
 
 .card-back-seal {
-  width: 36px;
-  height: 36px;
+  width: 30px;
+  height: 30px;
   background: #991b1b;
   border: 1.5px solid #fef08a;
   border-radius: 50%;
   color: #fef08a;
   font-family: var(--font-calligraphy);
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.5);
   z-index: 2;
 }
 
 .card-back-text {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: #fef08a;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   font-family: var(--font-calligraphy);
   z-index: 2;
   text-shadow: 0 2px 4px rgba(0,0,0,0.6);
@@ -710,16 +724,16 @@ body {
   width: 100%;
 }
 
-.card-type-icon { font-size: 1.1rem; }
+.card-type-icon { font-size: 0.95rem; }
 
 .card-seal-stamp {
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   border-radius: 4px;
   background: var(--accent-vermilion);
   border: 1px solid #fca5a5;
   color: #fff;
-  font-size: 0.75rem;
+  font-size: 0.68rem;
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -737,26 +751,26 @@ body {
 }
 
 .art-svg-medallion {
-  width: 54px;
-  height: 54px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: #ffffff;
   border: 1.5px solid rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
 }
 
 .art-svg-medallion svg {
-  width: 32px;
-  height: 32px;
+  width: 26px;
+  height: 26px;
 }
 
 .card-title-vertical {
-  font-size: 1rem;
+  font-size: 0.88rem;
   font-weight: 900;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   color: var(--text-main);
   text-align: center;
   white-space: nowrap;
@@ -770,10 +784,11 @@ body {
   cursor: pointer;
   transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
+  touch-action: manipulation;
 }
 
 .dock-card-wrapper:hover {
-  transform: translateY(-12px) scale(1.08);
+  transform: translateY(-8px) scale(1.05);
   z-index: 20;
 }
 
@@ -787,18 +802,18 @@ body {
 
 .card-qty-tag {
   position: absolute;
-  top: -8px;
-  right: -8px;
+  top: -6px;
+  right: -6px;
   background: linear-gradient(135deg, #b91c1c, #dc2626);
   color: #fff;
   font-weight: 900;
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
   border: 1.5px solid #ffffff;
   z-index: 25;
@@ -807,35 +822,35 @@ body {
 /* Bottom Panel & Dock */
 .bottom-panel {
   display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 12px;
+  grid-template-columns: 300px 1fr;
+  gap: 10px;
 }
 
 .log-box {
   background: var(--panel-parchment);
   border: 1px solid rgba(124, 45, 18, 0.2);
   border-radius: 14px;
-  padding: 12px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
-  height: 130px;
+  height: 120px;
 }
 
 .log-header {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--text-sub);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   font-weight: bold;
 }
 
 .log-content {
   flex: 1;
   overflow-y: auto;
-  font-size: 0.8rem;
-  line-height: 1.4;
+  font-size: 0.78rem;
+  line-height: 1.35;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
 }
 
 .log-item {
@@ -852,19 +867,19 @@ body {
   background: var(--panel-parchment);
   border: 1.5px solid var(--border-mahogany);
   border-radius: 16px;
-  padding: 14px 20px;
+  padding: 10px 14px;
   box-shadow: var(--shadow-lg);
 }
 
 .dock-title {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--text-sub);
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .hand-cards-list {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   justify-content: center;
   flex-wrap: wrap;
 }
@@ -881,10 +896,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 300; /* FIXED HIGHER Z-INDEX */
+  z-index: 300;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
+  padding: 12px;
 }
 
 .modal.active {
@@ -896,9 +912,9 @@ body {
   background: #fdfbf7;
   border: 2px solid var(--border-mahogany);
   border-radius: 20px;
-  padding: 28px;
+  padding: 22px;
   max-width: 620px;
-  width: 90%;
+  width: 100%;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
   max-height: 85vh;
   overflow-y: auto;
@@ -908,42 +924,43 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .close-btn {
   background: none;
   border: none;
   color: var(--text-sub);
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   cursor: pointer;
+  padding: 4px;
 }
 
 .tracker-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 14px;
 }
 
 .tracker-column h3 {
-  font-size: 0.95rem;
-  margin-bottom: 12px;
+  font-size: 0.88rem;
+  margin-bottom: 10px;
   color: var(--accent-vermilion);
 }
 
 .tracker-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .tracker-item {
   display: flex;
   justify-content: space-between;
-  padding: 8px 12px;
+  padding: 6px 10px;
   border-radius: 8px;
   background: #f3ebdc;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
 }
 
 .hidden { display: none !important; }
@@ -962,4 +979,230 @@ body {
 @keyframes slideDown {
   0% { transform: translateY(-10px); opacity: 0; }
   100% { transform: translateY(0); opacity: 1; }
+}
+
+/* ==========================================================================
+   📱 MOBILE RESPONSIVE ADAPTATIONS (手机端高度优化与触摸适配)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  #app {
+    padding: 6px;
+  }
+
+  /* Header Mobile */
+  .game-header {
+    padding: 6px 10px;
+    border-radius: 12px;
+    margin-bottom: 6px;
+  }
+
+  .logo h1 {
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+  }
+
+  .logo-seal {
+    padding: 2px 5px;
+    font-size: 0.9rem;
+  }
+
+  .btn {
+    padding: 6px 8px;
+    font-size: 0.75rem;
+  }
+
+  /* Player Status Header Bar Mobile */
+  .player-zone {
+    padding: 6px 10px;
+    border-radius: 12px;
+  }
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+
+  .player-name {
+    font-size: 0.85rem;
+  }
+
+  .hp-wrapper {
+    width: 110px;
+    gap: 4px;
+  }
+
+  .hp-bar-bg {
+    height: 8px;
+  }
+
+  .hp-text {
+    font-size: 0.72rem;
+    min-width: 48px;
+  }
+
+  .ai-hand-deck {
+    gap: 4px;
+  }
+
+  .card-back-mini {
+    width: 16px;
+    height: 24px;
+    font-size: 0.5rem;
+    margin-left: -6px;
+  }
+
+  .hand-count-badge {
+    font-size: 0.7rem;
+  }
+
+  /* Arena Mobile Sizing */
+  .arena-zone {
+    min-height: 180px;
+    padding: 8px;
+    border-radius: 14px;
+  }
+
+  .turn-indicator {
+    top: 4px;
+    padding: 2px 10px;
+    font-size: 0.72rem;
+  }
+
+  .stun-notice-banner {
+    top: 28px;
+    padding: 3px 10px;
+    font-size: 0.7rem;
+  }
+
+  .cards-clash {
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  .arena-card-slot {
+    width: 78px;
+    height: 118px;
+    border-radius: 10px;
+  }
+
+  .card-container-3d {
+    width: 78px;
+    height: 118px;
+  }
+
+  .art-svg-medallion {
+    width: 34px;
+    height: 34px;
+  }
+
+  .art-svg-medallion svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .card-title-vertical {
+    font-size: 0.75rem;
+    letter-spacing: 0px;
+  }
+
+  .vs-badge {
+    font-size: 1.3rem;
+  }
+
+  .clash-ray {
+    width: 50px;
+  }
+
+  .outcome-banner {
+    margin-top: 6px;
+    padding: 4px 12px;
+    font-size: 0.75rem;
+  }
+
+  /* Bottom Panel Single Column Mobile */
+  .bottom-panel {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .log-box {
+    height: 80px;
+    padding: 6px 10px;
+  }
+
+  .log-content {
+    font-size: 0.72rem;
+  }
+
+  /* Hand Dock Horizontal Scroll on Mobile */
+  .hand-dock {
+    padding: 8px 10px;
+    border-radius: 14px;
+  }
+
+  .dock-title {
+    font-size: 0.72rem;
+    margin-bottom: 6px;
+  }
+
+  .hand-cards-list {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    gap: 10px;
+    padding-bottom: 6px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .dock-card-wrapper {
+    flex: 0 0 auto;
+  }
+
+  .card-qty-tag {
+    top: -4px;
+    right: -4px;
+    width: 18px;
+    height: 18px;
+    font-size: 0.68rem;
+  }
+
+  /* Modals Mobile */
+  .modal-content {
+    padding: 16px;
+    border-radius: 16px;
+    width: 95vw;
+  }
+
+  .tracker-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  /* Cover Screen Mobile */
+  .cover-content {
+    padding: 20px 16px;
+    border-radius: 18px;
+  }
+
+  .cover-title {
+    font-size: 2.4rem;
+    letter-spacing: 4px;
+  }
+
+  .diff-buttons {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .diff-select-btn {
+    padding: 6px;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 8px 12px;
+  }
+
+  .d-sub { margin-top: 0; }
 }

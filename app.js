@@ -1,7 +1,6 @@
 /* ==========================================================================
    《舌战》桌游电子版 核心游戏引擎与 AI 逻辑 (App.js)
-   100% 严格对照《规则.pdf》下三角矩阵图片逐格订正
-   (打出破口大骂碰沉默是金：破口大骂 0 伤，沉默是金 -5 HP)
+   (包含 100% 规则下三角矩阵 + 手机端触摸控制适配 Mobile Friendly)
    ========================================================================== */
 
 // SVG Art Icons for 6 Cards
@@ -36,66 +35,65 @@ const CARDS = [
 
 // 100% PERFECT MATRIX DIRECTLY FROM PDF screenshot:
 // Rows = Player A, Cols = Player B
-// Values: A = Player A HP change, B = Player B HP change, sA/sB = Stun, pA/pB = Card Pickup
 const MATRIX = [
   // 0: 一语道破 (Y) vs [Y, F, P, C, X, S]
   [
-    {A: -10, B: -10, sA: false, sB: false, pA: false, pB: false}, // Y vs Y (-10/-10)
-    {A: -10, B:   0, sA: false, sB: false, pA: false, pB: false}, // Y vs F (-10/-)
-    {A:   0, B: -15, sA: false, sB: false, pA: false, pB: false}, // Y vs P (-/-15)
-    {A:   0, B:   0, sA: false, sB: false, pA: false, pB: false}, // Y vs C (-/-)
-    {A:   0, B: -10, sA: false, sB: false, pA: false, pB: false}, // Y vs X (-/-10)
-    {A:   0, B: -10, sA: false, sB: false, pA: false, pB: true }  // Y vs S (-/-10,捡牌)
+    {A: -10, B: -10, sA: false, sB: false, pA: false, pB: false},
+    {A: -10, B:   0, sA: false, sB: false, pA: false, pB: false},
+    {A:   0, B: -15, sA: false, sB: false, pA: false, pB: false},
+    {A:   0, B:   0, sA: false, sB: false, pA: false, pB: false},
+    {A:   0, B: -10, sA: false, sB: false, pA: false, pB: false},
+    {A:   0, B: -10, sA: false, sB: false, pA: false, pB: true }
   ],
 
   // 1: 反唇相讥 (F) vs [Y, F, P, C, X, S]
   [
-    {A:   0, B: -10, sA: false, sB: false, pA: false, pB: false}, // F vs Y (-/-10)
-    {A:   0, B:   0, sA: false, sB: false, pA: false, pB: false}, // F vs F (-/-)
-    {A:   0, B:  -5, sA: false, sB: true,  pA: false, pB: false}, // F vs P (-/-5,停动 -> F gets 0, P gets -5 & Stun!)
-    {A:   0, B:   0, sA: false, sB: false, pA: false, pB: false}, // F vs C (-/-)
-    {A:   0, B: +10, sA: false, sB: false, pA: false, pB: false}, // F vs X (-/+10)
-    {A:   0, B:   0, sA: false, sB: false, pA: false, pB: false}  // F vs S (-/- -> S NO PICKUP)
+    {A:   0, B: -10, sA: false, sB: false, pA: false, pB: false},
+    {A:   0, B:   0, sA: false, sB: false, pA: false, pB: false},
+    {A:   0, B:  -5, sA: false, sB: true,  pA: false, pB: false},
+    {A:   0, B:   0, sA: false, sB: false, pA: false, pB: false},
+    {A:   0, B: +10, sA: false, sB: false, pA: false, pB: false},
+    {A:   0, B:   0, sA: false, sB: false, pA: false, pB: false}
   ],
 
   // 2: 破口大骂 (P) vs [Y, F, P, C, X, S]
   [
-    {A: -15, B:   0, sA: false, sB: false, pA: false, pB: false}, // P vs Y (-15/-)
-    {A:  -5, B:   0, sA: true,  sB: false, pA: false, pB: false}, // P vs F (-5,停动/- -> P gets -5 & Stun, F gets 0!)
-    {A:  -5, B:  -5, sA: true,  sB: true,  pA: false, pB: false}, // P vs P (-5,停动/-5,停动)
-    {A:   0, B:  -5, sA: false, sB: false, pA: false, pB: false}, // P vs C (0/-5 -> P gets 0, C gets -5!)
-    {A:   0, B: +15, sA: false, sB: false, pA: false, pB: false}, // P vs X (-/+15)
-    {A:   0, B:  -5, sA: false, sB: true,  pA: false, pB: true }  // P vs S (-/-5,停动,捡牌 -> P gets 0, S gets -5, Stun, Pickup!)
+    {A: -15, B:   0, sA: false, sB: false, pA: false, pB: false},
+    {A:  -5, B:   0, sA: true,  sB: false, pA: false, pB: false},
+    {A:  -5, B:  -5, sA: true,  sB: true,  pA: false, pB: false},
+    {A:   0, B:  -5, sA: false, sB: false, pA: false, pB: false},
+    {A:   0, B: +15, sA: false, sB: false, pA: false, pB: false},
+    {A:   0, B:  -5, sA: false, sB: true,  pA: false, pB: true }
   ],
 
   // 3: 沉默是金 (C) vs [Y, F, P, C, X, S]
   [
-    {A:   0, B:   0, sA: false, sB: false, pA: false, pB: false}, // C vs Y (-/-)
-    {A:   0, B:   0, sA: false, sB: false, pA: false, pB: false}, // C vs F (-/-)
-    {A:  -5, B:   0, sA: false, sB: false, pA: false, pB: false}, // C vs P (-5/- -> C gets -5, P gets 0!)
-    {A:   0, B:   0, sA: false, sB: false, pA: false, pB: false}, // C vs C (-/-)
-    {A:   0, B: +10, sA: false, sB: false, pA: false, pB: false}, // C vs X (-/+10)
-    {A:   0, B:   0, sA: false, sB: false, pA: false, pB: true }  // C vs S (-/捡牌)
+    {A:   0, B:   0, sA: false, sB: false, pA: false, pB: false},
+    {A:   0, B:   0, sA: false, sB: false, pA: false, pB: false},
+    {A:  -5, B:   0, sA: false, sB: false, pA: false, pB: false},
+    {A:   0, B:   0, sA: false, sB: false, pA: false, pB: false},
+    {A:   0, B: +10, sA: false, sB: false, pA: false, pB: false},
+    {A:   0, B:   0, sA: false, sB: false, pA: false, pB: true }
   ],
 
   // 4: 心如止水 (X) vs [Y, F, P, C, X, S]
   [
-    {A: -10, B:   0, sA: false, sB: false, pA: false, pB: false}, // X vs Y (-10/-)
-    {A: +10, B:   0, sA: false, sB: false, pA: false, pB: false}, // X vs F (+10/-)
-    {A: +15, B:   0, sA: false, sB: false, pA: false, pB: false}, // X vs P (+15/-)
-    {A: +10, B:   0, sA: false, sB: false, pA: false, pB: false}, // X vs C (+10/-)
-    {A: +10, B: +10, sA: false, sB: false, pA: false, pB: false}, // X vs X (+10/+10)
-    {A: +10, B:   0, sA: false, sB: false, pA: false, pB: true }  // X vs S (+10/捡牌)
+    {A: -10, B:   0, sA: false, sB: false, pA: false, pB: false},
+    {A: +10, B:   0, sA: false, sB: false, pA: false, pB: false},
+    {A: +15, B:   0, sA: false, sB: false, pA: false, pB: false},
+    {A: +10, B:   0, sA: false, sB: false, pA: false, pB: false},
+    {A: +10, B: +10, sA: false, sB: false, pA: false, pB: false},
+    {A: +10, B:   0, sA: false, sB: false, pA: false, pB: true }
   ],
 
   // 5: 深思熟虑 (S) vs [Y, F, P, C, X, S]
   [
-    {A: -10, B:   0, sA: false, sB: false, pA: true,  pB: false}, // S vs Y (-10,捡牌/-)
-    {A:   0, B:   0, sA: false, sB: false, pA: false, pB: false}, // S vs F (-/- -> NO PICKUP)
-    {A:  -5, B:   0, sA: true,  sB: false, pA: true,  pB: false}, // S vs P (-5,停动,捡牌/- -> S gets -5, Stun, Pickup; P gets 0)
-    {A:   0, B:   0, sA: false, sB: false, pA: true,  pB: false}, // S vs C (捡牌/-)
-    {A:   0, B: +10, sA: false, sB: false, pA: true,  pB: false}, // S vs X (捡牌/+10)
-    {A:   0, B:   0, sA: false, sB: false, pA: true,  pB: true }  // S vs S (捡牌/捡牌)
+    {A: -10, B:   0, sA: false, sB: false, pA: true,  pB: false},
+    {A:   0, B:   0, sA: false, sB: false, pA: false, pB: false},
+    {A:  -5, B:   0, sA: true,  sB: false, pA: true,  pB: false},
+    {A:   0, B:   0, sA: false, sB: false, pA: true,  pB: false},
+    {A:   0, B: +10, sA: false, sB: false, pA: true,  pB: false},
+    {A:   0, B:   0, sA: false, sB: false, pA: true,  pB: true }
   ]
 ];
 
@@ -341,6 +339,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  document.addEventListener('touchstart', (e) => {
+    if (!e.target.closest('.dock-card-wrapper')) {
+      hideCardTooltip();
+    }
+  }, { passive: true });
+
   function resetArenaSlots() {
     playerCardSlot.innerHTML = `<div class="slot-placeholder">等待选牌...</div>`;
     aiCardSlot.innerHTML = `<div class="slot-placeholder">等待出牌...</div>`;
@@ -392,7 +396,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (game.userStunned) {
-      handCardsContainer.innerHTML = `<div class="placeholder-text" style="color: #b91c1c; font-size: 1rem; font-weight:bold;">😵 你处于【停动】状态，本回合无法出牌！点击“跳过回合”继续。</div>
+      handCardsContainer.innerHTML = `<div class="placeholder-text" style="color: #b91c1c; font-size: 0.9rem; font-weight:bold;">😵 你处于【停动】状态，本回合无法出牌！点击“跳过回合”继续。</div>
       <button id="btn-skip-turn" class="btn btn-primary" style="margin-top:8px;">跳过本回合</button>`;
       document.getElementById('btn-skip-turn')?.addEventListener('click', () => handleTurn(-1));
       return;
@@ -408,6 +412,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ${qty > 0 ? `<span class="card-qty-tag">${qty}</span>` : ''}
       `;
 
+      // Touch & Mouse Events
       cardWrapper.addEventListener('mouseenter', (e) => showCardTooltip(card.id, e));
       cardWrapper.addEventListener('mousemove', (e) => positionCardTooltip(e));
       cardWrapper.addEventListener('mouseleave', () => hideCardTooltip());
@@ -431,10 +436,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function positionCardTooltip(e) {
-    let left = e.clientX + 15;
-    let top = e.clientY - 80;
-    if (left + 290 > window.innerWidth) left = e.clientX - 290;
-    if (top < 10) top = e.clientY + 15;
+    let clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : window.innerWidth / 2);
+    let clientY = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : window.innerHeight / 2);
+
+    let left = clientX + 15;
+    let top = clientY - 80;
+    if (left + 260 > window.innerWidth) left = Math.max(10, clientX - 260);
+    if (top < 10) top = clientY + 15;
     hoverTooltip.style.left = left + 'px';
     hoverTooltip.style.top = top + 'px';
   }
