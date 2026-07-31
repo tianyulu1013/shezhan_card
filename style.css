@@ -2531,6 +2531,12 @@ body {
     gap: 3px;
   }
 
+  /* Hide Cancel + Confirm buttons on touch devices — drag to play instead */
+  #btn-cancel-card,
+  #btn-confirm-card {
+    display: none !important;
+  }
+
   .hand-action-btn {
     min-height: 22px;
     padding: 2px 6px;
