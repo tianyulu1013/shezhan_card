@@ -5,7 +5,7 @@ const path = require('node:path');
 
 const appPath = path.join(__dirname, '..', 'app.js');
 const source = `${fs.readFileSync(appPath, 'utf8')}
-globalThis.__rulesForTest = { MATRIX, describeMatrixEffects, ShezhanGame };`;
+globalThis.__rulesForTest = { MATRIX, describeMatrixEffects, describeShowdownEn, ShezhanGame };`;
 const sandbox = {
   document: { addEventListener() {} },
   console,
@@ -14,7 +14,7 @@ const sandbox = {
 };
 
 vm.runInNewContext(source, sandbox, { filename: appPath });
-const { MATRIX, describeMatrixEffects, ShezhanGame } = sandbox.__rulesForTest;
+const { MATRIX, describeMatrixEffects, describeShowdownEn, ShezhanGame } = sandbox.__rulesForTest;
 const signature = ({ A, B, sA, sB, pA, pB }) =>
   [A, B, Number(sA), Number(sB), Number(pA), Number(pB)];
 
@@ -72,6 +72,21 @@ assert.equal(
 assert.match(
   describeMatrixEffects(5, 1, MATRIX[5][1]),
   /你的捡牌被《反唇相讥》打断/
+);
+assert.match(
+  describeShowdownEn(0, 2, MATRIX[0][2]),
+  /Cut Through the Noise[\s\S]*15 damage/,
+  '英文日志应解释一语道破为何克制破口大骂'
+);
+assert.match(
+  describeShowdownEn(4, 2, MATRIX[4][2]),
+  /Keep Your Cool[\s\S]*recover 15 HP/,
+  '英文日志应解释心如止水为何吸收破口大骂'
+);
+assert.match(
+  describeShowdownEn(3, 2, MATRIX[3][2]),
+  /Refuse to Engage[\s\S]*5 damage[\s\S]*not Shut Down/,
+  '英文日志应体现沉默是金只受到小伤且不停动'
 );
 
 const tacticalGame = new ShezhanGame();
@@ -263,6 +278,11 @@ assert.match(
   '停动时应保留六张手牌并覆盖跳过提示'
 );
 assert.match(
+  handRenderSource,
+  /id="btn-skip-turn"[\s\S]*aria-disabled="false"/,
+  '停动跳过按钮应明确标记为可用状态'
+);
+assert.match(
   styles,
   /@media \(max-width: 768px\)[\s\S]*\.hand-cards-list\s*\{[\s\S]*grid-template-columns:\s*repeat\(6/,
   '手机端六种手牌应使用单屏六列布局'
@@ -276,5 +296,39 @@ assert.match(
 );
 assert.match(source, /function renderDiscardPreview\(\)/, '应渲染弃牌及可回收数量');
 assert.match(source, /function clearPlayedCards\(\)/, '每回合结算后应收走中央旧牌');
+assert.match(html, /class="language-btn active"[^>]*data-lang="zh"/, '语言切换应默认中文');
+assert.match(html, /class="language-btn"[^>]*data-lang="en"/, '界面应提供英文切换按钮');
+assert.match(html, /id="rules-body"/, '规则手册应使用可切换语言的动态内容区');
+assert.match(source, /const CARD_NAMES = \{[\s\S]*Cut Through the Noise[\s\S]*Gather Your Thoughts/, '六张牌应有完整英文名称');
+assert.match(source, /const RULE_MATRIX_TEXT = \{[\s\S]*双方 -10[\s\S]*Both -10/, '完整对比矩阵应同时提供中英文');
+assert.match(source, /function applyLanguage\(lang\)/, '语言切换应同步更新游戏界面');
+assert.match(source, /applyLanguage\('zh'\)/, '页面加载时应默认使用中文');
+assert.match(source, /const CARD_EPIGRAPHS = \{[\s\S]*辞达而已矣[\s\S]*Words need only hit their mark/, '牌面题跋应提供自然的中英文版本');
+assert.match(source, /class="card-illustration"[\s\S]*class="card-epigraph"/, '正面牌应包含半幅插画与题跋');
+assert.match(styles, /\.arena-zone \.card-epigraph\s*\{\s*display:\s*block/, '题跋应只在场中央大牌上展开');
+assert.match(source, /function triggerCardFeedback\(/, '应集中处理牌面结算反馈');
+assert.match(source, /impact-light/, '应提供轻度受击反馈');
+assert.match(source, /impact-medium/, '应提供中度受击反馈');
+assert.match(source, /impact-heavy/, '应提供重度受击反馈');
+assert.match(source, /impact-heal[\s\S]*status-stun[\s\S]*status-recover[\s\S]*effect-muted/, '回血、停动、回收和沉默抵消应有独立牌面反馈');
+assert.match(source, /function renderHealthBars\([\s\S]*hp-loss[\s\S]*hp-gain/, '血条应区分受伤和回血反馈');
+assert.match(styles, /@keyframes cardImpact[\s\S]*@keyframes cardHealing[\s\S]*@keyframes stunStamp[\s\S]*@keyframes recoverSlip/, '结算动画关键帧应完整存在');
+assert.match(html, /id="tooltip-quote"/, '牌面说明框应展示名言与出处');
+assert.match(source, /const impactDuration = damage >= 15 \? 720/, '重度受击动画应保留足够辨识时间');
+assert.match(styles, /\.arena-zone \.card-epigraph span\s*\{[\s\S]*font-size:\s*0\.62rem/, '中央牌题跋应清晰可读');
+[
+  'cut-through.webp',
+  'throw-back.webp',
+  'shout-down.webp',
+  'refuse-engage.webp',
+  'keep-cool.webp',
+  'gather-thoughts.webp'
+].forEach(file => {
+  assert.equal(
+    fs.existsSync(path.join(__dirname, '..', 'assets', 'cards', file)),
+    true,
+    `缺少牌面插画：${file}`
+  );
+});
 
 console.log('核心规则、空门结算与静态概率 AI 校验通过。');

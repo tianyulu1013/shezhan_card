@@ -13,10 +13,6 @@
   <div id="app">
     <!-- Game Cover / Welcome Screen (开始界面) -->
     <div id="cover-screen" class="cover-screen active">
-      <div class="language-switcher language-switcher-cover" aria-label="Language">
-        <button class="language-btn active" type="button" data-lang="zh">中文</button>
-        <button class="language-btn" type="button" data-lang="en">EN</button>
-      </div>
       <div class="cover-content">
         <div class="cover-header">
           <div class="cover-seal">舌战</div>
@@ -25,53 +21,53 @@
 
         <div class="cover-setup-panel">
           <div class="setup-group">
-            <label class="group-label" data-i18n="modeLabel">对局模式</label>
+            <label class="group-label">对局模式</label>
             <div class="mode-buttons">
               <button class="mode-select-btn" data-mode="competitive">
-                <span class="m-title" data-i18n="competitiveTitle">⚡ 竞技刺客模式</span>
-                <span class="m-sub" data-i18n="competitiveSub">30 HP | 每方 14 张牌 · 1 张心如止水</span>
+                <span class="m-title">⚡ 竞技刺客模式</span>
+                <span class="m-sub">30 HP | 14 张手牌 (1张心如止水)</span>
               </button>
               <button class="mode-select-btn active" data-mode="casual">
-                <span class="m-title" data-i18n="casualTitle">♟️ 持久策略模式</span>
-                <span class="m-sub" data-i18n="casualSub">40 HP | 每方 15 张牌 · 双心如止水</span>
+                <span class="m-title">♟️ 持久策略模式</span>
+                <span class="m-sub">40 HP | 15 张手牌 · 双心如止水</span>
               </button>
             </div>
           </div>
 
           <div class="setup-group">
-            <label class="group-label" data-i18n="difficultyLabel">AI 对手难度</label>
+            <label class="group-label">AI 对手难度</label>
             <div class="diff-buttons">
               <button class="diff-select-btn active" data-diff="master">
-                <span class="d-title" data-i18n="masterTitle">🧠 大师 AI</span>
-                <span class="d-sub" data-i18n="masterSub">概率推演 · 战术斩杀</span>
+                <span class="d-title">🧠 大师 AI</span>
+                <span class="d-sub">概率推演·战术斩杀</span>
               </button>
               <button class="diff-select-btn" data-diff="medium">
-                <span class="d-title" data-i18n="mediumTitle">⚖️ 中级 AI</span>
-                <span class="d-sub" data-i18n="mediumSub">单回合期望 · 适度随机</span>
+                <span class="d-title">⚖️ 中级 AI</span>
+                <span class="d-sub">单回合期望·适度随机</span>
               </button>
               <button class="diff-select-btn" data-diff="easy">
-                <span class="d-title" data-i18n="easyTitle">🎲 随机 AI</span>
-                <span class="d-sub" data-i18n="easySub">轻松试玩</span>
+                <span class="d-title">🎲 随机 AI</span>
+                <span class="d-sub">轻松试玩</span>
               </button>
             </div>
           </div>
 
           <div class="session-record" aria-label="本次游玩战绩">
             <div class="session-record-heading">
-              <span data-i18n="sessionHeading">本次游玩</span>
+              <span>本次游玩</span>
               <small id="session-games">0 局</small>
             </div>
             <div class="session-record-grid">
-              <div><strong id="session-wins">0</strong><span data-i18n="wins">胜</span></div>
-              <div><strong id="session-losses">0</strong><span data-i18n="losses">负</span></div>
-              <div><strong id="session-draws">0</strong><span data-i18n="draws">平</span></div>
-              <div><strong id="session-win-rate">—</strong><span data-i18n="winRate">胜率</span></div>
+              <div><strong id="session-wins">0</strong><span>胜</span></div>
+              <div><strong id="session-losses">0</strong><span>负</span></div>
+              <div><strong id="session-draws">0</strong><span>平</span></div>
+              <div><strong id="session-win-rate">—</strong><span>胜率</span></div>
             </div>
           </div>
 
           <div class="cover-actions">
-            <button id="btn-enter-game" class="btn-primary btn-cover-start" data-i18n="startGame">开始对局</button>
-            <button id="btn-cover-rules" class="btn btn-secondary btn-cover-rules" data-i18n="rulebook">📖 规则手册</button>
+            <button id="btn-enter-game" class="btn-primary btn-cover-start">开始对局</button>
+            <button id="btn-cover-rules" class="btn btn-secondary btn-cover-rules">📖 规则手册</button>
           </div>
         </div>
       </div>
@@ -84,13 +80,9 @@
         <h1>舌战</h1>
       </div>
       <div class="header-controls">
-        <div class="language-switcher language-switcher-header" aria-label="Language">
-          <button class="language-btn active" type="button" data-lang="zh">中</button>
-          <button class="language-btn" type="button" data-lang="en">EN</button>
-        </div>
-        <button id="btn-tracker" class="btn btn-secondary" data-i18n="tracker">📊 记牌器</button>
-        <button id="btn-rules" class="btn btn-secondary" data-i18n="rules">📖 规则</button>
-        <button id="btn-restart" class="btn btn-danger" data-i18n="mainMenu">🔄 主菜单</button>
+        <button id="btn-tracker" class="btn btn-secondary">📊 记牌器</button>
+        <button id="btn-rules" class="btn btn-secondary">📖 规则</button>
+        <button id="btn-restart" class="btn btn-danger">🔄 主菜单</button>
       </div>
     </header>
 
@@ -102,7 +94,7 @@
           <div class="avatar ai-avatar">🤖</div>
           <div class="status-details">
             <div class="name-bar">
-              <span class="player-name" data-i18n="aiOpponent">AI 对手</span>
+              <span class="player-name">AI 对手</span>
               <span id="ai-diff-tag" class="badge">大师 AI</span>
             </div>
             <div class="hp-wrapper">
@@ -120,8 +112,8 @@
           <div id="ai-hand-backs" class="hand-backs-row">
             <!-- Dynamic Face-Down Cards Rendered by JS -->
           </div>
-          <span class="hand-count-badge"><span data-i18n="remaining">🎴 剩余:</span> <strong id="ai-hand-count">14</strong></span>
-          <span id="ai-stun-badge" class="badge badge-warning hidden" data-i18n="stunned">😵 停动中</span>
+          <span class="hand-count-badge">🎴 剩余: <strong id="ai-hand-count">14</strong></span>
+          <span id="ai-stun-badge" class="badge badge-warning hidden">😵 停动中</span>
         </div>
       </section>
 
@@ -139,7 +131,7 @@
         <div class="cards-clash">
           <!-- Player Card Played Slot -->
           <div class="clash-slot player-slot">
-            <span class="slot-label" data-i18n="playerPlay">👤 玩家出牌</span>
+            <span class="slot-label">👤 玩家出牌</span>
             <div id="player-card-slot" class="arena-card-slot">
               <div class="slot-placeholder">等待选牌...</div>
             </div>
@@ -153,7 +145,7 @@
 
           <!-- AI Card Played Slot -->
           <div class="clash-slot ai-slot">
-            <span class="slot-label" data-i18n="aiPlay">🤖 AI 出牌</span>
+            <span class="slot-label">🤖 AI出牌</span>
             <div id="ai-card-slot" class="arena-card-slot">
               <div class="slot-placeholder">等待出牌...</div>
             </div>
@@ -170,9 +162,9 @@
       <section class="bottom-panel">
         <!-- Battle Log -->
         <div class="log-box">
-          <div class="log-header" data-i18n="battleLog">📜 对局日志</div>
+          <div class="log-header">📜 对局日志</div>
           <div id="battle-log" class="log-content">
-            <p class="log-item system" data-zh="对局开始！请选择一张卡牌暗置出牌。" data-en="The debate begins. Choose your opening move.">对局开始！请选择一张卡牌暗置出牌。</p>
+            <p class="log-item system">对局开始！请选择一张卡牌暗置出牌。</p>
           </div>
         </div>
 
@@ -182,7 +174,7 @@
             <div class="avatar user-avatar">👤</div>
             <div class="status-details">
               <div class="name-bar">
-                <span class="player-name" data-i18n="youPlayer">你 (Player)</span>
+                <span class="player-name">你 (Player)</span>
               </div>
               <div class="hp-wrapper">
                 <span class="hp-heart-icon">❤️</span>
@@ -194,8 +186,8 @@
             </div>
           </div>
           <div class="hand-summary">
-            <span class="hand-count-badge"><span data-i18n="remaining">🎴 剩余:</span> <strong id="user-hand-count">14</strong></span>
-            <span id="user-stun-badge" class="badge badge-warning hidden" data-i18n="stunned">😵 停动中</span>
+            <span class="hand-count-badge">🎴 剩余: <strong id="user-hand-count">14</strong></span>
+            <span id="user-stun-badge" class="badge badge-warning hidden">😵 停动中</span>
           </div>
         </div>
       </section>
@@ -203,15 +195,15 @@
       <!-- Player Hand Dock (Bottom Interactive Bar) -->
       <section class="hand-dock">
         <div class="dock-heading-row">
-          <div class="dock-title" data-i18n="playHint">点击选牌，或向上拖到出牌区</div>
+          <div class="dock-title">点击选牌，或向上拖到出牌区</div>
           <div id="hand-action-bar" class="hand-action-bar" aria-live="polite">
             <span id="selected-card-name">点选或上拖</span>
-            <button id="btn-cancel-card" class="hand-action-btn hand-cancel-btn" disabled data-i18n="cancel">取消</button>
-            <button id="btn-confirm-card" class="hand-action-btn hand-confirm-btn" disabled data-i18n="confirmPlay">确认出牌</button>
+            <button id="btn-cancel-card" class="hand-action-btn hand-cancel-btn" disabled>取消</button>
+            <button id="btn-confirm-card" class="hand-action-btn hand-confirm-btn" disabled>确认出牌</button>
           </div>
         </div>
         <div class="discard-summary" aria-label="玩家弃牌堆">
-          <span class="discard-label" data-i18n="discardPile">弃牌堆</span>
+          <span class="discard-label">弃牌堆</span>
           <div id="user-discard-preview" class="discard-chips">
             <span class="discard-empty">空</span>
           </div>
@@ -226,7 +218,6 @@
     <!-- Floating Mouse Hover Tooltip -->
     <div id="card-hover-tooltip" class="card-hover-tooltip hidden">
       <div id="tooltip-title" class="tooltip-title">卡牌名称</div>
-      <blockquote id="tooltip-quote" class="tooltip-quote"></blockquote>
       <div id="tooltip-body" class="tooltip-body">卡牌效果说明...</div>
     </div>
 
@@ -234,16 +225,16 @@
     <div id="tracker-modal" class="modal">
       <div class="modal-content">
         <div class="modal-header">
-          <h2 data-i18n="trackerTitle">📊 双方手牌剩余记牌器</h2>
+          <h2>📊 双方手牌剩余记牌器</h2>
           <button class="close-btn" data-close="tracker-modal">✕</button>
         </div>
         <div class="tracker-grid">
           <div class="tracker-column">
-            <h3 data-i18n="aiCardsRemaining">🤖 AI 对手剩余手牌</h3>
+            <h3>🤖 AI 对手剩余手牌</h3>
             <div id="ai-tracker-list" class="tracker-list"></div>
           </div>
           <div class="tracker-column">
-            <h3 data-i18n="yourCardsRemaining">👤 你的剩余手牌</h3>
+            <h3>👤 你的剩余手牌</h3>
             <div id="user-tracker-list" class="tracker-list"></div>
           </div>
         </div>
@@ -255,12 +246,12 @@
       <div class="modal-content">
         <div class="modal-header">
           <div>
-            <span class="rules-kicker" data-i18n="howToPlay">HOW TO PLAY</span>
-            <h2 data-i18n="rulesTitle">《舌战》完整规则手册</h2>
+            <span class="rules-kicker">HOW TO PLAY</span>
+            <h2>《舌战》规则手册</h2>
           </div>
           <button class="close-btn" data-close="rules-modal">✕</button>
         </div>
-        <div id="rules-body" class="rules-body">
+        <div class="rules-body">
           <section class="rules-section">
             <div class="rules-section-heading">
               <span class="rules-step">01</span>
@@ -377,11 +368,11 @@
         <h2 id="gameover-title">🏆 战斗胜利！</h2>
         <p id="gameover-desc" class="gameover-desc">你成功击败了 AI 对手！</p>
         <div class="gameover-stats">
-          <div class="stat-item"><span data-i18n="totalTurns">总回合数:</span> <strong id="stat-turns">12</strong></div>
-          <div class="stat-item"><span data-i18n="remainingHp">剩余血量:</span> <strong id="stat-hp">15</strong></div>
+          <div class="stat-item">总回合数: <strong id="stat-turns">12</strong></div>
+          <div class="stat-item">剩余血量: <strong id="stat-hp">15</strong></div>
         </div>
         <p id="gameover-session-record" class="gameover-session-record">本次游玩：0 胜 · 0 负 · 0 平</p>
-        <button id="btn-play-again" class="btn btn-primary btn-large" data-i18n="backToMenu">🔄 返回主菜单</button>
+        <button id="btn-play-again" class="btn btn-primary btn-large">🔄 返回主菜单</button>
       </div>
     </div>
   </div>

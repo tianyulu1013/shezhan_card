@@ -6,12 +6,12 @@
 
 // SVG Art Icons for 6 Cards
 const SVG_ICONS = {
-  0: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h12a3 3 0 0 1 3 3v5a3 3 0 0 1-3 3H9l-5 4v-4a3 3 0 0 1-2-3V8a3 3 0 0 1 2-3Z"/><path d="m8 13 7-7"/><path d="m11 6h4v4"/></svg>`,
-  1: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h10a3 3 0 0 1 3 3v3"/><path d="m18 7 3 3-3 3"/><path d="M19 20H9a3 3 0 0 1-3-3v-3"/><path d="m6 17-3-3 3-3"/></svg>`,
-  2: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4"/><path d="M7 8v8"/><path d="M10 6v12"/><path d="m13 8 7-4v16l-7-4Z"/><path d="M18 9.5h3"/><path d="M18 14.5h3"/></svg>`,
-  3: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h14a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H9l-5 4v-4a3 3 0 0 1-2-3V8a3 3 0 0 1 3-3Z"/><path d="m7 9 10 4"/><path d="m17 9-10 4"/></svg>`,
-  4: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a7 7 0 0 0-7 7c0 5 7 11 7 11s7-6 7-11a7 7 0 0 0-7-7Z"/><path d="M8.5 10.5c1.2 1 2.4 1.5 3.5 1.5s2.3-.5 3.5-1.5"/><path d="M9 8.5h.01M15 8.5h.01"/></svg>`,
-  5: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3H8l-4 3v-4a3 3 0 0 1-2-3V7a3 3 0 0 1 3-3Z"/><path d="M7 9h7M7 13h5"/><path d="m16 11 2 2 3-4"/></svg>`
+  0: `<svg viewBox="0 0 24 24" fill="none" stroke="#9e7539" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>`,
+  1: `<svg viewBox="0 0 24 24" fill="none" stroke="#52705e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>`,
+  2: `<svg viewBox="0 0 24 24" fill="none" stroke="#9b4942" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>`,
+  3: `<svg viewBox="0 0 24 24" fill="none" stroke="#746279" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`,
+  4: `<svg viewBox="0 0 24 24" fill="none" stroke="#536f7e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"></path></svg>`,
+  5: `<svg viewBox="0 0 24 24" fill="none" stroke="#8a6046" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"></path></svg>`
 };
 
 const SEALS = { 0: '破', 1: '反', 2: '怒', 3: '静', 4: '水', 5: '虑' };
@@ -33,182 +33,6 @@ const CARDS = [
   { id: 4, name: '心如止水', color: '#536f7e' },
   { id: 5, name: '深思熟虑', color: '#8a6046' }
 ];
-
-const CARD_NAMES = {
-  zh: CARDS.map(card => card.name),
-  en: [
-    'Cut Through the Noise',
-    'Throw It Back',
-    'Shout Them Down',
-    'Refuse to Engage',
-    'Keep Your Cool',
-    'Gather Your Thoughts'
-  ]
-};
-
-const CARD_DESCS_EN = {
-  0: '⚡ Get straight to the point. Both sides take 10 damage in a mirror match. Deal 15 to Shout Them Down and 10 to Keep Your Cool or Gather Your Thoughts—but Throw It Back turns 10 damage onto you.',
-  1: '🌿 Turn their point against them. Reflect Cut Through the Noise for 10 damage and interrupt Gather Your Thoughts. If they Shout You Down, however, you take 5 damage and are Shut Down.',
-  2: '🔥 Overwhelm their reply. Deal 5 damage and Shut Down Throw It Back or Gather Your Thoughts. Two shouting matches hurt and Shut Down both sides. Refuse to Engage takes 5 damage but cannot be Shut Down.',
-  3: '🌈 Give them nothing to argue with. Every direct move fails except Shout Them Down: you take 5 damage, but you are not Shut Down.',
-  4: '💧 Stay calm under pressure. Take 10 damage from Cut Through the Noise; recover 15 against Shout Them Down; recover 10 against every other move, up to your maximum HP.',
-  5: '⛰️ Rebuild your argument. Return every spent card except Gather Your Thoughts itself. Throw It Back interrupts the recovery. Shout Them Down deals 5 and Shuts you Down, but your recovery still succeeds.'
-};
-
-const CARD_FACE_COPY = {
-  zh: [
-    { type: '直击', cue: '切穿噪音' },
-    { type: '反击', cue: '原话奉还' },
-    { type: '压制', cue: '不许还嘴' },
-    { type: '缄默', cue: '拒绝接招' },
-    { type: '定心', cue: '稳住阵脚' },
-    { type: '蓄势', cue: '重整论点' }
-  ],
-  en: [
-    { type: 'BREAK THROUGH', cue: 'Get to the point' },
-    { type: 'COUNTER', cue: 'Turn it around' },
-    { type: 'PRESSURE', cue: 'Drown out the reply' },
-    { type: 'DISENGAGE', cue: 'Give them nothing' },
-    { type: 'COMPOSURE', cue: 'Stay calm under fire' },
-    { type: 'REGROUP', cue: 'Rebuild your argument' }
-  ]
-};
-
-const CARD_ART_URLS = [
-  'assets/cards/cut-through.webp',
-  'assets/cards/throw-back.webp',
-  'assets/cards/shout-down.webp',
-  'assets/cards/refuse-engage.webp',
-  'assets/cards/keep-cool.webp',
-  'assets/cards/gather-thoughts.webp'
-];
-
-const CARD_EPIGRAPHS = {
-  zh: [
-    { quote: '辞达而已矣。', source: '《论语》' },
-    { quote: '以子之矛，陷子之盾。', source: '《韩非子》' },
-    { quote: '竖子不足与谋！', source: '《史记》' },
-    { quote: '知者不言。', source: '《道德经》' },
-    { quote: '猝然临之而不惊。', source: '苏轼' },
-    { quote: '三思而后行。', source: '《论语》' }
-  ],
-  en: [
-    { quote: 'Words need only hit their mark.', source: 'Confucius · adapted' },
-    { quote: 'Turn his own spear against his shield.', source: 'Han Feizi · adapted' },
-    { quote: 'The fool is beyond counsel!', source: 'Grand Historian · adapted' },
-    { quote: 'Those who know do not speak.', source: 'Laozi' },
-    { quote: 'Unshaken when the storm breaks.', source: 'Su Shi · adapted' },
-    { quote: 'Think it through, then act.', source: 'Confucius · adapted' }
-  ]
-};
-
-const UI_TEXT = {
-  zh: {
-    modeLabel: '对局模式',
-    competitiveTitle: '⚡ 竞技刺客模式',
-    competitiveSub: '30 HP | 每方 14 张牌 · 1 张心如止水',
-    casualTitle: '♟️ 持久策略模式',
-    casualSub: '40 HP | 每方 15 张牌 · 双心如止水',
-    difficultyLabel: 'AI 对手难度',
-    masterTitle: '🧠 大师 AI',
-    masterSub: '概率推演 · 战术斩杀',
-    mediumTitle: '⚖️ 中级 AI',
-    mediumSub: '单回合期望 · 适度随机',
-    easyTitle: '🎲 随机 AI',
-    easySub: '轻松试玩',
-    sessionHeading: '本次游玩',
-    wins: '胜',
-    losses: '负',
-    draws: '平',
-    winRate: '胜率',
-    startGame: '开始对局',
-    rulebook: '📖 规则手册',
-    tracker: '📊 记牌器',
-    rules: '📖 规则',
-    mainMenu: '🔄 主菜单',
-    aiOpponent: 'AI 对手',
-    remaining: '🎴 剩余:',
-    stunned: '😵 停动中',
-    playerPlay: '👤 玩家出牌',
-    aiPlay: '🤖 AI 出牌',
-    battleLog: '📜 对局日志',
-    youPlayer: '你 (Player)',
-    playHint: '点击选牌，或向上拖到出牌区',
-    cancel: '取消',
-    confirmPlay: '确认出牌',
-    discardPile: '弃牌堆',
-    trackerTitle: '📊 双方手牌剩余记牌器',
-    aiCardsRemaining: '🤖 AI 对手剩余手牌',
-    yourCardsRemaining: '👤 你的剩余手牌',
-    howToPlay: 'HOW TO PLAY',
-    rulesTitle: '《舌战》完整规则手册',
-    totalTurns: '总回合数:',
-    remainingHp: '剩余血量:',
-    backToMenu: '🔄 返回主菜单'
-  },
-  en: {
-    modeLabel: 'GAME MODE',
-    competitiveTitle: '⚡ Quick-Fire Debate',
-    competitiveSub: '30 HP | 14 cards each · 1 Keep Your Cool',
-    casualTitle: '♟️ Long-Form Debate',
-    casualSub: '40 HP | 15 cards each · 2 Keep Your Cool',
-    difficultyLabel: 'CHOOSE YOUR OPPONENT',
-    masterTitle: '🧠 Master Orator',
-    masterSub: 'Reads patterns · Punishes repetition · Sets up the finish',
-    mediumTitle: '⚖️ Seasoned Speaker',
-    mediumSub: 'Weighs each exchange · Mixes up its replies',
-    easyTitle: '🎲 Impulsive Speaker',
-    easySub: 'Plays on impulse',
-    sessionHeading: 'THIS SESSION',
-    wins: 'Wins',
-    losses: 'Losses',
-    draws: 'Draws',
-    winRate: 'Win rate',
-    startGame: 'Start the Debate',
-    rulebook: '📖 How to Play',
-    tracker: '📊 Arguments',
-    rules: '📖 Rules',
-    mainMenu: '🔄 Withdraw',
-    aiOpponent: 'Your Opponent',
-    remaining: '🎴 In hand:',
-    stunned: '😵 Shut Down',
-    playerPlay: '👤 Your argument',
-    aiPlay: '🤖 Their reply',
-    battleLog: '📜 Record of Debate',
-    youPlayer: 'You',
-    playHint: 'Choose a move, or drag it into the debate',
-    cancel: 'Cancel',
-    confirmPlay: 'Make Your Move',
-    discardPile: 'Spent arguments',
-    trackerTitle: '📊 Arguments Still in Hand',
-    aiCardsRemaining: '🤖 Your opponent',
-    yourCardsRemaining: '👤 You',
-    howToPlay: 'HOW TO PLAY',
-    rulesTitle: 'Shezhan: How to Play',
-    totalTurns: 'Exchanges:',
-    remainingHp: 'HP remaining:',
-    backToMenu: '🔄 Back to Menu'
-  }
-};
-
-const RULE_MATRIX_TEXT = {
-  zh: [
-    ['双方 -10', '你 -10', '对方 -15', '无效果', '对方 -10', '对方 -10；对方回收'],
-    ['对方 -10', '无效果', '你 -5；你停动', '无效果', '对方 +10', '对方回收被打断'],
-    ['你 -15', '对方 -5；对方停动', '双方 -5；双方停动', '对方 -5', '对方 +15', '对方 -5；停动并回收'],
-    ['无效果', '无效果', '你 -5；不停动', '无效果', '对方 +10', '对方回收'],
-    ['你 -10', '你 +10', '你 +15', '你 +10', '双方 +10', '你 +10；对方回收'],
-    ['你 -10；你回收', '你的回收被打断', '你 -5；停动并回收', '你回收', '你回收；对方 +10', '双方回收']
-  ],
-  en: [
-    ['Both -10', 'You -10', 'Opponent -15', 'No effect', 'Opponent -10', 'Opponent -10; they recover cards'],
-    ['Opponent -10', 'No effect', 'You -5; Shut Down', 'No effect', 'Opponent +10', 'Their recovery is interrupted'],
-    ['You -15', 'Opponent -5; Shut Down', 'Both -5; both Shut Down', 'Opponent -5', 'Opponent +15', 'Opponent -5; Shut Down and recovers'],
-    ['No effect', 'No effect', 'You -5; not Shut Down', 'No effect', 'Opponent +10', 'Opponent recovers cards'],
-    ['You -10', 'You +10', 'You +15', 'You +10', 'Both +10', 'You +10; opponent recovers'],
-    ['You -10; recover', 'Your recovery is interrupted', 'You -5; Shut Down and recover', 'You recover cards', 'You recover; opponent +10', 'Both recover cards']
-  ]
-};
 
 // 100% EXACT MATCHING MATRIX FOR PDF SCREENSHOT:
 // Row 3 (破口大骂) Col 2 (反唇相讥): -/-5, 停动 (Red: -, Blue: -5, 停动)
@@ -297,57 +121,6 @@ function describeMatrixEffects(userCardId, aiCardId, cell) {
   return effects.length
     ? `${effects.join('；')}。`
     : '双方均无伤害、无停动、无捡牌效果。';
-}
-
-function describeMatrixEffectsEn(userCardId, aiCardId, cell) {
-  const effects = [];
-
-  if (cell.A < 0) effects.push(`you lose ${Math.abs(cell.A)} HP`);
-  if (cell.A > 0) effects.push(`you recover ${cell.A} HP`);
-  if (cell.B < 0) effects.push(`your opponent loses ${Math.abs(cell.B)} HP`);
-  if (cell.B > 0) effects.push(`your opponent recovers ${cell.B} HP`);
-  if (cell.sA) effects.push('you are Shut Down');
-  if (cell.sB) effects.push('your opponent is Shut Down');
-  if (cell.pA) effects.push('you recover every eligible spent card');
-  if (cell.pB) effects.push('your opponent recovers every eligible spent card');
-
-  if (userCardId === 5 && aiCardId === 1 && !cell.pA) {
-    effects.push('your Gather Your Thoughts recovery is interrupted');
-  }
-  if (aiCardId === 5 && userCardId === 1 && !cell.pB) {
-    effects.push('your opponent’s Gather Your Thoughts recovery is interrupted');
-  }
-
-  return effects.length
-    ? `${effects.join('; ')}.`
-    : 'Neither move gets through.';
-}
-
-function describeShowdownEn(userCardId, aiCardId, cell) {
-  const key = `${userCardId}-${aiCardId}`;
-  const lines = {
-    '0-0': 'You both Cut Through the Noise at once. Both sides take 10 damage.',
-    '0-1': 'You Cut Through the Noise—but they Throw It Back. Your own point hits you for 10 damage.',
-    '1-0': 'They Cut Through the Noise, and you Throw It Back. Their own point hits them for 10 damage.',
-    '0-2': 'They try to Shout You Down, but you Cut Through the Noise. They take 15 damage.',
-    '2-0': 'You try to Shout Them Down, but they Cut Through the Noise. You take 15 damage.',
-    '1-2': 'You try to Throw It Back, but they Shout You Down. You take 5 damage and are Shut Down.',
-    '2-1': 'They try to Throw It Back, but you Shout Them Down. They take 5 damage and are Shut Down.',
-    '2-2': 'The exchange turns into a shouting match. Both sides take 5 damage and are Shut Down.',
-    '2-3': 'You Shout Them Down. They Refuse to Engage: they take 5 damage, but are not Shut Down.',
-    '3-2': 'They Shout You Down. You Refuse to Engage: you take 5 damage, but are not Shut Down.',
-    '2-4': 'You Shout Them Down, but they Keep Their Cool. They recover 15 HP.',
-    '4-2': 'They Shout You Down, but you Keep Your Cool. You recover 15 HP.',
-    '2-5': 'You Shout Them Down. They take 5 damage and are Shut Down—but still Gather Their Thoughts and recover their cards.',
-    '5-2': 'They Shout You Down. You take 5 damage and are Shut Down—but still Gather Your Thoughts and recover your cards.',
-    '1-5': 'You Throw It Back before they can Gather Their Thoughts. Their recovery is interrupted.',
-    '5-1': 'You try to Gather Your Thoughts, but they Throw It Back. Your recovery is interrupted.',
-    '4-4': 'You both Keep Your Cool. Both sides recover 10 HP.',
-    '5-5': 'You both Gather Your Thoughts and recover every eligible spent card.'
-  };
-
-  return lines[key]
-    || `You play ${CARD_NAMES.en[userCardId]}. They answer with ${CARD_NAMES.en[aiCardId]}. ${describeMatrixEffectsEn(userCardId, aiCardId, cell)}`;
 }
 
 // Game Engine Class
@@ -761,7 +534,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const trackerModal = document.getElementById('tracker-modal');
   const rulesModal = document.getElementById('rules-modal');
-  const rulesBody = document.getElementById('rules-body');
   const gameoverModal = document.getElementById('gameover-modal');
   const sessionWins = document.getElementById('session-wins');
   const sessionLosses = document.getElementById('session-losses');
@@ -808,267 +580,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Hover Tooltip Elements
   const hoverTooltip = document.getElementById('card-hover-tooltip');
   const tooltipTitle = document.getElementById('tooltip-title');
-  const tooltipQuote = document.getElementById('tooltip-quote');
   const tooltipBody = document.getElementById('tooltip-body');
 
   let selectedMode = 'casual';
   let selectedDiff = 'master';
   let selectedCardId = null;
   let suppressCardClick = false;
-  let currentLang = 'zh';
-
-  const tr = key => UI_TEXT[currentLang][key] || key;
-  const cardName = cardId => CARD_NAMES[currentLang][cardId];
-  const isEnglish = () => currentLang === 'en';
-
-  function renderRules() {
-    const zh = currentLang === 'zh';
-    const copy = zh ? {
-      goalTitle: '胜利目标与开局配置',
-      goalSub: '双方使用完全相同的牌组。先把对方生命降到 0；若双方同时归零则平局。',
-      endurance: '持久策略（默认）',
-      enduranceSpec: '每方 40 HP、15 张牌',
-      duel: '竞技刺客',
-      duelSpec: '每方 30 HP、14 张牌',
-      deckTitle: '每方牌组',
-      cardCol: '牌名',
-      enduranceCol: '持久模式',
-      duelCol: '竞技模式',
-      flowTitle: '一回合怎样进行',
-      flowSub: '没有先后手：双方先暗置，再同时翻开。',
-      flow: [
-        ['1', '选择', '双方各从手牌打出 1 张牌。牌在揭示前对对方隐藏。'],
-        ['2', '对比', '在下方矩阵中，用“你的牌”找行、用“对手的牌”找列。'],
-        ['3', '同时结算', '同时处理伤害、回血、停动和回收；生命值不会超过模式上限。'],
-        ['4', '进入弃牌堆', '本回合打出的牌进入各自弃牌堆，然后开始下一回合。']
-      ],
-      matrixTitle: '完整对比矩阵',
-      matrixSub: '从行方（你）的视角阅读。负数是扣血，正数是回血。',
-      yourCard: '你的牌 ↓ / 对手的牌 →',
-      matrixNote: '例：你出《反唇相讥》，对手出《破口大骂》，读取“反唇相讥”这一行与“破口大骂”这一列：你 -5 HP，并在下一回合停动。',
-      stunTitle: '停动与空门回合',
-      stunSub: '停动只影响下一回合，不会额外丢牌。',
-      stunRules: [
-        ['被停动', '下一回合不能出牌，手牌保持不变；该回合结束后停动解除。'],
-        ['对手停动', '你仍打出 1 张牌，按下方“空门效果”单独结算。'],
-        ['双方停动', '系统自动跳过这一回合并解除双方停动，不需要点击。'],
-        ['破口大骂续停', '对空门打出破口大骂只让对手继续停动，不重复扣血，避免无限伤害循环。']
-      ],
-      soloTitle: '对手停动时：你的空门效果',
-      solo: [
-        ['attack', '一', '一语道破', '对手 -10 HP'],
-        ['stun', '破', '破口大骂', '对手继续停动；不造成伤害'],
-        ['heal', '心', '心如止水', '自己 +10 HP'],
-        ['pickup', '思', '深思熟虑', '正常回收弃牌']
-      ],
-      soloNote: '反唇相讥、沉默是金在空门回合没有效果，但打出的牌仍会进入弃牌堆。',
-      cardsTitle: '六张牌分别做什么',
-      cardsSub: '这里说明每张牌的定位；所有精确对局仍以矩阵为准。',
-      cardRoles: ['直接攻击 / 被反制', '反弹 / 打断回收', '压制 / 制造停动', '安全试探 / 不被停动', '回血 / 吸收攻击', '资源回收 / 延长牌组'],
-      recycleTitle: '弃牌、回收与结束',
-      recycleRules: [
-        ['深思熟虑', '成功时回收自己弃牌堆中除《深思熟虑》以外的全部牌。本回合打出的这张《深思熟虑》留在弃牌堆。'],
-        ['反唇相讥打断', '《深思熟虑》遇到《反唇相讥》时完全不能回收。'],
-        ['手牌耗尽', '当一方手牌为 0 时，自动把自己的整个弃牌堆全部拿回手中，包括《深思熟虑》。'],
-        ['胜负判定', '结算后仅对手为 0：你获胜；仅你为 0：你失败；双方同时为 0：平局。']
-      ]
-    } : {
-      goalTitle: 'Set Up the Debate',
-      goalSub: 'Both players use the same set of cards. Bring your opponent to 0 HP to win. If both players hit 0 HP in the same exchange, the debate ends in a draw.',
-      endurance: 'Long-Form Debate (default)',
-      enduranceSpec: '40 HP and 15 cards each',
-      duel: 'Quick-Fire Debate',
-      duelSpec: '30 HP and 14 cards each',
-      deckTitle: 'Starting Cards for Each Player',
-      cardCol: 'Move',
-      enduranceCol: 'Long-Form',
-      duelCol: 'Quick-Fire',
-      flowTitle: 'How an Exchange Works',
-      flowSub: 'Neither side goes first. Both moves are locked in, then revealed at the same time.',
-      flow: [
-        ['1', 'Choose a move', 'Each player secretly commits 1 card from hand.'],
-        ['2', 'Reveal both cards', 'Find your move’s row and your opponent’s move’s column in the table below.'],
-        ['3', 'Resolve everything', 'Apply damage, healing, Shut Down, and card recovery at the same time. HP cannot exceed the mode maximum.'],
-        ['4', 'Discard both cards', 'Each played card enters its owner’s spent pile, then the next exchange begins.']
-      ],
-      matrixTitle: 'Full Matchup Table',
-      matrixSub: 'Read every result from the row player’s point of view. Minus means HP lost; plus means HP recovered.',
-      yourCard: 'Your move ↓ / Their move →',
-      matrixNote: 'Example: you play Throw It Back and your opponent plays Shout Them Down. Read that row and column: you lose 5 HP and are Shut Down for the next exchange.',
-      stunTitle: 'Being Shut Down',
-      stunSub: 'Shut Down affects the next exchange only and never makes you discard an extra card.',
-      stunRules: [
-        ['When you are Shut Down', 'You cannot play a card in the next exchange. Your hand stays unchanged, and Shut Down clears when that exchange ends.'],
-        ['When your opponent is Shut Down', 'You still play 1 card and resolve its unanswered effect below.'],
-        ['When both sides are Shut Down', 'The game skips the exchange automatically and clears both effects.'],
-        ['Keep shouting them down', 'Shout Them Down against an already Shut Down opponent extends the effect but deals no damage, preventing an endless damage loop.']
-      ],
-      soloTitle: 'When your opponent cannot answer',
-      solo: [
-        ['attack', 'C', 'Cut Through the Noise', 'Hit uncontested: opponent loses 10 HP'],
-        ['stun', 'S', 'Shout Them Down', 'Keep them Shut Down; deal no damage'],
-        ['heal', 'K', 'Keep Your Cool', 'Recover 10 HP'],
-        ['pickup', 'G', 'Gather Your Thoughts', 'Recover spent cards normally']
-      ],
-      soloNote: 'Throw It Back and Refuse to Engage have nothing to answer when the opponent cannot speak. The played card still enters your spent pile.',
-      cardsTitle: 'What Each Move Does',
-      cardsSub: 'The names show the basic logic. Use the full matchup table above for every exact result.',
-      cardRoles: ['Direct point / cuts through shouting', 'Counterattack / turns a point around', 'Pressure / shuts down a reply', 'Safe non-response / cannot be shut down', 'Healing / gets stronger against shouting', 'Card recovery / rebuilds your options'],
-      recycleTitle: 'Spent Cards, Recovery, and Winning',
-      recycleRules: [
-        ['Gather Your Thoughts', 'When it succeeds, every spent card except Gather Your Thoughts returns to your hand. The copy you just played stays spent.'],
-        ['Throw It Back interrupts it', 'If Gather Your Thoughts meets Throw It Back, your train of thought is broken and no cards return.'],
-        ['When your hand is empty', 'Your entire spent pile returns automatically, including Gather Your Thoughts.'],
-        ['Winning the debate', 'After an exchange: only your opponent at 0 HP means you win; only you at 0 means you lose; both at 0 means a draw.']
-      ]
-    };
-
-    const modeRows = CARD_NAMES[currentLang].map((name, id) => `
-      <tr>
-        <th scope="row">${name}</th>
-        <td>${id < 4 ? 3 : (id === 4 ? 2 : 1)}</td>
-        <td>${id < 4 ? 3 : 1}</td>
-      </tr>
-    `).join('');
-
-    const matrixHead = CARD_NAMES[currentLang]
-      .map(name => `<th scope="col">${name}</th>`)
-      .join('');
-    const matrixRows = CARD_NAMES[currentLang].map((name, row) => `
-      <tr>
-        <th scope="row">${name}</th>
-        ${RULE_MATRIX_TEXT[currentLang][row].map(cell => `<td>${cell}</td>`).join('')}
-      </tr>
-    `).join('');
-
-    const flowCards = copy.flow.map(([number, title, body]) => `
-      <article class="rule-basic">
-        <span class="rule-basic-icon">${number}</span>
-        <div><strong>${title}</strong><p>${body}</p></div>
-      </article>
-    `).join('');
-
-    const soloCards = copy.solo.map(([kind, icon, title, body]) => `
-      <article class="solo-rule ${kind}">
-        <span>${icon}</span><div><strong>${title}</strong><p>${body}</p></div>
-      </article>
-    `).join('');
-
-    const cardGuides = CARD_NAMES[currentLang].map((name, id) => `
-      <article class="rule-guide guide-${['y', 'f', 'p', 'c', 'x', 's'][id]}">
-        <header>
-          <span>${zh ? SEALS[id] : ['C', 'T', 'S', 'R', 'K', 'G'][id]}</span>
-          <div>
-            <h4>${name}</h4>
-            <small>${copy.cardRoles[id]} · ${id < 4 ? '3 / 3' : (id === 4 ? '2 / 1' : '1 / 1')}</small>
-          </div>
-        </header>
-        <p class="rule-guide-summary">${zh ? CARD_DESCS[id] : CARD_DESCS_EN[id]}</p>
-      </article>
-    `).join('');
-
-    const ruleList = copy.recycleRules.map(([title, body]) => `
-      <article class="rule-basic rule-basic-wide">
-        <div><strong>${title}</strong><p>${body}</p></div>
-      </article>
-    `).join('');
-
-    rulesBody.innerHTML = `
-      <section class="rules-section">
-        <div class="rules-section-heading"><span class="rules-step">01</span><div>
-          <h3>${copy.goalTitle}</h3><p>${copy.goalSub}</p>
-        </div></div>
-        <div class="rules-mode-grid">
-          <article><strong>${copy.endurance}</strong><span>${copy.enduranceSpec}</span></article>
-          <article><strong>${copy.duel}</strong><span>${copy.duelSpec}</span></article>
-        </div>
-        <h4 class="rules-subheading">${copy.deckTitle}</h4>
-        <div class="rules-table-scroll"><table class="deck-table">
-          <thead><tr><th>${copy.cardCol}</th><th>${copy.enduranceCol}</th><th>${copy.duelCol}</th></tr></thead>
-          <tbody>${modeRows}</tbody>
-          <tfoot><tr><th>${zh ? '合计' : 'Total'}</th><td>15</td><td>14</td></tr></tfoot>
-        </table></div>
-      </section>
-
-      <section class="rules-section">
-        <div class="rules-section-heading"><span class="rules-step">02</span><div>
-          <h3>${copy.flowTitle}</h3><p>${copy.flowSub}</p>
-        </div></div>
-        <div class="rules-basics-grid rules-flow-grid">${flowCards}</div>
-      </section>
-
-      <section class="rules-section">
-        <div class="rules-section-heading"><span class="rules-step">03</span><div>
-          <h3>${copy.matrixTitle}</h3><p>${copy.matrixSub}</p>
-        </div></div>
-        <div class="rules-table-scroll matrix-scroll"><table class="matchup-table">
-          <thead><tr><th>${copy.yourCard}</th>${matrixHead}</tr></thead>
-          <tbody>${matrixRows}</tbody>
-        </table></div>
-        <p class="rules-note">${copy.matrixNote}</p>
-      </section>
-
-      <section class="rules-section">
-        <div class="rules-section-heading"><span class="rules-step">04</span><div>
-          <h3>${copy.stunTitle}</h3><p>${copy.stunSub}</p>
-        </div></div>
-        <div class="stun-rules-list">${copy.stunRules.map(([title, body]) =>
-          `<article><strong>${title}</strong><p>${body}</p></article>`
-        ).join('')}</div>
-        <h4 class="rules-subheading">${copy.soloTitle}</h4>
-        <div class="solo-rules-grid">${soloCards}</div>
-        <p class="rules-note">${copy.soloNote}</p>
-      </section>
-
-      <section class="rules-section">
-        <div class="rules-section-heading"><span class="rules-step">05</span><div>
-          <h3>${copy.cardsTitle}</h3><p>${copy.cardsSub}</p>
-        </div></div>
-        <div class="rule-card-grid">${cardGuides}</div>
-      </section>
-
-      <section class="rules-section">
-        <div class="rules-section-heading"><span class="rules-step">06</span><div>
-          <h3>${copy.recycleTitle}</h3>
-        </div></div>
-        <div class="rules-basics-grid rules-end-grid">${ruleList}</div>
-      </section>
-    `;
-  }
-
-  function applyLanguage(lang) {
-    currentLang = lang === 'en' ? 'en' : 'zh';
-    document.documentElement.lang = currentLang === 'en' ? 'en' : 'zh-CN';
-    document.title = currentLang === 'en' ? 'Shezhan - A War of Words' : '舌战';
-    document.querySelectorAll('.cover-title, .logo h1').forEach(title => {
-      title.textContent = currentLang === 'en' ? 'SHEZHAN' : '舌战';
-    });
-
-    document.querySelectorAll('[data-i18n]').forEach(element => {
-      const value = UI_TEXT[currentLang][element.dataset.i18n];
-      if (value) element.textContent = value;
-    });
-    document.querySelectorAll('.language-btn').forEach(button => {
-      button.classList.toggle('active', button.dataset.lang === currentLang);
-    });
-    document.querySelectorAll('.log-item[data-zh][data-en]').forEach(item => {
-      const prefix = item.dataset.turn ? `[${currentLang === 'en' ? 'R' : 'T'}${item.dataset.turn}] ` : '';
-      item.textContent = prefix + item.dataset[currentLang];
-    });
-
-    renderRules();
-    updateSessionStats();
-    if (!game.isProcessing) {
-      updateUI();
-      if (coverScreen.classList.contains('active')) clearPlayedCards();
-    }
-    if (outcomeText.dataset[currentLang]) outcomeText.textContent = outcomeText.dataset[currentLang];
-    if (trackerModal.classList.contains('active')) renderTracker();
-  }
-
-  document.querySelectorAll('.language-btn').forEach(button => {
-    button.addEventListener('click', () => applyLanguage(button.dataset.lang));
-  });
 
   // Mode & Difficulty Setup in Cover Screen
   document.querySelectorAll('.mode-select-btn').forEach(btn => {
@@ -1093,10 +610,7 @@ document.addEventListener('DOMContentLoaded', () => {
     coverScreen.classList.remove('active');
     resetArenaSlots();
     updateUI();
-    addLog({
-      zh: `对局开始！模式：${selectedMode === 'competitive' ? '⚡竞技刺客 (30HP)' : '♟️持久策略 (40HP · 双心如止水)'} | AI难度：${selectedDiff.toUpperCase()}`,
-      en: `The debate begins. ${selectedMode === 'competitive' ? '⚡ Quick-Fire Debate (30 HP)' : '♟️ Long-Form Debate (40 HP · two Keep Your Cool)'} | Opponent: ${selectedDiff.toUpperCase()}`
-    }, 'system');
+    addLog(`对局开始！模式：${selectedMode === 'competitive' ? '⚡竞技刺客 (30HP)' : '♟️持久策略 (40HP · 双心如止水)'} | AI难度：${selectedDiff.toUpperCase()}`, 'system');
   });
 
   btnCoverRules.addEventListener('click', () => {
@@ -1146,9 +660,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { passive: true });
 
   function clearPlayedCards() {
-    playerCardSlot.innerHTML = `<div class="slot-placeholder">${isEnglish() ? 'Choose a card...' : '等待选牌...'}</div>`;
+    playerCardSlot.innerHTML = `<div class="slot-placeholder">等待选牌...</div>`;
     playerCardSlot.classList.remove('drop-ready');
-    aiCardSlot.innerHTML = `<div class="slot-placeholder">${isEnglish() ? 'Waiting for AI...' : '等待出牌...'}</div>`;
+    aiCardSlot.innerHTML = `<div class="slot-placeholder">等待出牌...</div>`;
   }
 
   function resetArenaSlots() {
@@ -1161,47 +675,31 @@ document.addEventListener('DOMContentLoaded', () => {
   // Render Card 3D Element (Complete with 3D Flip animation support)
   function createCard3DHtml(cardId, isFaceDown = true) {
     if (cardId === -1) {
-      return `<div class="stun-slot-badge">😵 ${isEnglish() ? 'STUNNED' : '停动跳过'}<br><small style="font-size:0.75rem;">${isEnglish() ? '(SKIPPED)' : '(SKIPPED)'}</small></div>`;
+      return `<div class="stun-slot-badge">😵 停动跳过<br><small style="font-size:0.75rem;">(SKIPPED)</small></div>`;
     }
-    const displayName = cardName(cardId);
-    const faceCopy = CARD_FACE_COPY[currentLang][cardId];
-    const epigraph = CARD_EPIGRAPHS[currentLang][cardId];
+    const card = CARDS[cardId];
     return `
       <div class="card-container-3d ${isFaceDown ? '' : 'flipped'}" data-card="${cardId}">
         <div class="card-3d-inner">
           <!-- BACK FACE (Facing user when card is face down) -->
           <div class="card-face card-face-back">
             <div class="card-back-pattern">
-              <span class="card-back-quote">“</span>
               <div class="card-back-seal">舌</div>
-              <span class="card-back-text">${isEnglish() ? 'SHEZHAN' : '舌战'}</span>
-              <span class="card-back-sub">${isEnglish() ? 'A WAR OF WORDS' : '以言为刃'}</span>
+              <span class="card-back-text">舌战</span>
             </div>
           </div>
           <!-- FRONT FACE (Facing user when card is flipped 180deg) -->
           <div class="card-face card-face-front">
-            <div class="card-paper-lines" aria-hidden="true"></div>
-            <span class="card-quote-mark" aria-hidden="true">“</span>
             <div class="card-header-bar">
-              <span class="card-tactic-label">${faceCopy.type}</span>
-              <span class="card-seal-stamp">${isEnglish() ? ['C', 'T', 'S', 'R', 'K', 'G'][cardId] : SEALS[cardId]}</span>
+              <span class="card-type-icon">${card.name.substring(0, 1)}</span>
+              <span class="card-seal-stamp">${SEALS[cardId]}</span>
             </div>
-            <div class="card-illustration" style="--card-art:url('${CARD_ART_URLS[cardId]}')" aria-hidden="true">
+            <div class="card-main-art">
               <div class="art-svg-medallion">
                 ${SVG_ICONS[cardId]}
               </div>
             </div>
-            <span class="card-state-fx stun-fx" aria-hidden="true"></span>
-            <span class="card-state-fx recover-fx" aria-hidden="true"><i></i><i></i><i></i></span>
-            <span class="card-state-fx mute-fx" aria-hidden="true"><i></i><i></i><i></i></span>
-            <blockquote class="card-epigraph">
-              <span>“${epigraph.quote}”</span>
-              <cite>${epigraph.source}</cite>
-            </blockquote>
-            <div class="card-title-block">
-              <div class="card-title-vertical ${isEnglish() ? 'card-title-en' : ''}">${displayName}</div>
-              <div class="card-cue">${faceCopy.cue}</div>
-            </div>
+            <div class="card-title-vertical">${card.name}</div>
           </div>
         </div>
       </div>
@@ -1215,14 +713,10 @@ document.addEventListener('DOMContentLoaded', () => {
     selectedCardName.textContent = hasSelection
       ? (
         selectedCardId === 5
-          ? (isEnglish()
-            ? `Chosen: Gather Your Thoughts · recover ${recoverableCards}`
-            : `已选：深思熟虑 · 可捡 ${recoverableCards}`)
-          : (isEnglish()
-            ? `Chosen: ${cardName(selectedCardId)}`
-            : `已选：${cardName(selectedCardId)}`)
+          ? `已选：深思熟虑 · 可捡 ${recoverableCards}`
+          : `已选：${CARDS[selectedCardId].name}`
       )
-      : (isEnglish() ? 'Choose, or cast upward' : '点选或上拖');
+      : '点选或上拖';
     btnCancelCard.disabled = !hasSelection;
     btnConfirmCard.disabled = !hasSelection;
 
@@ -1440,10 +934,7 @@ document.addEventListener('DOMContentLoaded', () => {
     handCardsContainer.innerHTML = '';
     
     if (game.checkAutoPickup()) {
-      addLog({
-        zh: '👤 你的手牌已用光，触发【全量自动回收】！全部弃牌回到手中。',
-        en: '👤 You have exhausted every argument. Your entire spent pile returns to hand.'
-      }, 'heal');
+      addLog('👤 你的手牌已用光，触发【全量自动回收】！全部手牌已重置回到手中。', 'heal');
     }
 
     if (
@@ -1471,14 +962,10 @@ document.addEventListener('DOMContentLoaded', () => {
       cardWrapper.addEventListener('mouseleave', () => hideCardTooltip());
 
       if (!unavailable) {
-        cardWrapper.addEventListener('click', (event) => {
+        cardWrapper.addEventListener('click', () => {
           if (suppressCardClick) return;
+          hideCardTooltip();
           selectCard(card.id);
-          if (window.matchMedia('(hover: none)').matches) {
-            showCardTooltip(card.id, event);
-          } else {
-            hideCardTooltip();
-          }
         });
         cardWrapper.addEventListener('dblclick', () => {
           if (suppressCardClick) return;
@@ -1495,8 +982,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const stunOverlay = document.createElement('div');
       stunOverlay.className = 'hand-stun-overlay';
       stunOverlay.innerHTML = `
-        <span>${isEnglish() ? '😵 You are Shut Down; your hand stays unchanged' : '😵 本回合停动，手牌保持不变'}</span>
-        <button id="btn-skip-turn" class="btn btn-primary" type="button" aria-disabled="false">${isEnglish() ? '▶ Skip This Exchange' : '▶ 继续 · 跳过本回合'}</button>
+        <span>😵 本回合停动，手牌保持不变</span>
+        <button id="btn-skip-turn" class="btn btn-primary" type="button" aria-disabled="false">▶ 继续 · 跳过本回合</button>
       `;
       handCardsContainer.appendChild(stunOverlay);
       stunOverlay.querySelector('#btn-skip-turn')?.addEventListener('click', () => handleTurn(-1));
@@ -1506,10 +993,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function showCardTooltip(cardId, e) {
-    const epigraph = CARD_EPIGRAPHS[currentLang][cardId];
-    tooltipTitle.textContent = cardName(cardId);
-    tooltipQuote.innerHTML = `<span>“${epigraph.quote}”</span><cite>${epigraph.source}</cite>`;
-    tooltipBody.textContent = isEnglish() ? CARD_DESCS_EN[cardId] : CARD_DESCS[cardId];
+    tooltipTitle.textContent = CARDS[cardId].name;
+    tooltipBody.textContent = CARD_DESCS[cardId];
     hoverTooltip.classList.remove('hidden');
     positionCardTooltip(e);
   }
@@ -1534,21 +1019,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const recoverableCards = game.userDiscard.slice(0, 5).reduce((sum, qty) => sum + qty, 0);
     const discardedCards = CARDS.filter(card => game.userDiscard[card.id] > 0);
 
-    recoverableCount.textContent = isEnglish()
-      ? `Gather Your Thoughts recovers ${recoverableCards}`
-      : `深思可捡 ${recoverableCards} 张`;
+    recoverableCount.textContent = `深思可捡 ${recoverableCards} 张`;
     userDiscardPreview.innerHTML = discardedCards.length
       ? discardedCards.map(card => {
         const qty = game.userDiscard[card.id];
         const unrecoverable = card.id === 5;
-        const displayName = cardName(card.id);
-        const note = unrecoverable
-          ? (isEnglish() ? ' (cannot recover itself)' : '（不能被深思熟虑自身回收）')
-          : '';
+        const note = unrecoverable ? '（不能被深思熟虑自身回收）' : '';
         return `<span class="discard-chip ${unrecoverable ? 'unrecoverable' : ''}"
-          title="${displayName} ×${qty}${note}">${isEnglish() ? ['C', 'T', 'S', 'R', 'K', 'G'][card.id] : displayName.substring(0, 1)}×${qty}</span>`;
+          title="${card.name} ×${qty}${note}">${card.name.substring(0, 1)}×${qty}</span>`;
       }).join('')
-      : `<span class="discard-empty">${isEnglish() ? 'Empty' : '空'}</span>`;
+      : '<span class="discard-empty">空</span>';
   }
 
   function renderAiHandBacks() {
@@ -1557,7 +1037,7 @@ document.addEventListener('DOMContentLoaded', () => {
     for (let i = 0; i < Math.min(15, count); i++) {
       const miniBack = document.createElement('div');
       miniBack.className = 'card-back-mini';
-      miniBack.textContent = isEnglish() ? 'S' : '舌';
+      miniBack.textContent = '舌';
       aiHandBacks.appendChild(miniBack);
     }
   }
@@ -1569,10 +1049,7 @@ document.addEventListener('DOMContentLoaded', () => {
     outcomeBanner.classList.add('hidden');
 
     if (game.checkAiAutoPickup()) {
-      addLog({
-        zh: '🤖 AI 对手手牌用光，触发【全量自动回收】！',
-        en: '🤖 Your opponent has exhausted every argument and gathers the entire spent pile anew.'
-      }, 'system');
+      addLog('🤖 AI 对手手牌用光，触发【全量自动回收】！', 'system');
     }
 
     let aiCardId = -1;
@@ -1610,114 +1087,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
           clashRay.classList.add('hidden');
-          const cardFeedback = resolveOutcome(userCardId, aiCardId);
-          const feedbackDelay = triggerCardFeedback(cardFeedback);
-          setTimeout(() => {
-            document.querySelectorAll('.arena-card-slot .card-container-3d').forEach(el => {
-              el.classList.add('played-card-exit');
-            });
+          resolveOutcome(userCardId, aiCardId);
+          document.querySelectorAll('.arena-card-slot .card-container-3d').forEach(el => {
+            el.classList.add('played-card-exit');
+          });
 
-            setTimeout(() => {
-              clearPlayedCards();
-              game.turn++;
-              game.isProcessing = false;
-              updateUI();
-              checkGameOver();
-            }, 220);
-          }, feedbackDelay);
+          setTimeout(() => {
+            clearPlayedCards();
+            game.turn++;
+            game.isProcessing = false;
+            updateUI();
+            checkGameOver();
+          }, 220);
         }, 500);
       }, 500);
     }, 400);
   }
 
-  function triggerCardFeedback({
-    userDamage = 0,
-    aiDamage = 0,
-    userHealing = 0,
-    aiHealing = 0,
-    userStunned = false,
-    aiStunned = false,
-    userRecovered = false,
-    aiRecovered = false,
-    userMuted = false,
-    aiMuted = false,
-    userSilenceGuard = false,
-    aiSilenceGuard = false
-  } = {}) {
-    const targets = [
-      {
-        damage: userDamage,
-        healing: userHealing,
-        stunned: userStunned,
-        recovered: userRecovered,
-        muted: userMuted,
-        silenceGuard: userSilenceGuard,
-        card: playerCardSlot.querySelector('.card-container-3d'),
-        sideClass: 'impact-user'
-      },
-      {
-        damage: aiDamage,
-        healing: aiHealing,
-        stunned: aiStunned,
-        recovered: aiRecovered,
-        muted: aiMuted,
-        silenceGuard: aiSilenceGuard,
-        card: aiCardSlot.querySelector('.card-container-3d'),
-        sideClass: 'impact-ai'
-      }
-    ];
-    let feedbackDelay = 0;
-
-    targets.forEach(({
-      damage,
-      healing,
-      stunned,
-      recovered,
-      muted,
-      silenceGuard,
-      card,
-      sideClass
-    }) => {
-      if (!card) return;
-      if (damage > 0) {
-        const tierClass = damage >= 15
-          ? 'impact-heavy'
-          : (damage >= 10 ? 'impact-medium' : 'impact-light');
-        card.classList.add('impact-hit', sideClass, tierClass);
-        const impactDuration = damage >= 15 ? 720 : (damage >= 10 ? 640 : 560);
-        feedbackDelay = Math.max(feedbackDelay, impactDuration);
-      } else if (healing > 0) {
-        card.classList.add('impact-heal');
-        feedbackDelay = Math.max(feedbackDelay, 700);
-      }
-      if (stunned) {
-        card.classList.add('status-stun');
-        feedbackDelay = Math.max(feedbackDelay, 820);
-      }
-      if (recovered) {
-        card.classList.add('status-recover');
-        feedbackDelay = Math.max(feedbackDelay, 820);
-      }
-      if (muted) {
-        card.classList.add('effect-muted', sideClass);
-        feedbackDelay = Math.max(feedbackDelay, 720);
-      }
-      if (silenceGuard) {
-        card.classList.add('silence-guard');
-        feedbackDelay = Math.max(feedbackDelay, 720);
-      }
-    });
-
-    return feedbackDelay;
-  }
-
   function resolveOutcome(uId, aId) {
     let outcomeStr = '';
-    let outcomeEn = '';
-    let userRecovered = false;
-    let aiRecovered = false;
-    const userHpBefore = game.userHp;
-    const aiHpBefore = game.aiHp;
     
     if (uId !== -1 && aId !== -1) {
       let cell = MATRIX[uId][aId];
@@ -1728,49 +1116,28 @@ document.addEventListener('DOMContentLoaded', () => {
       game.aiStunned = cell.sB;
 
       if (cell.pA) {
-        userRecovered = game.userDiscard.slice(0, 5).some(qty => qty > 0);
         for(let k=0; k<5; k++) { game.userHand[k] += game.userDiscard[k]; game.userDiscard[k] = 0; }
         if (aId === 2) {
-          addLog({
-            zh: '👤 你打出《深思熟虑》遭遇《破口大骂》：虽受到 -5 伤害并被【停动】，但成功回收了全部弃牌！',
-            en: '👤 They Shout You Down: take 5 damage and become Shut Down—but you still Gather Your Thoughts and recover your cards.'
-          }, 'heal');
+          addLog('👤 你打出《深思熟虑》遭遇《破口大骂》：虽受到 -5 伤害并被【停动】，但成功回收了全部弃牌！', 'heal');
         } else {
-          addLog({
-            zh: '👤 你使用了《深思熟虑》，成功回收了已打出的手牌！',
-            en: '👤 You Gather Your Thoughts. Every eligible spent card returns to your hand.'
-          }, 'heal');
+          addLog('👤 你使用了《深思熟虑》，成功回收了已打出的手牌！', 'heal');
         }
       } else if (uId === 5) {
-        addLog({
-          zh: '⚠️ 你的《深思熟虑》遭遇《反唇相讥》，回收被打断！',
-          en: '⚠️ They Throw It Back and break your train of thought. Your recovery fails.'
-        }, 'dmg');
+        addLog('⚠️ 你的《深思熟虑》遭遇《反唇相讥》，回收被打断！', 'dmg');
       }
 
       if (cell.pB) {
-        aiRecovered = game.aiDiscard.slice(0, 5).some(qty => qty > 0);
         for(let k=0; k<5; k++) { game.aiHand[k] += game.aiDiscard[k]; game.aiDiscard[k] = 0; }
         if (uId === 2) {
-          addLog({
-            zh: '🤖 AI打出《深思熟虑》遭遇《破口大骂》：虽受到 -5 伤害并被【停动】，但成功回收了全部弃牌！',
-            en: '🤖 You Shout Them Down: they take 5 damage and become Shut Down—but they still Gather Their Thoughts and recover their cards.'
-          }, 'system');
+          addLog('🤖 AI打出《深思熟虑》遭遇《破口大骂》：虽受到 -5 伤害并被【停动】，但成功回收了全部弃牌！', 'system');
         } else {
-          addLog({
-            zh: '🤖 AI 使用了《深思熟虑》，成功回收了已打出的手牌！',
-            en: '🤖 Your opponent Gathers Their Thoughts. Every eligible spent card returns to their hand.'
-          }, 'system');
+          addLog('🤖 AI 使用了《深思熟虑》，成功回收了已打出的手牌！', 'system');
         }
       } else if (aId === 5) {
-        addLog({
-          zh: '⚠️ AI 的《深思熟虑》遭遇《反唇相讥》，回收被打断！',
-          en: '⚠️ You Throw It Back and break their train of thought. Their recovery fails.'
-        }, 'heal');
+        addLog('⚠️ AI 的《深思熟虑》遭遇《反唇相讥》，回收被打断！', 'heal');
       }
 
       outcomeStr = `【对决】你出《${CARDS[uId].name}》，AI 出《${CARDS[aId].name}》。${describeMatrixEffects(uId, aId, cell)}`;
-      outcomeEn = describeShowdownEn(uId, aId, cell);
 
     } else if (uId !== -1 && aId === -1) {
       // 停动时没有对手牌可供结算；破口大骂只续停动，不重复扣血。
@@ -1778,27 +1145,16 @@ document.addEventListener('DOMContentLoaded', () => {
       if (uId === 0) {
         game.aiHp -= 10;
         outcomeStr = `AI本轮因【停动】未出牌；你的《一语道破》直接攻击，AI -10 HP。`;
-        outcomeEn = 'Your opponent is Shut Down. You Cut Through the Noise uncontested: they take 10 damage.';
       }
       else if (uId === 2) {
         game.aiStunned = true;
         outcomeStr = `AI本轮因【停动】未出牌；《破口大骂》续接【停动】，但不造成伤害。`;
-        outcomeEn = 'Your opponent is already Shut Down. You keep Shouting Them Down: no damage, but they stay Shut Down.';
       }
-      else if (uId === 4) {
-        game.userHp += 10;
-        outcomeStr = `AI本轮因【停动】未出牌；你的《心如止水》恢复 +10 HP。`;
-        outcomeEn = 'Your opponent cannot answer. You Keep Your Cool and recover 10 HP.';
-      }
+      else if (uId === 4) { game.userHp += 10; outcomeStr = `AI本轮因【停动】未出牌；你的《心如止水》恢复 +10 HP。`; }
       else if (uId === 5) { 
-        userRecovered = game.userDiscard.slice(0, 5).some(qty => qty > 0);
         for(let k=0; k<5; k++) { game.userHand[k] += game.userDiscard[k]; game.userDiscard[k] = 0; }
         outcomeStr = `AI本轮因【停动】未出牌；你用《深思熟虑》回收了除本牌外的弃牌。`;
-        outcomeEn = 'Your opponent cannot answer. You Gather Your Thoughts and recover every eligible spent card.';
-      } else {
-        outcomeStr = `AI本轮因【停动】未出牌；《${CARDS[uId].name}》没有对手牌可供结算。`;
-        outcomeEn = `Your opponent is Shut Down. ${CARD_NAMES.en[uId]} has nothing to answer and does nothing.`;
-      }
+      } else { outcomeStr = `AI本轮因【停动】未出牌；《${CARDS[uId].name}》没有对手牌可供结算。`; }
 
     } else if (uId === -1 && aId !== -1) {
       // 与上面的玩家分支保持完全对称。
@@ -1806,107 +1162,48 @@ document.addEventListener('DOMContentLoaded', () => {
       if (aId === 0) {
         game.userHp -= 10;
         outcomeStr = `你本轮因【停动】未出牌；AI 的《一语道破》直接攻击，你 -10 HP。`;
-        outcomeEn = 'You are Shut Down. They Cut Through the Noise uncontested: you take 10 damage.';
       }
       else if (aId === 2) {
         game.userStunned = true;
         outcomeStr = `你本轮因【停动】未出牌；AI 的《破口大骂》续接【停动】，但不造成伤害。`;
-        outcomeEn = 'You are already Shut Down. They keep Shouting You Down: no damage, but you stay Shut Down.';
       }
-      else if (aId === 4) {
-        game.aiHp += 10;
-        outcomeStr = `你本轮因【停动】未出牌；AI 的《心如止水》恢复 +10 HP。`;
-        outcomeEn = 'You cannot answer. Your opponent Keeps Their Cool and recovers 10 HP.';
-      }
+      else if (aId === 4) { game.aiHp += 10; outcomeStr = `你本轮因【停动】未出牌；AI 的《心如止水》恢复 +10 HP。`; }
       else if (aId === 5) {
-        aiRecovered = game.aiDiscard.slice(0, 5).some(qty => qty > 0);
         for(let k=0; k<5; k++) { game.aiHand[k] += game.aiDiscard[k]; game.aiDiscard[k] = 0; }
         outcomeStr = `你本轮因【停动】未出牌；AI 用《深思熟虑》回收了除本牌外的弃牌。`;
-        outcomeEn = 'You cannot answer. Your opponent Gathers Their Thoughts and recovers every eligible spent card.';
-      } else {
-        outcomeStr = `你本轮因【停动】未出牌；AI 的《${CARDS[aId].name}》没有对手牌可供结算。`;
-        outcomeEn = `You are Shut Down. Their ${CARD_NAMES.en[aId]} has nothing to answer and does nothing.`;
-      }
+      } else { outcomeStr = `你本轮因【停动】未出牌；AI 的《${CARDS[aId].name}》没有对手牌可供结算。`; }
 
     } else {
       game.userStunned = false;
       game.aiStunned = false;
       outcomeStr = `双方均处于【停动】状态，本回合平稳过档！`;
-      outcomeEn = 'Both sides are Shut Down. The exchange is skipped, and both effects clear.';
     }
 
     game.userHp = Math.min(game.maxHp, Math.max(0, game.userHp));
     game.aiHp = Math.min(game.maxHp, Math.max(0, game.aiHp));
 
-    const healthFeedback = {
-      userDamage: Math.max(0, userHpBefore - game.userHp),
-      aiDamage: Math.max(0, aiHpBefore - game.aiHp),
-      userHealing: Math.max(0, game.userHp - userHpBefore),
-      aiHealing: Math.max(0, game.aiHp - aiHpBefore),
-      userStunned: game.userStunned,
-      aiStunned: game.aiStunned,
-      userRecovered,
-      aiRecovered,
-      userMuted: aId === 3 && (uId === 0 || uId === 1),
-      aiMuted: uId === 3 && (aId === 0 || aId === 1),
-      userSilenceGuard: uId === 3 && (aId === 0 || aId === 1),
-      aiSilenceGuard: aId === 3 && (uId === 0 || uId === 1)
-    };
-    renderHealthBars(healthFeedback);
-
     outcomeBanner.classList.remove('hidden');
-    outcomeText.dataset.zh = outcomeStr;
-    outcomeText.dataset.en = outcomeEn;
-    outcomeText.textContent = currentLang === 'en' ? outcomeEn : outcomeStr;
-    addLog({ zh: outcomeStr, en: outcomeEn }, (game.userHp > game.aiHp) ? 'heal' : 'dmg');
-
-    return healthFeedback;
-  }
-
-  function renderHealthBars(feedback = null) {
-    const healthRows = [
-      {
-        fill: userHpBar,
-        text: userHpText,
-        hp: game.userHp,
-        damage: feedback?.userDamage || 0,
-        healing: feedback?.userHealing || 0
-      },
-      {
-        fill: aiHpBar,
-        text: aiHpText,
-        hp: game.aiHp,
-        damage: feedback?.aiDamage || 0,
-        healing: feedback?.aiHealing || 0
-      }
-    ];
-
-    healthRows.forEach(({ fill, text, hp, damage, healing }) => {
-      fill.style.width = `${(hp / game.maxHp * 100).toFixed(1)}%`;
-      text.textContent = `${hp}/${game.maxHp}`;
-      if (!feedback || (!damage && !healing)) return;
-
-      const wrapper = fill.closest('.hp-wrapper');
-      wrapper.classList.remove('hp-loss', 'hp-gain');
-      void wrapper.offsetWidth;
-      wrapper.classList.add(damage > 0 ? 'hp-loss' : 'hp-gain');
-      setTimeout(() => wrapper.classList.remove('hp-loss', 'hp-gain'), 620);
-    });
+    outcomeText.textContent = outcomeStr;
+    addLog(outcomeStr, (game.userHp > game.aiHp) ? 'heal' : 'dmg');
   }
 
   function updateUI() {
     if (game.userStunned && game.aiStunned && game.userHp > 0 && game.aiHp > 0) {
       const skippedTurn = game.turn;
-      addLog({
-        zh: `双方均处于【停动】状态，第 ${skippedTurn} 回合已自动跳过。`,
-        en: `Both sides are Shut Down. Exchange ${skippedTurn} is skipped.`
-      }, 'stun');
+      addLog(`双方均处于【停动】状态，第 ${skippedTurn} 回合已自动跳过。`, 'stun');
       game.consumeMutualStunTurn();
     }
 
-    turnCounter.textContent = isEnglish() ? `ROUND ${game.turn}` : `第 ${game.turn} 回合`;
+    turnCounter.textContent = `第 ${game.turn} 回合`;
     
-    renderHealthBars();
+    let uPct = (game.userHp / game.maxHp * 100).toFixed(1);
+    let aPct = (game.aiHp / game.maxHp * 100).toFixed(1);
+
+    userHpBar.style.width = uPct + '%';
+    userHpText.textContent = `${game.userHp}/${game.maxHp}`;
+
+    aiHpBar.style.width = aPct + '%';
+    aiHpText.textContent = `${game.aiHp}/${game.maxHp}`;
 
     userHandCount.textContent = game.getHandCount(game.userHand);
     aiHandCount.textContent = game.getHandCount(game.aiHand);
@@ -1919,28 +1216,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (game.aiStunned && !game.userStunned) {
       stunNoticeBanner.classList.remove('hidden');
-      stunNoticeText.textContent = isEnglish()
-        ? '😵 Your opponent is Shut Down. You get a free move.'
-        : '😵 提示：AI 处于【停动】状态！本回合无法出牌，你可以单方面自由出牌！';
+      stunNoticeText.textContent = `😵 提示：AI 处于【停动】状态！本回合无法出牌，你可以单方面自由出牌！`;
     } else if (game.userStunned && !game.aiStunned) {
       stunNoticeBanner.classList.remove('hidden');
-      stunNoticeText.textContent = isEnglish()
-        ? '😵 You are Shut Down. Skip this exchange.'
-        : '😵 提示：你处于【停动】状态！本回合无法出牌，请点击跳过回合。';
+      stunNoticeText.textContent = `😵 提示：你处于【停动】状态！本回合无法出牌，请点击跳过回合。`;
     } else if (game.userStunned && game.aiStunned) {
       stunNoticeBanner.classList.remove('hidden');
-      stunNoticeText.textContent = isEnglish()
-        ? '😵 Both sides are Shut Down. This exchange skips automatically.'
-        : '😵 提示：双方均处于【停动】状态！';
+      stunNoticeText.textContent = `😵 提示：双方均处于【停动】状态！`;
     } else {
       stunNoticeBanner.classList.add('hidden');
     }
 
-    aiDiffTag.textContent = (game.difficulty === 'master')
-      ? (isEnglish() ? '🧠 Master Orator' : '🧠 大师 AI')
-      : (game.difficulty === 'medium'
-        ? (isEnglish() ? '⚖️ Seasoned Speaker' : '⚖️ 中级 AI')
-        : (isEnglish() ? '🎲 Impulsive Speaker' : '🎲 随机 AI'));
+    aiDiffTag.textContent = (game.difficulty === 'master') ? '🧠 大师 AI' : (game.difficulty === 'medium' ? '⚖️ 中级 AI' : '🎲 随机 AI');
 
     renderAiHandBacks();
     renderDiscardPreview();
@@ -1948,13 +1235,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function addLog(text, type = 'system') {
-    const localized = typeof text === 'string' ? { zh: text, en: text } : text;
     const pEl = document.createElement('p');
     pEl.className = `log-item ${type}`;
-    pEl.dataset.zh = localized.zh;
-    pEl.dataset.en = localized.en;
-    pEl.dataset.turn = game.turn;
-    pEl.textContent = `[${isEnglish() ? 'R' : 'T'}${game.turn}] ${localized[currentLang]}`;
+    pEl.textContent = `[T${game.turn}] ${text}`;
     battleLog.appendChild(pEl);
     battleLog.scrollTop = battleLog.scrollHeight;
   }
@@ -1968,13 +1251,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     CARDS.forEach(card => {
       aiList.innerHTML += `<div class="tracker-item">
-        <span>${cardName(card.id)}</span>
-        <strong>${game.aiHand[card.id]} ${isEnglish() ? '' : '张'}</strong>
+        <span>${card.name}</span>
+        <strong>${game.aiHand[card.id]} 张</strong>
       </div>`;
 
       userList.innerHTML += `<div class="tracker-item">
-        <span>${cardName(card.id)}</span>
-        <strong>${game.userHand[card.id]} ${isEnglish() ? '' : '张'}</strong>
+        <span>${card.name}</span>
+        <strong>${game.userHand[card.id]} 张</strong>
       </div>`;
     });
   }
@@ -1984,12 +1267,11 @@ document.addEventListener('DOMContentLoaded', () => {
     sessionWins.textContent = stats.wins;
     sessionLosses.textContent = stats.losses;
     sessionDraws.textContent = stats.draws;
-    sessionGames.textContent = isEnglish() ? `${stats.games} games` : `${stats.games} 局`;
+    sessionGames.textContent = `${stats.games} 局`;
     const winRate = game.getSessionWinRate();
     sessionWinRate.textContent = winRate === null ? '—' : `${winRate}%`;
-    gameoverSessionRecord.textContent = isEnglish()
-      ? `This session: ${stats.wins} W · ${stats.losses} L · ${stats.draws} D`
-      : `本次游玩：${stats.wins} 胜 · ${stats.losses} 负 · ${stats.draws} 平`;
+    gameoverSessionRecord.textContent =
+      `本次游玩：${stats.wins} 胜 · ${stats.losses} 负 · ${stats.draws} 平`;
   }
 
   function checkGameOver() {
@@ -2008,27 +1290,22 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('stat-hp').textContent = game.userHp + ' HP';
 
         if (result === 'win') {
-          title.textContent = isEnglish() ? '🏆 You win the argument!' : '🏆 辩论压制，战斗胜利！';
+          title.textContent = '🏆 辩论压制，战斗胜利！';
           title.style.color = '#15803d';
-          desc.textContent = isEnglish()
-            ? 'You read their replies, found the opening, and landed the final point.'
-            : `你凭借高超的词锋与手牌推演，成功击败了 ${selectedDiff.toUpperCase()} AI！`;
+          desc.textContent = `你凭借高超的词锋与手牌推演，成功击败了 ${selectedDiff.toUpperCase()} AI！`;
         } else if (result === 'loss') {
-          title.textContent = isEnglish() ? '💀 You have been outargued.' : '💀 辩词匮乏，遗憾战败！';
+          title.textContent = '💀 辩词匮乏，遗憾战败！';
           title.style.color = '#b91c1c';
-          desc.textContent = isEnglish()
-            ? 'Your opponent read your moves and shut down your final reply.'
-            : 'AI 在残局中看破了你的手牌，你未能存活下来。';
+          desc.textContent = `AI 在残局中看破了你的手牌，你未能存活下来。`;
         } else {
-          title.textContent = isEnglish() ? '🤝 Nobody gets the last word.' : '🤝 同归于尽，双方平局！';
+          title.textContent = '🤝 同归于尽，双方平局！';
           title.style.color = '#d97706';
-          desc.textContent = isEnglish()
-            ? 'Both sides hit 0 HP in the same final exchange. The debate ends in a draw.'
-            : '双方辩手在最后一个回合同时耗尽了最后一口气。';
+          desc.textContent = `双方辩手在最后一个回合同时耗尽了最后一口气。`;
         }
       }, 500);
     }
   }
 
-  applyLanguage('zh');
+  updateSessionStats();
+  updateUI();
 });
