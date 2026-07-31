@@ -152,42 +152,42 @@ const UI_TEXT = {
     competitiveSub: '30 HP | 14 cards each · 1 Keep Your Cool',
     casualTitle: '♟️ Long-Form Debate',
     casualSub: '40 HP | 15 cards each · 2 Keep Your Cool',
-    difficultyLabel: 'CHOOSE YOUR OPPONENT',
+    difficultyLabel: 'CHOOSE OPPONENT',
     masterTitle: '🧠 Master Orator',
-    masterSub: 'Reads patterns · Punishes repetition · Sets up the finish',
+    masterSub: 'Reads patterns · Punishes repetition · Sets up finish',
     mediumTitle: '⚖️ Seasoned Speaker',
-    mediumSub: 'Weighs each exchange · Mixes up its replies',
+    mediumSub: 'Weighs exchange · Mixes up replies',
     easyTitle: '🎲 Impulsive Speaker',
     easySub: 'Plays on impulse',
     sessionHeading: 'THIS SESSION',
     wins: 'Wins',
     losses: 'Losses',
     draws: 'Draws',
-    winRate: 'Win rate',
-    startGame: 'Start the Debate',
-    rulebook: '📖 How to Play',
-    tracker: '📊 Arguments',
+    winRate: 'Win Rate',
+    startGame: 'Start Game',
+    rulebook: '📖 Rules',
+    tracker: '📊 Tracker',
     rules: '📖 Rules',
-    mainMenu: '🔄 Withdraw',
-    aiOpponent: 'Your Opponent',
+    mainMenu: '🔄 Menu',
+    aiOpponent: 'AI Opponent',
     remaining: '🎴 In hand:',
     stunned: '😵 Shut Down',
-    playerPlay: '👤 Your argument',
-    aiPlay: '🤖 Their reply',
-    battleLog: '📜 Record of Debate',
+    playerPlay: '👤 Player',
+    aiPlay: '🤖 AI',
+    battleLog: '📜 Battle Log',
     youPlayer: 'You',
-    playHint: 'Choose a move, or drag it into the debate',
+    playHint: 'Click to select or drag card to arena',
     cancel: 'Cancel',
-    confirmPlay: 'Make Your Move',
-    discardPile: 'Spent arguments',
-    trackerTitle: '📊 Arguments Still in Hand',
-    aiCardsRemaining: '🤖 Your opponent',
-    yourCardsRemaining: '👤 You',
+    confirmPlay: 'Play Card',
+    discardPile: 'Discard',
+    trackerTitle: '📊 Card Tracker',
+    aiCardsRemaining: '🤖 AI Opponent Hand',
+    yourCardsRemaining: '👤 Your Hand',
     howToPlay: 'HOW TO PLAY',
     rulesTitle: 'Shezhan: How to Play',
-    totalTurns: 'Exchanges:',
-    remainingHp: 'HP remaining:',
-    backToMenu: '🔄 Back to Menu'
+    totalTurns: 'Total Turns:',
+    remainingHp: 'Remaining HP:',
+    backToMenu: '🔄 Main Menu'
   }
 };
 
@@ -379,17 +379,15 @@ class ShezhanGame {
     this.gameOver = false;
   }
 
-  init(mode, difficulty) {
-    this.mode = mode;
-    this.difficulty = difficulty;
+  init(difficulty) {
+    this.difficulty = difficulty || 'master';
     this.turn = 1;
-    this.maxHp = (mode === 'competitive') ? 30 : 40;
-    this.userHp = this.maxHp;
-    this.aiHp = this.maxHp;
+    this.maxHp = 40;
+    this.userHp = 40;
+    this.aiHp = 40;
     
-    let xCount = (mode === 'competitive') ? 1 : 2;
-    this.userHand = [3, 3, 3, 3, xCount, 1];
-    this.aiHand = [3, 3, 3, 3, xCount, 1];
+    this.userHand = [3, 3, 3, 3, 2, 1];
+    this.aiHand = [3, 3, 3, 3, 2, 1];
     
     this.userDiscard = [0, 0, 0, 0, 0, 0];
     this.aiDiscard = [0, 0, 0, 0, 0, 0];
@@ -1070,15 +1068,7 @@ document.addEventListener('DOMContentLoaded', () => {
     button.addEventListener('click', () => applyLanguage(button.dataset.lang));
   });
 
-  // Mode & Difficulty Setup in Cover Screen
-  document.querySelectorAll('.mode-select-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.mode-select-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      selectedMode = btn.dataset.mode;
-    });
-  });
-
+  // Difficulty Setup in Cover Screen
   document.querySelectorAll('.diff-select-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.diff-select-btn').forEach(b => b.classList.remove('active'));
@@ -1088,14 +1078,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   btnEnterGame.addEventListener('click', () => {
-    game.init(selectedMode, selectedDiff);
+    game.init(selectedDiff);
     clearCardSelection();
     coverScreen.classList.remove('active');
     resetArenaSlots();
     updateUI();
     addLog({
-      zh: `对局开始！模式：${selectedMode === 'competitive' ? '⚡竞技刺客 (30HP)' : '♟️持久策略 (40HP · 双心如止水)'} | AI难度：${selectedDiff.toUpperCase()}`,
-      en: `The debate begins. ${selectedMode === 'competitive' ? '⚡ Quick-Fire Debate (30 HP)' : '♟️ Long-Form Debate (40 HP · two Keep Your Cool)'} | Opponent: ${selectedDiff.toUpperCase()}`
+      zh: `对局开始！AI 难度：${selectedDiff.toUpperCase()}`,
+      en: `The debate begins. Opponent: ${selectedDiff.toUpperCase()}`
     }, 'system');
   });
 
@@ -1196,11 +1186,10 @@ document.addEventListener('DOMContentLoaded', () => {
             <span class="card-state-fx mute-fx" aria-hidden="true"><i></i><i></i><i></i></span>
             <blockquote class="card-epigraph">
               <span>“${epigraph.quote}”</span>
-              <cite>${epigraph.source}</cite>
+              <cite>—— ${epigraph.source}</cite>
             </blockquote>
             <div class="card-title-block">
               <div class="card-title-vertical ${isEnglish() ? 'card-title-en' : ''}">${displayName}</div>
-              <div class="card-cue">${faceCopy.cue}</div>
             </div>
           </div>
         </div>

@@ -4,40 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>舌战</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=4">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
 </head>
 <body>
   <div id="app">
-    <!-- Game Cover / Welcome Screen (开始界面) -->
+    <!-- Game Cover / Welcome Screen (开始界面 / 主菜单) -->
     <div id="cover-screen" class="cover-screen active">
-      <div class="language-switcher language-switcher-cover" aria-label="Language">
-        <button class="language-btn active" type="button" data-lang="zh">中文</button>
-        <button class="language-btn" type="button" data-lang="en">EN</button>
-      </div>
       <div class="cover-content">
         <div class="cover-header">
           <div class="cover-seal">舌战</div>
           <h1 class="cover-title">舌战</h1>
+          <div class="language-switcher language-switcher-mainmenu" aria-label="Language">
+            <button class="language-btn active" type="button" data-lang="zh">中文</button>
+            <button class="language-btn" type="button" data-lang="en">English</button>
+          </div>
         </div>
 
         <div class="cover-setup-panel">
-          <div class="setup-group">
-            <label class="group-label" data-i18n="modeLabel">对局模式</label>
-            <div class="mode-buttons">
-              <button class="mode-select-btn" data-mode="competitive">
-                <span class="m-title" data-i18n="competitiveTitle">⚡ 竞技刺客模式</span>
-                <span class="m-sub" data-i18n="competitiveSub">30 HP | 每方 14 张牌 · 1 张心如止水</span>
-              </button>
-              <button class="mode-select-btn active" data-mode="casual">
-                <span class="m-title" data-i18n="casualTitle">♟️ 持久策略模式</span>
-                <span class="m-sub" data-i18n="casualSub">40 HP | 每方 15 张牌 · 双心如止水</span>
-              </button>
-            </div>
-          </div>
-
           <div class="setup-group">
             <label class="group-label" data-i18n="difficultyLabel">AI 对手难度</label>
             <div class="diff-buttons">
@@ -245,6 +231,24 @@
           <div class="tracker-column">
             <h3 data-i18n="yourCardsRemaining">👤 你的剩余手牌</h3>
             <div id="user-tracker-list" class="tracker-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Detail Long-Press Modal Sheet -->
+    <div id="card-detail-modal" class="modal">
+      <div class="modal-content card-detail-modal-content">
+        <div class="modal-header">
+          <h2 id="detail-card-name">一语道破</h2>
+          <button class="close-btn" data-close="card-detail-modal">✕</button>
+        </div>
+        <div class="card-detail-body">
+          <blockquote id="detail-card-quote" class="detail-card-quote">“辞达而已矣。” —— 《论语》</blockquote>
+          <p id="detail-card-desc" class="detail-card-desc">描述内容...</p>
+          <div class="detail-matchup-section">
+            <h4 data-i18n="matchupTitle">⚔️ 对局得失关系表</h4>
+            <div id="detail-matchup-list" class="detail-matchup-list"></div>
           </div>
         </div>
       </div>

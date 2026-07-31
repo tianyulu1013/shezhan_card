@@ -41,9 +41,12 @@ html, body {
 }
 
 body {
+  background-color: #242b27;
   background-image:
-    radial-gradient(circle at 50% 0%, rgba(107, 129, 112, 0.25), transparent 54%),
-    linear-gradient(145deg, #29312d 0%, #1c2220 100%);
+    radial-gradient(circle at 50% 15%, rgba(188, 162, 122, 0.28), transparent 60%),
+    radial-gradient(circle at 85% 85%, rgba(163, 67, 61, 0.14), transparent 50%),
+    radial-gradient(circle at 15% 85%, rgba(82, 112, 94, 0.16), transparent 50%),
+    linear-gradient(150deg, #29322d 0%, #1e2522 50%, #171d1a 100%);
   display: flex;
   flex-direction: column;
 }
@@ -59,6 +62,17 @@ body {
   padding: 8px;
   position: relative;
   overflow: hidden;
+}
+
+#app::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(198, 167, 115, 0.22);
+  border-radius: 14px;
+  pointer-events: none;
+  z-index: 1;
+  box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.18);
 }
 
 /* COVER SCREEN z-index: 200 */
@@ -132,6 +146,33 @@ body {
   color: var(--accent-vermilion);
   letter-spacing: 6px;
   text-shadow: 0 2px 1px rgba(255, 255, 255, 0.55);
+}
+
+.language-switcher-mainmenu {
+  margin-top: 8px;
+  display: inline-flex;
+  background: rgba(94, 76, 60, 0.08);
+  padding: 3px;
+  border-radius: 20px;
+  border: 1px solid rgba(94, 76, 60, 0.18);
+}
+
+.language-switcher-mainmenu .language-btn {
+  padding: 4px 14px;
+  font-size: 0.78rem;
+  border-radius: 16px;
+  border: none;
+  background: transparent;
+  color: var(--text-sub);
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.language-switcher-mainmenu .language-btn.active {
+  background: var(--accent-vermilion);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(163, 67, 61, 0.35);
 }
 
 .cover-setup-panel {
@@ -712,45 +753,43 @@ body {
   white-space: nowrap;
 }
 
-/* Arena Zone (Center Tabletop) */
+/* Arena Zone (Center Tabletop Plate with Fine Brass Gold & Ink Trim) */
 .arena-zone {
   position: relative;
-  flex: 1;
-  min-height: 140px;
+  flex: 1.2;
+  min-height: 185px;
   background:
-    radial-gradient(circle at 50% 48%, rgba(255, 255, 255, 0.34), transparent 30%),
-    linear-gradient(145deg, #ddd4c3, #cfc3ad);
-  border: 1px solid rgba(155, 123, 72, 0.78);
-  border-radius: 12px;
+    radial-gradient(circle at 50% 50%, rgba(255, 252, 246, 0.96) 0%, rgba(243, 234, 219, 0.98) 60%, rgba(226, 214, 195, 1) 100%),
+    #e8decb;
+  border: 2px solid rgba(143, 56, 51, 0.58);
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 4px;
-  box-shadow: inset 0 0 48px rgba(70, 61, 49, 0.12), 0 3px 12px rgba(15, 19, 17, 0.14);
+  padding: 6px;
+  box-shadow:
+    inset 0 0 0 3px rgba(198, 167, 115, 0.7),     /* Outer Gold Inlay Line */
+    inset 0 0 0 5px rgba(85, 68, 54, 0.28),      /* Double Trim Gap Line */
+    inset 0 0 36px rgba(70, 56, 42, 0.16),       /* Parchment Inset Glow */
+    0 8px 24px rgba(0, 0, 0, 0.32);              /* Raised Plate Drop Shadow */
   overflow: hidden;
 }
 
-.arena-zone.drag-ready {
-  border-color: var(--accent-vermilion);
-  box-shadow:
-    inset 0 0 52px rgba(163, 67, 61, 0.12),
-    0 0 0 3px rgba(163, 67, 61, 0.18),
-    0 3px 12px rgba(15, 19, 17, 0.14);
+/* Brass Gold Inner Inlay Accent Frame */
+.arena-zone::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(198, 167, 115, 0.55);
+  border-radius: 10px;
+  pointer-events: none;
+  z-index: 1;
 }
 
-.arena-zone.drag-ready::after {
-  content: "松手出牌";
-  position: absolute;
-  bottom: 8px;
-  z-index: 80;
-  padding: 4px 12px;
-  border-radius: 999px;
-  background: rgba(143, 56, 51, 0.92);
-  color: #fff7e8;
-  font-size: 0.72rem;
-  font-weight: 900;
-  box-shadow: 0 4px 12px rgba(72, 27, 24, 0.25);
+/* NO WATERMARK OVERLAP & NO FULL-BOARD DRAG COLOR FLASH */
+.arena-zone.drag-ready {
+  /* Keep background steady and solid without flashing color */
 }
 
 .turn-indicator {
@@ -786,7 +825,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 20px;
   width: 100%;
   margin-top: 6px;
 }
@@ -795,40 +834,40 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
 }
 
 .slot-label {
-  font-size: 0.7rem;
+  font-size: 0.78rem;
   color: var(--text-sub);
   font-weight: bold;
 }
 
 .arena-card-slot {
-  width: clamp(140px, 13vw, 180px);
-  height: clamp(210px, 19.5vw, 270px);
-  border-radius: 10px;
-  border: 1px dashed rgba(79, 68, 55, 0.38);
+  width: clamp(160px, 15vw, 210px);
+  height: clamp(240px, 22.5vw, 315px);
+  border-radius: 12px;
+  border: 1.5px dashed rgba(79, 68, 55, 0.42);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(246, 241, 230, 0.28);
+  background: rgba(246, 241, 230, 0.32);
   position: relative;
   perspective: 800px;
 }
 
 .slot-placeholder {
-  font-size: 0.7rem;
+  font-size: 0.78rem;
   color: var(--text-sub);
 }
 
 .stun-slot-badge {
-  padding: 4px;
+  padding: 6px;
   background: rgba(185, 28, 28, 0.1);
   border: 1.5px solid rgba(185, 28, 28, 0.4);
   border-radius: 8px;
   color: var(--accent-vermilion);
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   font-weight: 900;
   text-align: center;
 }
@@ -841,7 +880,7 @@ body {
 }
 
 .vs-badge {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 900;
   color: #863a35;
   font-family: var(--font-calligraphy);
@@ -849,11 +888,11 @@ body {
 
 .clash-ray {
   position: absolute;
-  width: 50px;
-  height: 3px;
+  width: 65px;
+  height: 4px;
   background: linear-gradient(90deg, #a2824e, #a3433d, #a2824e);
   border-radius: 2px;
-  box-shadow: 0 0 8px rgba(163, 67, 61, 0.46);
+  box-shadow: 0 0 10px rgba(163, 67, 61, 0.6);
   animation: clashBeam 0.5s infinite alternate;
 }
 
@@ -1350,42 +1389,46 @@ body {
 .voice-line-right { transform: rotate(-8deg); }
 
 .card-epigraph {
-  display: none;
+  display: block;
   box-sizing: border-box;
   width: 100%;
-  margin: 0 0 4px;
-  padding: 0 2px;
-  color: color-mix(in srgb, var(--card-ink) 84%, #342d28);
+  margin: 2px 0 4px;
+  padding: 3px 5px;
+  border-left: 2.5px solid var(--card-accent);
+  border-radius: 0 4px 4px 0;
+  background: rgba(255, 255, 255, 0.45);
+  color: var(--card-ink);
   font-family: var(--font-serif);
   text-align: left;
 }
 
 .card-epigraph span {
   display: block;
-  font-size: 0.49rem;
-  font-weight: 700;
-  line-height: 1.16;
+  font-size: 0.54rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--card-ink);
 }
 
 .card-epigraph cite {
   display: block;
   margin-top: 2px;
-  color: color-mix(in srgb, var(--card-ink) 62%, transparent);
-  font: 600 0.36rem/1.1 system-ui, sans-serif;
-  letter-spacing: 0.02em;
+  color: color-mix(in srgb, var(--card-ink) 78%, transparent);
+  font-size: 0.42rem;
+  font-weight: bold;
 }
 
 .card-title-block {
   position: relative;
   z-index: 2;
   width: 100%;
-  padding-top: 5px;
+  padding-top: 4px;
   border-top: 1px solid color-mix(in srgb, var(--card-accent) 27%, transparent);
   text-align: center;
 }
 
 .card-title-vertical {
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-weight: 900;
   letter-spacing: 0.5px;
   color: var(--text-main);
@@ -1404,15 +1447,7 @@ body {
 }
 
 .card-cue {
-  margin-top: 2px;
-  overflow: hidden;
-  color: color-mix(in srgb, var(--card-ink) 76%, transparent);
-  font-size: 0.42rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  line-height: 1.1;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  display: none !important;
 }
 
 .arena-zone .art-svg-medallion {
@@ -1471,9 +1506,12 @@ body {
 /* Interactive Dock Cards */
 .dock-card-wrapper {
   cursor: pointer;
-  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
-  touch-action: none;
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: transform 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.22s ease;
 }
 
 .dock-card-wrapper:hover {
@@ -1482,11 +1520,6 @@ body {
 }
 
 .dock-card-wrapper.selected {
-  transform: translateY(-7px);
-  z-index: 22;
-}
-
-.dock-card-wrapper.selected .card-3d-inner {
   box-shadow:
     0 0 0 3px rgba(163, 67, 61, 0.72),
     0 9px 18px rgba(31, 34, 30, 0.28);
@@ -1985,30 +2018,34 @@ body {
 
 .rules-table-scroll {
   overflow-x: auto;
-  border: 1px solid rgba(94, 76, 60, 0.16);
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid rgba(94, 76, 60, 0.22);
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.26);
+  background: #fdfbf7;
   scrollbar-color: rgba(155, 123, 72, 0.55) transparent;
 }
 
 .deck-table,
 .matchup-table {
   width: 100%;
-  border-collapse: collapse;
-  color: #514b44;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: #3d3832;
   font-size: 0.68rem;
   line-height: 1.35;
+  background: #fdfbf7;
 }
 
 .deck-table th,
 .deck-table td,
 .matchup-table th,
 .matchup-table td {
-  padding: 7px 8px;
-  border-right: 1px solid rgba(94, 76, 60, 0.1);
-  border-bottom: 1px solid rgba(94, 76, 60, 0.1);
+  padding: 8px 7px;
+  border-right: 1px solid rgba(94, 76, 60, 0.15);
+  border-bottom: 1px solid rgba(94, 76, 60, 0.15);
   text-align: center;
   vertical-align: middle;
+  background: #fdfbf7; /* 100% SOLID OPAQUE COLOR */
 }
 
 .deck-table th:first-child,
@@ -2019,21 +2056,14 @@ body {
 .deck-table thead th,
 .deck-table tfoot th,
 .deck-table tfoot td,
-.matchup-table thead th,
-.matchup-table tbody th {
-  background: rgba(155, 123, 72, 0.1);
+.matchup-table thead th {
+  background: #eee4d3; /* 100% SOLID OPAQUE HEADER */
   color: #3e3933;
   font-weight: 800;
 }
 
-.deck-table tr:last-child > *,
-.matchup-table tr:last-child > * {
-  border-bottom: 0;
-}
-
-.deck-table tr > *:last-child,
-.matchup-table tr > *:last-child {
-  border-right: 0;
+.matchup-table tbody tr:nth-child(even) td {
+  background: #f7f0e4;
 }
 
 .matrix-scroll {
@@ -2041,25 +2071,32 @@ body {
 }
 
 .matchup-table {
-  min-width: 980px;
+  min-width: 920px;
   table-layout: fixed;
-  font-size: 0.64rem;
+  font-size: 0.68rem;
 }
 
-.matchup-table th:first-child {
+/* 100% SOLID OPAQUE STICKY FIRST COLUMN (NEVER BLEEDS THROUGH ON HORIZONTAL SCROLL) */
+.matchup-table th:first-child,
+.matchup-table tbody th {
   position: sticky;
   left: 0;
-  z-index: 2;
-  width: 150px;
-  box-shadow: 2px 0 0 rgba(94, 76, 60, 0.08);
+  z-index: 3;
+  width: 135px;
+  background: #ebd8bd !important; /* 100% SOLID OPAQUE COLOR */
+  background-clip: padding-box;
+  box-shadow: 3px 0 6px rgba(94, 76, 60, 0.18);
+  color: #332d26;
+  font-weight: 800;
 }
 
 .matchup-table thead th:first-child {
-  z-index: 3;
+  z-index: 5;
+  background: #dfcca8 !important; /* 100% SOLID OPAQUE CORNER */
 }
 
 .matchup-table td {
-  width: 138px;
+  width: 130px;
 }
 
 .rules-flow-grid {
@@ -2337,11 +2374,31 @@ body {
     padding: 3px 6px;
     margin-bottom: 2px;
     height: 32px;
+    max-height: 32px;
+    overflow: hidden;
+    flex-shrink: 0;
   }
 
-  .logo h1 { font-size: 0.95rem; }
+  .header-controls {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+  }
+
+  .header-controls .btn {
+    padding: 3px 5px;
+    font-size: 0.65rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+    height: 24px;
+    line-height: 1;
+  }
+
+  .logo h1 { font-size: 0.95rem; white-space: nowrap; }
   .logo-seal { font-size: 0.78rem; padding: 1px 3px; }
-  .btn { padding: 3px 6px; font-size: 0.68rem; }
+  .btn { padding: 3px 5px; font-size: 0.68rem; white-space: nowrap; }
 
   .language-switcher-cover {
     top: 8px;
@@ -2400,37 +2457,37 @@ body {
 
   /* ENLARGED ARENA CARDS ON MOBILE (PROMINENT & READABLE WITHOUT OVERFLOW) */
   .arena-zone {
-    flex: 1;
-    min-height: 170px;
+    flex: 1.3;
+    min-height: 195px;
     padding: 4px;
   }
 
-  .turn-indicator { top: 2px; font-size: 0.65rem; padding: 1px 6px; }
-  .stun-notice-banner { top: 18px; font-size: 0.65rem; padding: 1px 6px; }
+  .turn-indicator { top: 2px; font-size: 0.68rem; padding: 1px 8px; }
+  .stun-notice-banner { top: 20px; font-size: 0.68rem; padding: 2px 8px; }
 
   .cards-clash {
     margin-top: 4px;
-    gap: clamp(8px, 3vw, 14px);
+    gap: clamp(10px, 3.5vw, 18px);
   }
 
   .arena-card-slot, .arena-zone .card-container-3d {
-    width: clamp(90px, 26vw, 108px);
-    height: clamp(135px, 39vw, 162px);
+    width: clamp(110px, 32vw, 135px);
+    height: clamp(165px, 48vw, 202px);
   }
 
-  .arena-zone .art-svg-medallion { width: 28px; height: 28px; }
-  .arena-zone .art-svg-medallion svg { width: 18px; height: 18px; }
+  .arena-zone .art-svg-medallion { width: 34px; height: 34px; }
+  .arena-zone .art-svg-medallion svg { width: 22px; height: 22px; }
   .arena-zone .card-epigraph {
-    margin-bottom: 3px;
-    padding: 3px 4px 2px;
+    margin-bottom: 4px;
+    padding: 4px 5px 3px;
   }
-  .arena-zone .card-epigraph span { font-size: 0.45rem; }
-  .arena-zone .card-epigraph cite { font-size: 0.32rem; }
-  .arena-zone .card-title-vertical { font-size: 0.88rem; }
-  .arena-zone .card-type-icon { font-size: 0.9rem; }
-  .arena-zone .card-seal-stamp { width: 18px; height: 18px; font-size: 0.72rem; }
-  .vs-badge { font-size: 1.35rem; }
-  .clash-ray { width: 40px; }
+  .arena-zone .card-epigraph span { font-size: 0.52rem; }
+  .arena-zone .card-epigraph cite { font-size: 0.38rem; }
+  .arena-zone .card-title-vertical { font-size: 1.05rem; }
+  .arena-zone .card-type-icon { font-size: 0.95rem; }
+  .arena-zone .card-seal-stamp { width: 20px; height: 20px; font-size: 0.78rem; }
+  .vs-badge { font-size: 1.65rem; }
+  .clash-ray { width: 55px; }
 
   .outcome-banner {
     margin-top: 2px;
