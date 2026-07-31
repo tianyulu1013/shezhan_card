@@ -1455,9 +1455,12 @@ document.addEventListener('DOMContentLoaded', () => {
         ${qty > 0 ? `<span class="card-qty-tag">${qty}</span>` : ''}
       `;
 
-      cardWrapper.addEventListener('mouseenter', (e) => showCardTooltip(card.id, e));
-      cardWrapper.addEventListener('mousemove', (e) => positionCardTooltip(e));
-      cardWrapper.addEventListener('mouseleave', () => hideCardTooltip());
+      // Only show hover tooltip on real pointer/mouse devices, never on touch
+      if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        cardWrapper.addEventListener('mouseenter', (e) => showCardTooltip(card.id, e));
+        cardWrapper.addEventListener('mousemove', (e) => positionCardTooltip(e));
+        cardWrapper.addEventListener('mouseleave', () => hideCardTooltip());
+      }
 
       if (!unavailable) {
         cardWrapper.addEventListener('click', (event) => {

@@ -2481,8 +2481,11 @@ body {
     margin-bottom: 4px;
     padding: 4px 5px 3px;
   }
-  .arena-zone .card-epigraph span { font-size: 0.52rem; }
-  .arena-zone .card-epigraph cite { font-size: 0.38rem; }
+  /* Hide quotes on mobile — card too small, art gets covered */
+  .card-epigraph {
+    display: none !important;
+  }
+
   .arena-zone .card-title-vertical { font-size: 1.05rem; }
   .arena-zone .card-type-icon { font-size: 0.95rem; }
   .arena-zone .card-seal-stamp { width: 20px; height: 20px; font-size: 0.78rem; }
